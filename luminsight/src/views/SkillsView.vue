@@ -3,14 +3,22 @@ import AddSkillCard from '../components/SkillCard.vue'
 </script>
 
 <script>
-import { store } from '../services/store'
 
 export default {
+  inject: ['skillsService'],
+  created() {
+    this.skillsService.fetchCatFacts()
+        .then(facts => {
+          this.facts = facts
+        });
+  },
+  methods: {},
   data() {
     return {
-      store
+      facts: [],
     }
-  }
+  },
+  computed: {}
 }
 </script>
 
@@ -20,7 +28,8 @@ export default {
   </div>
 
   <main>
-    <AddSkillCard :stars="store.skills['C#'].stars"></AddSkillCard>
+    <p v-for="f in facts">{{ f.text }}</p>
+    <!--    <AddSkillCard :stars="store.skills['C#'].stars"></AddSkillCard>-->
   </main>
 </template>
 

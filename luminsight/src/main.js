@@ -7,9 +7,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap'
 
 import './assets/main.css'
+import {skillsService} from "@/services/SkillsService";
 
 const app = createApp(App)
 
 app.use(router)
 
 app.mount('#app')
+app.provide('skillsService', skillsService)
