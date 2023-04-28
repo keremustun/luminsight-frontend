@@ -1,5 +1,17 @@
 <script setup>
-import AddSkillCard from "../components/SkillCard.vue";
+import AddSkillCard from '../components/SkillCard.vue'
+</script>
+
+<script>
+import { store } from '../services/store'
+
+export default {
+  data() {
+    return {
+      store
+    }
+  }
+}
 </script>
 
 <template>
@@ -8,7 +20,7 @@ import AddSkillCard from "../components/SkillCard.vue";
   </div>
 
   <main>
-    <AddSkillCard :stars="5"></AddSkillCard>
+    <AddSkillCard :stars="store.skills['C#'].stars"></AddSkillCard>
   </main>
 </template>
 

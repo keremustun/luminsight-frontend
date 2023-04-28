@@ -1,19 +1,24 @@
 <script setup>
-import {RouterLink, RouterView} from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
   <div class="container-fluid">
     <div class="row">
       <div class="col">
-      <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-          <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+        <header>
+          <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+              <span class="navbar-toggler-icon"></span>
+            </button>
             <a class="navbar-brand" href="#">
-              <img src="https://www.luminis.eu/wp-content/themes/luminis-2020/library/images/logo.svg" alt="Logo"
-                   width="80" height="24" class="d-inline-block align-text-top">
+              <img
+                src="https://www.luminis.eu/wp-content/themes/luminis-2020/library/images/logo.svg"
+                alt="Logo"
+                width="80"
+                height="24"
+                class="d-inline-block align-text-top"
+              />
             </a>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
@@ -34,14 +39,13 @@ import {RouterLink, RouterView} from 'vue-router'
                 </li>
               </ul>
             </div>
-        </nav>
-      </header>
+          </nav>
+        </header>
       </div>
     </div>
 
-
     <div class="row">
-      <RouterView/>
+      <RouterView />
     </div>
   </div>
 </template>
@@ -50,14 +54,6 @@ import {RouterLink, RouterView} from 'vue-router'
 header {
   line-height: 1.5;
   max-height: 100vh;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
 }
 
 nav a {

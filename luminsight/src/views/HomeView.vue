@@ -1,8 +1,5 @@
-<script setup>
-</script>
+<script setup></script>
 
 <template>
-  <main>
-    Homepage landing
-  </main>
+  <main>Homepage landing</main>
 </template>

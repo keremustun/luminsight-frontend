@@ -1,5 +1,5 @@
 <script setup>
-import AddSkillCard from "../components/SkillCard.vue";
+import AddSkillCard from '../components/SkillCard.vue'
 </script>
 
 <template>
