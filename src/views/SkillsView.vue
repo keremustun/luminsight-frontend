@@ -12,10 +12,15 @@ export default {
         this.facts = facts
       });
   },
-  methods: {},
+  methods: {
+    logCatFacts() {
+      console.log(this.facts);
+    }
+  },
   data() {
     return {
       facts: [],
+      modalOpened: false,
     }
   },
   computed: {}
@@ -24,7 +29,7 @@ export default {
 
 <template>
   <div class="about">
-    <h1>This is a Skills page</h1>
+    <h1>This is a Skills page, modal = {{ modalOpened }}</h1>
   </div>
 
   <main>
@@ -32,7 +37,19 @@ export default {
     <!-- Button trigger modal -->
 
     <!-- Modal -->
-    <AddSkillModal id="id-1" titleText="cats" bodyText="bodyText" safeButtonText="Save" closeButtonText="Lol" />
+    <button @click="modalOpened = !modalOpened">trigger</button>
+    
+    <AddSkillModal v-if="modalOpened" id="add-skill" saveButtonText="Save" closeButtonText="Lol" :open="modalOpened" @close="modalOpened = false">
+      <template #title>
+        <h1>Titeltekst</h1>
+      </template>
+
+      <template #body>
+        <p>Dit is de bio van Kerem.</p>
+
+        <button @click="logCatFacts()">catFacts</button>
+      </template>
+    </AddSkillModal>
   </main>
 </template>
 
