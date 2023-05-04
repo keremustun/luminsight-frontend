@@ -1,9 +1,52 @@
 <script setup>
+import { computed } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
+import { PersonService } from "./services/PersonService.js";
+</script>
+
+<script>
+export default {
+  created() {
+  },
+
+  data() {
+    return {
+      loggedInPerson: {},
+      personService: new PersonService(),
+    }
+
+  },
+
+  computed: {
+    loggedIn() {
+      return  JSON.stringify(this.loggedInPerson) !== '{}'
+    }
+  },
+
+  methods: {
+    performSSOLogin() {
+      this.personService.getPerson('kerem.ustun@luminis.eu').then(response => this.loggedInPerson = response.data)
+    }
+  },
+
+  provide() {
+    return {
+      loggedInPerson: computed(() => this.loggedInPerson),
+      personService: this.personService
+    }
+  }
+
+}
 </script>
 
 <template>
-  <div class="container-fluid">
+  <div v-if="!loggedIn">
+    <h1>Welcome to Luminsight</h1>
+    <h2>Please click on login to login with your company email</h2>
+    <button @click="performSSOLogin">Login</button>
+  </div>
+
+  <div v-else class="container-fluid">
     <div class="row">
       <div class="col">
         <header>
@@ -12,13 +55,8 @@ import { RouterLink, RouterView } from 'vue-router'
               <span class="navbar-toggler-icon"></span>
             </button>
             <a class="navbar-brand" href="#">
-              <img
-                src="https://www.luminis.eu/wp-content/themes/luminis-2020/library/images/logo.svg"
-                alt="Logo"
-                width="80"
-                height="24"
-                class="d-inline-block align-text-top"
-              />
+              <img src="https://www.luminis.eu/wp-content/themes/luminis-2020/library/images/logo.svg" alt="Logo"
+                width="80" height="24" class="d-inline-block align-text-top" />
             </a>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">

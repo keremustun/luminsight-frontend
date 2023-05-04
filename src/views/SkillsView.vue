@@ -1,17 +1,18 @@
 <script setup>
-import AddSkillModal from '../components/AddSkillModal.vue'
+import GenericModal from '../components/GenericModal.vue'
+import SkillCard from '../components/SkillCard.vue'
+import { PersonService } from '../services/PersonService';
 </script>
 
 <script>
 
 export default {
-  inject: ['skillsService'],
-  created() {
-    this.skillsService.fetchCatFacts()
-      .then(facts => {
-        this.facts = facts
-      });
+  inject: ['loggedInPerson','personService'],
+  
+  mounted(){
+    this.skills = this.personService.getPersonsSkills(this.loggedInPerson.email)
   },
+
   methods: {
     logCatFacts() {
       console.log(this.facts);
@@ -19,7 +20,7 @@ export default {
   },
   data() {
     return {
-      facts: [],
+      skills: [],
       modalOpened: false,
     }
   },
@@ -33,13 +34,15 @@ export default {
   </div>
 
   <main>
-    <p v-for="f in facts">{{ f.text }}</p>
-    <!-- Button trigger modal -->
+    <SkillCard v-for="skill in skills" :header='skill.skillName' :stars='skill.proficiency'>
 
-    <!-- Modal -->
+    </SkillCard>
+
     <button @click="modalOpened = !modalOpened">trigger</button>
-    
-    <AddSkillModal v-if="modalOpened" id="add-skill" saveButtonText="Save" closeButtonText="Lol" :open="modalOpened" @close="modalOpened = false">
+
+
+    <GenericModal v-if="modalOpened" id="add-skill" saveButtonText="Save" closeButtonText="Lol" :open="modalOpened"
+      @close="modalOpened = false">
       <template #title>
         <h1>Titeltekst</h1>
       </template>
@@ -49,7 +52,7 @@ export default {
 
         <button @click="logCatFacts()">catFacts</button>
       </template>
-    </AddSkillModal>
+    </GenericModal>
   </main>
 </template>
 
