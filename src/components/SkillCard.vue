@@ -13,9 +13,6 @@ export default {
     skillName: {
       default: "skill"
     },
-    key: {
-      default: "skill"
-    },
   },
   data() {
     return {
@@ -46,10 +43,16 @@ export default {
         <i v-for="x in stars" class="bi bi-star-fill"></i>
         <i v-for="x in 5 - (stars ?? 0)" class="bi bi-star"></i>
       </p>
+
+      
       <button @click="toggleModal()">Edit</button>
 
-      <ManageSkillModal v-if="modalOpened" id="edit-skill" :skillNameProp="skillName" saveButtonText="Save"
-        closeButtonText="Delete" :open="modalOpened" @close="modalOpened = false">
+      <ManageSkillModal v-if="modalOpened" 
+        :skillNameProp="skillName"
+        :starsProp="stars"
+        :open="true" 
+        @close="modalOpened = false">
+        
         <template #title>
           <h3>Edit the skill</h3>
         </template>
@@ -57,9 +60,9 @@ export default {
         <template #body>
           <input :value="this.skillName" @input="updateSkillName" type="text">
 
-          <p class="card-text">
+          <!-- <p class="card-text">
             <i v-for="(x, index) in 5" :class="'bi bi-star ' + (index < stars ? 'star-filled' : 'star')"></i>
-          </p>
+          </p> -->
         </template>
 
         <template #leftButton>
@@ -77,12 +80,8 @@ export default {
 </template>
 
 <style>
-.star{
-  color:gray;
-}
 
-.star-filled{
-  color:gold;
+.star-filled {
+  color: gold;
 }
-
 </style>
