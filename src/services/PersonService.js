@@ -18,6 +18,10 @@ export class PersonService {
             {
                 skillName: 'JavaScript',
                 proficiency: 4,
+            },
+            {
+                skillName: 'TypeScript',
+                proficiency: 3,
             }
         ]
     }

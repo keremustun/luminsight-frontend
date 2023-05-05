@@ -3,19 +3,18 @@ import { Modal } from 'bootstrap'
 import GenericModal from './GenericModal.vue';
 
 export default {
+    data() {
+        return {
+            skillName: this.skillNameProp
+        }
+    },
     props: {
+        skillNameProp: {
+            default: ''
+        },
         open: {
             default: false
-        },
-        id: {
-            default: "modal-id"
-        },
-        closeButtonText: {
-            default: null
-        },
-        saveButtonText: {
-            default: null
-        },
+        }
     },
     components: { GenericModal }
 }
@@ -23,9 +22,21 @@ export default {
 
 <template>
     <GenericModal :open="open">
-        
         <template #title>
-            <h3>Edit the skill</h3>
+            <slot name="title"></slot>
+        </template>
+
+        <template #body>
+            <slot name="body"></slot>
+        </template>
+
+        <template #leftButton>
+            <slot name="leftButton"></slot>
+        </template>
+
+        <template #rightButton>
+            <slot name="rightButton"></slot>
+
         </template>
     </GenericModal>
 </template>

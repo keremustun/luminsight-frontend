@@ -13,6 +13,9 @@ export default {
     skillName: {
       default: "skill"
     },
+    key: {
+      default: "skill"
+    },
   },
   data() {
     return {
@@ -20,8 +23,9 @@ export default {
       modalOpened: false,
     }
   },
-  methods:{
-    toggleModal(){
+  methods: {
+    toggleModal() {
+      debugger
       console.log('click')
       this.modalOpened = !this.modalOpened
       console.log(this.modalOpened)
@@ -42,12 +46,25 @@ export default {
         <i v-for="x in stars" class="bi bi-star-fill"></i>
         <i v-for="x in 5 - (stars ?? 0)" class="bi bi-star"></i>
       </p>
-      <a href="#" class="btn btn-primary">Save</a>
+      <button @click="toggleModal()">Edit</button>
 
-      <button @click="toggleModal()">trigger</button>
+      <ManageSkillModal v-if="modalOpened" id="edit-skill" :skillNameProp="skillName" saveButtonText="Save"
+        closeButtonText="Delete" :open="modalOpened">
+        <template #title>
+            <h3>Edit the skill</h3>
+        </template>
 
-      <ManageSkillModal v-if="modalOpened" 
-      id="add-skill" saveButtonText="Save" closeButtonText="Delete" :open="modalOpened" >
+        <template #body>
+          <input :value="skillName" @input="updateSkillName" type="text">
+        </template>
+
+        <template #leftButton>
+          <button>Delete</button>
+        </template>
+
+        <template #rightButton>
+          <button>Save</button>
+        </template>
       </ManageSkillModal>
     </template>
 

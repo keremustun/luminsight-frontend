@@ -15,8 +15,20 @@ export default {
   data() {
     return {
       skills: [],
+      editingSkill:{},
       modalOpened: false
     }
+  },
+
+  methods:{
+    openModal(){
+        this.modalOpened = !this.modalOpened
+    },
+    
+    toggleModal() {
+      console.log('togglw')
+      this.$emit('modal-toggled',this.modalOpened)
+    },
   },
 }
 </script>
@@ -28,10 +40,12 @@ export default {
 
   <main>
     <SkillCard v-for="skill in skills"
+    :key="skill.skillName"
     :skillName='skill.skillName'
     :stars='skill.proficiency'>
-
+    
     </SkillCard>
+
   </main>
 </template>
 

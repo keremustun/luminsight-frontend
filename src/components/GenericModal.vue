@@ -16,11 +16,19 @@ export default {
             default: null
         },
     },
+
+    mounted() {
+        if (this.open) {
+            this.openModal();
+        }
+    },
+
     data() {
         return {
             modal: null,
         }
     },
+
     methods: {
         openModal() {
             if (!this.modal) {
@@ -40,12 +48,8 @@ export default {
             this.$emit('close');
         }
     },
-    mounted() {
-        if (this.open) {
-            this.openModal();
-            console.log('genericmodal')
-        }
-    },
+
+
     watch: {
         open: {
             handler(openState) {
@@ -68,17 +72,23 @@ export default {
 
                 <div class="modal-header">
                     <slot name="title"></slot>
-                    
+
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                
+
                 <div class="modal-body">
                     <slot name="body"></slot>
                 </div>
-                
+
                 <div class="modal-footer">
-                    <slot name="leftButton"></slot>    
-                    <slot name="rightButton"></slot> 
+                    <div>
+
+                        <slot name="leftButton"></slot>
+                    </div>
+                    <div>
+                        <slot name="rightButton"></slot> 
+
+                    </div>
                 </div>
 
             </div>
