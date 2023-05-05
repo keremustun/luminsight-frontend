@@ -70,6 +70,10 @@ export default {
         <div class="modal-dialog">
             <div class="modal-content">
 
+                <div class="top-frame">
+                    
+                </div>
+
                 <div class="modal-header">
                     <slot name="title"></slot>
 
@@ -96,4 +100,13 @@ export default {
     </div>
 </template>
 
-<style></style>
+<style>
+.top-frame{
+    background-color: rgb(53, 0, 53);
+    height: 1rem;
+}
+
+.modal-content{
+    border-radius: 0;
+}
+</style>
