@@ -3,15 +3,7 @@ import { Modal } from 'bootstrap'
 import GenericModal from './GenericModal.vue';
 
 export default {
-    data() {
-        return {
-            skillName: this.skillNameProp
-        }
-    },
     props: {
-        skillNameProp: {
-            default: ''
-        },
         open: {
             default: false
         }

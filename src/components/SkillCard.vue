@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     toggleModal() {
-      debugger
+      console.log(this.skillName)
       console.log('click')
       this.modalOpened = !this.modalOpened
       console.log(this.modalOpened)
@@ -49,13 +49,17 @@ export default {
       <button @click="toggleModal()">Edit</button>
 
       <ManageSkillModal v-if="modalOpened" id="edit-skill" :skillNameProp="skillName" saveButtonText="Save"
-        closeButtonText="Delete" :open="modalOpened">
+        closeButtonText="Delete" :open="modalOpened" @close="modalOpened = false">
         <template #title>
-            <h3>Edit the skill</h3>
+          <h3>Edit the skill</h3>
         </template>
 
         <template #body>
-          <input :value="skillName" @input="updateSkillName" type="text">
+          <input :value="this.skillName" @input="updateSkillName" type="text">
+
+          <p class="card-text">
+            <i v-for="(x, index) in 5" :class="'bi bi-star ' + (index < stars ? 'star-filled' : 'star')"></i>
+          </p>
         </template>
 
         <template #leftButton>
@@ -72,4 +76,13 @@ export default {
   </GenericCard>
 </template>
 
-<style scoped></style>
+<style>
+.star{
+  color:gray;
+}
+
+.star-filled{
+  color:gold;
+}
+
+</style>
