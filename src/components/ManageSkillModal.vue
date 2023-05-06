@@ -54,13 +54,23 @@ export default {
             return star <= this.newSkill.proficiency;
         },
 
-        updateSkill(oldSkill, newSkill) {
-            if ((JSON.stringify(oldSkill) !== JSON.stringify(newSkill))) {
+        addSkill(){
+            this.personService.addPersonSkill(
+                this.loggedInPerson.email,
+                this.newSkill
+            ).then(response => {
+                    this.$refs.genericModal.hideModal()
+                    this.$emit('skills-updated')
+                })
+        },
+
+        updateSkill() {
+            if ((JSON.stringify(this.oldSkill) !== JSON.stringify(this.newSkill))) {
 
                 this.personService.updatePersonSkill(
                     this.loggedInPerson.email,
-                    oldSkill.skillName,
-                    newSkill
+                    this.oldSkill.skillName,
+                    this.newSkill
                 ).then(response => {
                     this.$refs.genericModal.hideModal()
                     this.$emit('skills-updated')
@@ -90,7 +100,7 @@ export default {
 <template>
     <GenericModal ref="genericModal" :open="open">
         <template #title>
-            <h3>Edit the skill</h3>
+            <slot name="title"></slot>
         </template>
 
         <template #body>
@@ -111,11 +121,11 @@ export default {
         </template>
 
         <template #leftButton>
-            <button @click="deleteSkill" class="btn btn-danger delete">Delete</button>
+            <slot name="leftButton"></slot>
         </template>
 
         <template #rightButton>
-            <button @click="updateSkill(oldSkill, newSkill)" class="btn btn-warning save">Save</button>
+            <slot name="rightButton"></slot>
         </template>
     </GenericModal>
 </template>

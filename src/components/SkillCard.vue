@@ -51,12 +51,24 @@ export default {
       
       <button @click="toggleModal()">Edit</button>
 
-      <ManageSkillModal v-if="modalOpened" 
+      <ManageSkillModal ref="manageSkillModal" v-if="modalOpened" 
         :skillNameProp="skillName"
         :starsProp="stars"
         :open="true" 
         @close="modalOpened = false"
         @skills-updated="skillsUpdated()">
+
+        <template #title>
+          <h3>Edit the skill</h3>
+        </template>
+
+        <template #leftButton>
+          <button @click="this.$refs.manageSkillModal.deleteSkill()" class="btn btn-danger delete">Delete</button>
+        </template>
+
+        <template #rightButton>
+          <button @click="this.$refs.manageSkillModal.updateSkill()" class="btn btn-warning save">Save</button>
+        </template>
       </ManageSkillModal>
     </template>
 
