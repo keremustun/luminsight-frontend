@@ -14,20 +14,24 @@ export default {
       default: "skill"
     },
   },
+
   data() {
     return {
 
       modalOpened: false,
     }
   },
+
   methods: {
     toggleModal() {
-      console.log(this.skillName)
-      console.log('click')
       this.modalOpened = !this.modalOpened
-      console.log(this.modalOpened)
+    },
+
+    skillUpdated(){
+      this.$emit('skill-updated')
     }
   },
+
   components: { GenericCard, ManageSkillModal }
 }
 </script>
@@ -51,7 +55,8 @@ export default {
         :skillNameProp="skillName"
         :starsProp="stars"
         :open="true" 
-        @close="modalOpened = false">
+        @close="modalOpened = false"
+        @skill-updated="skillUpdated()">
       </ManageSkillModal>
     </template>
 

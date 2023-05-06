@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 export class PersonService {
-    getPerson(personEmail) {
-        return axios.get(`https://localhost:7224/api/person/getPerson`, { params: { email: personEmail } });
-    }
-
-    async getPersonAsync(personEmail) {
+    async getPerson(personEmail) {
         return await axios.get(`https://localhost:7224/api/person/getPerson`, { params: { email: personEmail } })
     }
 
@@ -14,14 +10,8 @@ export class PersonService {
        
     }
 
-    updatePersonSkill(personEmail, skillName, newSkill) {
-        console.log(skillName)
-        axios.put(`https://localhost:7224/api/person/${personEmail}/skills/${encodeURIComponent(skillName)}`, newSkill)
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+    async updatePersonSkill(personEmail, skillName, newSkill) {
+        return await axios.put(`https://localhost:7224/api/person/${personEmail}/skills/${encodeURIComponent(skillName)}`, newSkill)
+            
     }
 }

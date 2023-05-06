@@ -17,6 +17,8 @@ export default {
         },
     },
 
+    emits:['close'],
+
     mounted() {
         if (this.open) {
             this.openModal();
@@ -28,6 +30,7 @@ export default {
             modal: null,
         }
     },
+    
 
     methods: {
         openModal() {

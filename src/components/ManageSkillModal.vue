@@ -3,10 +3,10 @@ import { Modal } from 'bootstrap'
 import GenericModal from './GenericModal.vue';
 
 export default {
-    inject:['loggedInPerson','personService'],
+    inject: ['loggedInPerson', 'personService'],
 
     props: {
-        skillNameProp:{
+        skillNameProp: {
             default: ''
         },
         open: {
@@ -17,15 +17,17 @@ export default {
         }
     },
 
+    emits: ['skill-updated'],
+
     data() {
         return {
-            oldSkill:{
+            oldSkill: {
                 skillName: this.skillNameProp,
                 proficiency: this.starsProp,
 
             },
 
-            newSkill:{
+            newSkill: {
                 skillName: this.skillNameProp,
                 proficiency: this.starsProp,
 
@@ -52,23 +54,24 @@ export default {
             return star <= this.newSkill.proficiency;
         },
 
-        updateSkill(oldSkill, newSkill){
-            if ((JSON.stringify(oldSkill) !== JSON.stringify(newSkill))){
-                
-                console.log('not same')
+        updateSkill(oldSkill, newSkill) {
+            if ((JSON.stringify(oldSkill) !== JSON.stringify(newSkill))) {
+
                 this.personService.updatePersonSkill(
                     this.loggedInPerson.email,
                     oldSkill.skillName,
                     newSkill
-                    );
-            } else {
-                console.log('same')
+                ).then(response => {
+                    this.$refs.genericModal.hideModal()
+                    this.$emit('skill-updated')
+                })
+
             }
         },
 
-        deleteSkill(){
+        deleteSkill() {
             const confirmed = window.confirm('Are you sure that you want to delete this skill?')
-            if(confirmed){
+            if (confirmed) {
                 //this.personService.deleteSkill(this.oldSkill)
             }
         }
@@ -79,13 +82,13 @@ export default {
 </script>
 
 <template>
-    <GenericModal :open="open">
+    <GenericModal ref="genericModal" :open="open">
         <template #title>
-                <h3>Edit the skill</h3>
+            <h3>Edit the skill</h3>
         </template>
 
         <template #body>
-            <input class="skillNameInput" v-model="newSkill.skillName"  type="text">
+            <input class="skillNameInput" v-model="newSkill.skillName" type="text">
 
             <div class="proficiencyEdit">
                 <p>What's your proficiency with this skill?</p>
@@ -102,31 +105,31 @@ export default {
         </template>
 
         <template #leftButton>
-                <button @click="deleteSkill" class="btn btn-danger delete">Delete</button>
+            <button @click="deleteSkill" class="btn btn-danger delete">Delete</button>
         </template>
 
         <template #rightButton>
-                <button @click="updateSkill(oldSkill, newSkill)" class="btn btn-warning save">Save</button>
+            <button @click="updateSkill(oldSkill, newSkill)" class="btn btn-warning save">Save</button>
         </template>
     </GenericModal>
 </template>
 
 <style>
-.skillNameInput{
+.skillNameInput {
     width: 100%;
     border-radius: 1rem;
     padding-left: 1rem;
     border-color: gray;
 }
 
-.proficiencyEditText{
+.proficiencyEditText {
     margin-top: 1rem;
-    
+
 }
 
-.starr{
-    cursor:pointer;
-    margin:0.2%
+.starr {
+    cursor: pointer;
+    margin: 0.2%
 }
 
 .bi-star {
@@ -134,8 +137,9 @@ export default {
     color: gray;
     cursor: pointer;
 }
+
 .bi-star-fill {
-    
+
     color: gold;
 }
 
@@ -151,12 +155,12 @@ export default {
     text-shadow: 0px 0px 5px gold;
 }
 
-.delete{
+.delete {
     background-color: red;
     border: red;
 }
 
-.save{
+.save {
     background-color: orange;
     border: orange;
 }

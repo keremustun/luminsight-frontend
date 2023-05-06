@@ -1,41 +1,47 @@
 <script setup>
 import SkillCard from '../components/SkillCard.vue'
 import { PersonService } from '../services/PersonService';
+import { reactive } from 'vue';
 </script>
 
 <script>
 
 export default {
-  inject: ['loggedInPerson','personService'],
-  
-  mounted(){
-    this.personService.getPersonsSkills(this.loggedInPerson.email).then(response => this.skills = response.data)
+  inject: ['loggedInPerson', 'personService'],
+
+  mounted() {
+    this.refreshSkills()
   },
 
   data() {
     return {
       skills: [],
-      editingSkill:{},
+      editingSkill: {},
       modalOpened: false
     }
   },
 
-  computed:{
-    skillsComputed(){
-      console.log(this.skills)
+  computed: {
+    skillsComputed() {
       return this.skills
     }
   },
 
-  methods:{
-    openModal(){
-        this.modalOpened = !this.modalOpened
+  methods: {
+    openModal() {
+      this.modalOpened = !this.modalOpened
     },
-    
+
     toggleModal() {
-      console.log('togglw')
-      this.$emit('modal-toggled',this.modalOpened)
+      this.$emit('modal-toggled', this.modalOpened)
     },
+
+    refreshSkills() {
+      this.personService.getPersonsSkills(this.loggedInPerson.email)
+        .then(response => {
+          this.skills = response.data
+        })
+    }
   },
 
 }
@@ -47,11 +53,10 @@ export default {
   </div>
 
   <main>
-    <SkillCard v-for="skill in skillsComputed"
-    :key="skill.skillName"
-    :skillName='skill.skillName'
-    :stars='skill.proficiency'>
-    
+    <SkillCard v-for="skill in skillsComputed" :key="skill.skillName" :skillName='skill.skillName'
+      :stars='skill.proficiency' @skill-updated="refreshSkills()">
+
+
     </SkillCard>
 
   </main>
