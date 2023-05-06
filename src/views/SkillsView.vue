@@ -54,7 +54,7 @@ export default {
 
   <main>
     <SkillCard v-for="skill in skillsComputed" :key="skill.skillName" :skillName='skill.skillName'
-      :stars='skill.proficiency' @skill-updated="refreshSkills()">
+      :stars='skill.proficiency' @skills-updated="refreshSkills()">
 
 
     </SkillCard>

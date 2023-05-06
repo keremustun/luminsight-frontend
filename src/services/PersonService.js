@@ -10,6 +10,11 @@ export class PersonService {
        
     }
 
+    async deletePersonSkill(personEmail, skillName) {
+        return await axios.delete(`https://localhost:7224/api/person/${personEmail}/skills/${encodeURIComponent(skillName)}`)
+            
+    }
+
     async updatePersonSkill(personEmail, skillName, newSkill) {
         return await axios.put(`https://localhost:7224/api/person/${personEmail}/skills/${encodeURIComponent(skillName)}`, newSkill)
             

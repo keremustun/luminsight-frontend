@@ -17,7 +17,7 @@ export default {
         }
     },
 
-    emits: ['skill-updated'],
+    emits: ['skills-updated'],
 
     data() {
         return {
@@ -63,7 +63,7 @@ export default {
                     newSkill
                 ).then(response => {
                     this.$refs.genericModal.hideModal()
-                    this.$emit('skill-updated')
+                    this.$emit('skills-updated')
                 })
 
             }
@@ -72,7 +72,13 @@ export default {
         deleteSkill() {
             const confirmed = window.confirm('Are you sure that you want to delete this skill?')
             if (confirmed) {
-                //this.personService.deleteSkill(this.oldSkill)
+                this.personService.deletePersonSkill(
+                    this.loggedInPerson.email,
+                    this.oldSkill.skillName
+                    ).then(response => {
+                        this.$refs.genericModal.hideModal()
+                        this.$emit('skills-updated')
+                    })
             }
         }
     },

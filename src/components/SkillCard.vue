@@ -27,8 +27,8 @@ export default {
       this.modalOpened = !this.modalOpened
     },
 
-    skillUpdated(){
-      this.$emit('skill-updated')
+    skillsUpdated(){
+      this.$emit('skills-updated')
     }
   },
 
@@ -56,7 +56,7 @@ export default {
         :starsProp="stars"
         :open="true" 
         @close="modalOpened = false"
-        @skill-updated="skillUpdated()">
+        @skills-updated="skillsUpdated()">
       </ManageSkillModal>
     </template>
 
