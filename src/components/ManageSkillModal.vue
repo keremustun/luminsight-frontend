@@ -3,7 +3,7 @@ import { Modal } from 'bootstrap'
 import GenericModal from './GenericModal.vue';
 
 export default {
-    inject:['personService'],
+    inject:['loggedInPerson','personService'],
 
     props: {
         skillNameProp:{
@@ -21,13 +21,13 @@ export default {
         return {
             oldSkill:{
                 skillName: this.skillNameProp,
-                selectedStars: this.starsProp,
+                proficiency: this.starsProp,
 
             },
 
             newSkill:{
                 skillName: this.skillNameProp,
-                selectedStars: this.starsProp,
+                proficiency: this.starsProp,
 
             },
 
@@ -46,19 +46,21 @@ export default {
             this.hovered = 0;
         },
         selectStars(star) {
-            this.newSkill.selectedStars = star;
+            this.newSkill.proficiency = star;
         },
         starFilled(star) {
-            return star <= this.newSkill.selectedStars;
+            return star <= this.newSkill.proficiency;
         },
 
         updateSkill(oldSkill, newSkill){
-            console.log(JSON.stringify(oldSkill) )
-            console.log(JSON.stringify(newSkill) )
             if ((JSON.stringify(oldSkill) !== JSON.stringify(newSkill))){
                 
                 console.log('not same')
-                // this.personService.updateSkill(oldSkill.skillName, newSkill);
+                this.personService.updatePersonSkill(
+                    this.loggedInPerson.email,
+                    oldSkill.skillName,
+                    newSkill
+                    );
             } else {
                 console.log('same')
             }
@@ -88,7 +90,7 @@ export default {
             <div class="proficiencyEdit">
                 <p>What's your proficiency with this skill?</p>
                 <span v-for="star in stars" :key="star" class="starr" :class="{
-                        oldSelection: star <= oldSkill.selectedStars,
+                        oldSelection: star <= oldSkill.proficiency,
                         glowing: star <= hovered,
                         'bi': true,
                         'bi-star': !starFilled(star),
