@@ -9,21 +9,9 @@ export class PersonService {
         return await axios.get(`https://localhost:7224/api/person/getPerson`, { params: { email: personEmail } })
     }
 
-    getPersonsSkills(personEmail) {
-        return [
-            {
-                skillName: 'C#',
-                proficiency: 5,
-            },
-            {
-                skillName: 'JavaScript',
-                proficiency: 4,
-            },
-            {
-                skillName: 'TypeScript',
-                proficiency: 3,
-            }
-        ]
+    async getPersonsSkills(personEmail) {
+        return await axios.get(`https://localhost:7224/api/person/${personEmail}/skills`)
+       
     }
 
     updatePersonSkill(personEmail, skillName, newSkill) {

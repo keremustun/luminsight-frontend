@@ -9,7 +9,7 @@ export default {
   inject: ['loggedInPerson','personService'],
   
   mounted(){
-    this.skills = this.personService.getPersonsSkills(this.loggedInPerson.email)
+    this.personService.getPersonsSkills(this.loggedInPerson.email).then(response => this.skills = response.data)
   },
 
   data() {
@@ -17,6 +17,13 @@ export default {
       skills: [],
       editingSkill:{},
       modalOpened: false
+    }
+  },
+
+  computed:{
+    skillsComputed(){
+      console.log(this.skills)
+      return this.skills
     }
   },
 
@@ -30,6 +37,7 @@ export default {
       this.$emit('modal-toggled',this.modalOpened)
     },
   },
+
 }
 </script>
 
@@ -39,7 +47,7 @@ export default {
   </div>
 
   <main>
-    <SkillCard v-for="skill in skills"
+    <SkillCard v-for="skill in skillsComputed"
     :key="skill.skillName"
     :skillName='skill.skillName'
     :stars='skill.proficiency'>
