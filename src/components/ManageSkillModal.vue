@@ -55,34 +55,28 @@ export default {
         },
 
         addSkill() {
-            this.validateSkill().then(response => {
-                if (response.data === 'Valid') {
-                    this.personService.addPersonSkill(
-                        this.loggedInPerson.email,
-                        this.newSkill
-                    ).then(response => {
-                        this.cleanUp()
-                    })
-                } else {
-                    return alert(response.data)
-                }
+            this.personService.addPersonSkill(
+                this.loggedInPerson.email,
+                this.newSkill
+            ).then(response => {
+                if (response.data === 'Skill Added')
+                    this.cleanUp()
+                else
+                    alert(response.data)
             })
         },
 
         updateSkill() {
 
-            this.validateSkill().then(response => {
-                if (response.data === 'Valid') {
-                    this.personService.updatePersonSkill(
-                        this.loggedInPerson.email,
-                        this.oldSkill.skillName,
-                        this.newSkill
-                    ).then(response => {
-                        this.cleanUp()
-                    })
-                } else {
-                    return alert(response.data)
-                }
+            this.personService.updatePersonSkill(
+                this.loggedInPerson.email,
+                this.oldSkill.skillName,
+                this.newSkill
+            ).then(response => {
+                if (response.data === 'Skill Updated')
+                    this.cleanUp()
+                else
+                    alert(response.data)
             })
         },
 
