@@ -23,4 +23,9 @@ export class PersonService {
         return await axios.put(`https://localhost:7224/api/person/${personEmail}/skills/${encodeURIComponent(skillName)}`, newSkill)
             
     }
+
+    async validateSkill(personEmail, newSkill) {
+        return await axios.post(`https://localhost:7224/api/person/${personEmail}/skills/validateSkill`, newSkill)
+            
+    }
 }

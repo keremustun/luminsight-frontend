@@ -13,7 +13,7 @@ export default {
             default: false
         },
         starsProp: {
-            default: 1
+            default: 0
         }
     },
 
@@ -54,29 +54,36 @@ export default {
             return star <= this.newSkill.proficiency;
         },
 
-        addSkill(){
-            this.personService.addPersonSkill(
-                this.loggedInPerson.email,
-                this.newSkill
-            ).then(response => {
-                    this.$refs.genericModal.hideModal()
-                    this.$emit('skills-updated')
-                })
+        addSkill() {
+            this.validateSkill().then(response => {
+                if (response.data === 'Valid') {
+                    this.personService.addPersonSkill(
+                        this.loggedInPerson.email,
+                        this.newSkill
+                    ).then(response => {
+                        this.cleanUp()
+                    })
+                } else {
+                    return alert(response.data)
+                }
+            })
         },
 
         updateSkill() {
-            if ((JSON.stringify(this.oldSkill) !== JSON.stringify(this.newSkill))) {
 
-                this.personService.updatePersonSkill(
-                    this.loggedInPerson.email,
-                    this.oldSkill.skillName,
-                    this.newSkill
-                ).then(response => {
-                    this.$refs.genericModal.hideModal()
-                    this.$emit('skills-updated')
-                })
-
-            }
+            this.validateSkill().then(response => {
+                if (response.data === 'Valid') {
+                    this.personService.updatePersonSkill(
+                        this.loggedInPerson.email,
+                        this.oldSkill.skillName,
+                        this.newSkill
+                    ).then(response => {
+                        this.cleanUp()
+                    })
+                } else {
+                    return alert(response.data)
+                }
+            })
         },
 
         deleteSkill() {
@@ -85,11 +92,20 @@ export default {
                 this.personService.deletePersonSkill(
                     this.loggedInPerson.email,
                     this.oldSkill.skillName
-                    ).then(response => {
-                        this.$refs.genericModal.hideModal()
-                        this.$emit('skills-updated')
-                    })
+                ).then(response => {
+                    this.cleanUp()
+                })
             }
+        },
+
+        validateSkill() {
+            return this.personService.validateSkill(this.loggedInPerson.email, this.newSkill)
+
+        },
+
+        cleanUp() {
+            this.$refs.genericModal.hideModal()
+            this.$emit('skills-updated')
         }
     },
 
