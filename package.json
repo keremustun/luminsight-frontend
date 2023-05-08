@@ -13,10 +13,18 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@azure/core-http": "1.1.8",
+    "@azure/msal-browser": "^2.3.1",
+    "@azure/storage-blob": "12.2.1",
+    "bulma": "^0.7.5",
+    "core-js": "^3.6.5",
+    "tiny-emitter": "^2.1.0",
+    "vuex": "^4.0.0-beta.4",
     "@popperjs/core": "^2.11.7",
     "bootstrap": "^5.3.0-alpha3",
     "bootstrap-icons": "^1.10.5",
     "vue": "^3.2.47",
+    "vue-msal": "^3.2.0",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
