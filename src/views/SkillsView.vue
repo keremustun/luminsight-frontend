@@ -34,6 +34,7 @@ export default {
     },
 
     refreshSkills() {
+      console.log(this.loggedInPerson)
       this.personService.getPersonsSkills(this.loggedInPerson.email)
         .then(response => {
           this.skills = response.data

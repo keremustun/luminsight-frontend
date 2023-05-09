@@ -1,23 +1,10 @@
-<template>
-  <div>
-
-
-    <button v-if="!account" @click="SignIn">sign in</button>
-    <button v-else @click="SignOut">sign out</button>
-
-    <div v-if="account">{{ account.name }}</div>
-  </div>
-</template>
-
 <script>
 import { PublicClientApplication } from '@azure/msal-browser';
 
 export default {
-  name: 'HeaderBar',
   data() {
     return {
       account: undefined,
-      signin: 'https://microsoft.com',
     };
   },
 
@@ -40,7 +27,9 @@ export default {
     async SignIn() {
       await this.$msalInstance
         .loginPopup({})
-        .then(() => {
+        .then(response => {
+          const token = response.accessToken;
+          this.$store.commit('setAccessToken', token);
           const myAccounts = this.$msalInstance.getAllAccounts();
           this.account = myAccounts[0];
           this.$emitter.emit('login', this.account);
@@ -53,7 +42,9 @@ export default {
       await this.$msalInstance
         .logout({})
         .then(() => {
+          this.$store.commit('setAccessToken', '');
           this.$emitter.emit('logout', 'logging out');
+          this.$router.push('/')
         })
         .catch(error => {
           console.error(error);
@@ -62,3 +53,14 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div>
+
+
+    <button v-if="!account" @click="SignIn">sign in</button>
+    <button v-else @click="SignOut">sign out</button>
+
+    <div v-if="account">{{ account.username }}</div>
+  </div>
+</template>

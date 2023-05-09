@@ -3,6 +3,7 @@ import { createStore } from 'vuex';
 const store = createStore({
   state() {
     return {
+      account: undefined,
       msalConfig: {
         auth: {
           clientId: 'd9c13219-6710-41c1-8d38-96690de3ae94',
