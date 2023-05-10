@@ -51,7 +51,6 @@ export default {
     <div v-if="!this.account">
       <h1>Welcome to Luminsight</h1>
       <h2>Please sign in with your company email</h2>
-
     </div>
 
     <div v-else class="container-fluid">

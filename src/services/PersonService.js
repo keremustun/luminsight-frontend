@@ -2,33 +2,68 @@ import axios from 'axios';
 import store from '../store/index.js'
 
 export class PersonService {
+    controllerEndpoint = 'https://localhost:7224/api/person/'
+
     async getPerson(personEmail) {
-        const url = `https://localhost:7224/api/person/getPerson/${personEmail}`
+        const url = this.controllerEndpoint +
+            `getPerson/${personEmail}`
+
         return await axios.get(url, { headers: { Authorization: `Bearer ${store.state.accessToken}` } })
-    
     }
 
-    async getPersonsSkills(personEmail) {
-        return await axios.get(`https://localhost:7224/api/person/${personEmail}/skills`)
+    async getPersonsPersonalInfo(personEmail) {
+        const url = this.controllerEndpoint +
+            `${personEmail}/personalInfo`
 
+        return await axios.get(url)
+    }
+
+    async savePersonalInfo(personEmail, person) {
+        const url = this.controllerEndpoint +
+            `${personEmail}/personalInfo`
+        const body = person
+
+        return await axios.put(url, body)
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    async getPersonsSkills(personEmail) {
+        const url = this.controllerEndpoint +
+            `${personEmail}/skills`
+
+        return await axios.get(url)
     }
 
     async addPersonSkill(personEmail, skill) {
-        return await axios.put(`https://localhost:7224/api/person/${personEmail}`, skill)
+        const url = this.controllerEndpoint +
+            `${personEmail}/skills`
+        const body = skill
+
+        return await axios.put(url, body)
     }
 
     async deletePersonSkill(personEmail, skillName) {
-        return await axios.delete(`https://localhost:7224/api/person/${personEmail}/skills/${encodeURIComponent(skillName)}`)
+        const url = this.controllerEndpoint +
+            `${personEmail}/skills/${encodeURIComponent(skillName)}`
 
+        return await axios.delete(url)
     }
 
     async updatePersonSkill(personEmail, skillName, newSkill) {
-        return await axios.put(`https://localhost:7224/api/person/${personEmail}/skills/${encodeURIComponent(skillName)}`, newSkill)
+        const url = this.controllerEndpoint +
+            `${personEmail}/skills/${encodeURIComponent(skillName)}`
+        const body = newSkill
 
+        return await axios.put(url, body)
     }
 
     async validateSkill(personEmail, newSkill) {
-        return await axios.post(`https://localhost:7224/api/person/${personEmail}/skills/validateSkill`, newSkill)
+        const url = this.controllerEndpoint +
+            `${personEmail}/skills/validateSkill`
+        const body = newSkill
 
+        return await axios.post(url, body)
     }
+
 }
