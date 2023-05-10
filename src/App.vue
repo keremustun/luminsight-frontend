@@ -9,9 +9,21 @@ import store from './store/index.js'
 export default {
   async created() {
     this.$emitter.on('login', async function (account) {
-        this.account = account;
-        this.personService.getPerson(account.username).then(response => this.loggedInPerson = response.data)
-      }.bind(this),
+      this.account = account;
+      this.personService.getPerson(account.username).then(response => {
+        console.log(typeof (response.data))
+        console.log(response.data)
+        console.log(response.data.email)
+
+        if (response.data.email === '') {
+          console.log('Person does not exist')
+          this.personService.createPerson(account.username).then(response => this.loggedInPerson = response.data)
+        } else
+          console.log('Person does exist')
+        this.loggedInPerson = response.data
+
+      })
+    }.bind(this),
     ),
       this.$emitter.on('logout', () => {
         this.account = undefined;
@@ -27,7 +39,7 @@ export default {
     }
   },
 
-  
+
   methods: {
     ...mapMutations(['setAccessToken']),
   },

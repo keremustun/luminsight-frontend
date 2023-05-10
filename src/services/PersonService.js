@@ -11,6 +11,15 @@ export class PersonService {
         return await axios.get(url, { headers: { Authorization: `Bearer ${store.state.accessToken}` } })
     }
 
+    async createPerson(personEmail) {
+        const url = this.controllerEndpoint +
+            `createPerson/${personEmail}`
+
+        return await axios.post(url)
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////// Personal Info
+
     async getPersonsPersonalInfo(personEmail) {
         const url = this.controllerEndpoint +
             `${personEmail}/personalInfo`
@@ -18,15 +27,15 @@ export class PersonService {
         return await axios.get(url)
     }
 
-    async savePersonalInfo(personEmail, person) {
+    async savePersonalInfo(personEmail, personalInfo) {
         const url = this.controllerEndpoint +
             `${personEmail}/personalInfo`
-        const body = person
+        const body = personalInfo
 
         return await axios.put(url, body)
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////// Skills
 
     async getPersonsSkills(personEmail) {
         const url = this.controllerEndpoint +
