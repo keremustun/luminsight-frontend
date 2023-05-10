@@ -20,14 +20,14 @@ export class PersonService {
 
     //////////////////////////////////////////////////////////////////////////////////// Personal Info
 
-    async getPersonsPersonalInfo(personEmail) {
+    async getPersonalInfo(personEmail) {
         const url = this.controllerEndpoint +
             `${personEmail}/personalInfo`
 
         return await axios.get(url)
     }
 
-    async savePersonalInfo(personEmail, personalInfo) {
+    async updatePersonalInfo(personEmail, personalInfo) {
         const url = this.controllerEndpoint +
             `${personEmail}/personalInfo`
         const body = personalInfo

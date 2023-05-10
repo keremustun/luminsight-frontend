@@ -1,4 +1,7 @@
 <script>
+import PersonalInfoCard from '../components/PersonalInfoCard.vue'
+
+
 export default {
   inject: ['loggedInPerson', 'personService'],
 
@@ -8,73 +11,44 @@ export default {
 
   data() {
     return {
-      personalInfo: this.loggedInPerson.personalInfo,
-      jobTitle: {
-        content: '',
-        clicked: false
-      },
-      availability: 5,
-      branch: {
-        content: '',
-        clicked: false
-      },
-      biography: {
-        content: '',
-        clicked: false
-      },
-      
-      education: [
 
-      ],
-      experiences: [
-      
-      ],
-      languages: [
-        {
-          content: '',
-          clicked: false
-        },
-      ],
-      hobbies: [
-        {
-          content: '',
-          clicked: false
-        },
-      ]
-    }
-  },
-  
-  data() {
-    return {
-      personalInfo: [],
-      modalOpened: false
+      fieldsArray: this.loggedInPerson.personalInfo,
+      unsavedChanges: false
+
     }
   },
 
-  computed: {
-    personalInfoComputed() {
-      return this.personalInfo
-    }
-  },
 
   methods: {
-    toggleModal() {
-      this.modalOpened = !this.modalOpened
+
+    updateChildData(updatedData, index) {
+      this.fieldsArray[`${index}`] = updatedData
+      this.unsavedChanges = true
+      console.log(this.unsavedChanges)
+    },
+
+    saveChanges() {
+      this.personService.updatePersonalInfo(this.loggedInPerson.email, this.fieldsArray)
+        .then(response => {
+          this.refreshPersonalInfo()
+        })
     },
 
     refreshPersonalInfo() {
-      console.log(this.loggedInPerson)
-      this.personService.getPersonsPersonalInfo(this.loggedInPerson.email)
+      this.personService.getPersonalInfo(this.loggedInPerson.email)
         .then(response => {
           this.personalInfo = response.data
+          this.unsavedChanges = false
         })
     },
-    
 
-    personalInfoUpdated(){
+
+    personalInfoUpdated() {
       this.refreshPersonalInfo()
     }
   },
+
+  components: { PersonalInfoCard }
 
 }
 </script>
@@ -85,14 +59,11 @@ export default {
   </div>
 
   <main>
-    <button v-if="!editing">Edit</button>
-    <div v-else>
-      <PersonalInfoModal/>
-    </div>
-    
-    <div v-for="field in this.loggedInPerson.personalInfo">
-      <p>{{ field.content }}</p>
-    </div>
+    <p>{{ unsavedChanges ? "Unsaved Changes" : "Up to date" }}</p>
+    <button @click="saveChanges()">Save Changes</button>
+    <PersonalInfoCard v-for="(fieldValue, fieldName) in this.loggedInPerson.personalInfo" :fieldValue="fieldValue"
+      :fieldName="fieldName" :key="fieldName" @updateData="updateChildData" />
+
   </main>
 </template>
 
@@ -102,5 +73,10 @@ export default {
     display: flex;
     align-items: center;
   }
+}
+
+.personalInfoField {
+  border: 0.05rem solid black;
+  margin-top: 1rem;
 }
 </style>
