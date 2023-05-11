@@ -1,10 +1,16 @@
-<script>export default {
+<script>
+export default {
+  inject: ['personService'],
   data() {
     return {
       searchText: '',
       dropdownSkills: ['JavaScript', 'HTML', 'CSS', 'Vue.js', 'React', 'Angular'],
       showDropdown: false,
+
       tags: [],
+      availableDaysPerWeekSelected: 0,
+      branchesSelected: [],
+      filteredPersons: []
     };
   },
 
@@ -15,7 +21,26 @@
       );
     },
   },
-  
+
+  watch: {
+    tags: {
+      deep: true,
+      handler() {
+        // Call the notifyParent method when any changes occur in the data object
+
+        const searchSkillsFilter = {
+          skillsToSearchFor: this.tags,
+          availableDaysPerWeek: this.availableDaysPerWeekSelected,
+          branches: this.branchesChosen
+        }
+
+        this.personService.findPersonsWithSkills(searchSkillsFilter)
+          .then(response => {
+            this.filteredPersons = response.data
+          })
+      }
+    }
+  },
   methods: {
     filterSkills() {
       this.showDropdown = this.searchText.length > 0;
@@ -27,12 +52,23 @@
     },
 
     addTag(tag) {
-      if(typeof(tag) === 'object'){
-        this.tags.push(this.searchText)
-      } else if (tag && !this.tags.includes(tag) && typeof(tag) === 'string') {
-        this.tags.push(tag);
+      let skill = {}
+
+      if (typeof (tag) === 'object') {
+        skill = {
+          skillName: this.searchText,
+          proficiency: 0
+        }
       }
 
+      else if (tag && !this.tags.includes(tag) && typeof (tag) === 'string') {
+        skill = {
+          skillName: tag,
+          proficiency: 0
+        }
+      }
+
+      this.tags.push(skill);
       this.searchText = '';
       this.showDropdown = false;
     },
@@ -56,31 +92,29 @@
   </div>
 
   <main>
-   <div>
-    <div class="tags">
-      <div v-for="tag in tags" :key="tag" class="tag">
-        <span  >
-        {{ tag }}
-        <span class="tag-close" @click="removeTag(tag)">&times;</span>
-      </span>
-      </div>
-      
-      <input
-        type="text"
-        class="form-control"
-        v-model="searchText"
-        @input="filterSkills"
-        @keydown.enter="addTag"
-        placeholder="Search skills..."
-      />
-    </div>
-    <ul class="dropdown-menu" v-if="showDropdown">
-      <li v-for="skill in filteredSkills" :key="skill" @click="addTag(skill)">
-        {{ skill }}
-      </li>
-    </ul>
-  </div>
+    <div>
+      <div class="tags">
+        <div v-for="tag in tags" :key="tag.skillName" class="tag">
+          <span>
+            {{ tag.skillName }}
+            <span class="tag-close" @click="removeTag(tag)">&times;</span>
+          </span>
+        </div>
 
+        <input type="text" class="form-control" v-model="searchText" @input="filterSkills" @keydown.enter="addTag"
+          placeholder="Search skills..." />
+      </div>
+      <ul class="dropdown-menu" v-if="showDropdown">
+        <li v-for="skill in filteredSkills" :key="skill" @click="addTag(skill)">
+          {{ skill }}
+        </li>
+      </ul>
+    </div>
+
+    <div v-for="person in filteredPersons" :key="person.id" class="person">
+      
+      {{ person.email }}
+    </div>
   </main>
 </template>
 
@@ -112,6 +146,13 @@
 .tag-close {
   cursor: pointer;
   margin-left: 5px;
-  margin-right: ;
+  margin-right: 5px;
+}
+
+.person{
+  background-color: lightgray;
+  margin-top: 1rem;
+  border: 0.05rem solid black;
+  border-radius: 0.25rem;
 }
 </style>
