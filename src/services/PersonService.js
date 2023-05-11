@@ -21,7 +21,7 @@ export class PersonService {
     async findPersonsWithSkills(searchSkillsFilter){
         const url = 'https://localhost:7224/api/person/findPersonsWithSkills'
         const body = searchSkillsFilter
-        console.log('aa')
+        
         return await axios.post(url, body)
     }
     //////////////////////////////////////////////////////////////////////////////////// Personal Info

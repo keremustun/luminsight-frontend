@@ -1,4 +1,5 @@
 <script>
+import SkillTag from '../components/SkillTag.vue'
 export default {
   inject: ['personService'],
   data() {
@@ -33,10 +34,11 @@ export default {
           availableDaysPerWeek: this.availableDaysPerWeekSelected,
           branches: this.branchesChosen
         }
-
+        console.log(this.tags)
         this.personService.findPersonsWithSkills(searchSkillsFilter)
           .then(response => {
             this.filteredPersons = response.data
+            console.log(this.filteredPersons)
           })
       }
     }
@@ -73,13 +75,26 @@ export default {
       this.showDropdown = false;
     },
 
-    removeTag(tag) {
-      const index = this.tags.indexOf(tag);
+    removeTag(skillName) {
+      const index = this.tags.findIndex(tag => tag.skillName === skillName);
       if (index !== -1) {
         this.tags.splice(index, 1);
       }
     },
+
+
+    updateTags(updatedTag) {
+      const index = this.tags.findIndex(tag => tag.skillName === updatedTag.skillName);
+
+      if (index !== -1) {
+        this.tags.splice(index, 1, updatedTag);
+      }
+      console.log(this.tags)
+    }
+
   },
+
+  components: { SkillTag }
 };
 </script>
 
@@ -94,25 +109,26 @@ export default {
   <main>
     <div>
       <div class="tags">
-        <div v-for="tag in tags" :key="tag.skillName" class="tag">
-          <span>
-            {{ tag.skillName }}
-            <span class="tag-close" @click="removeTag(tag)">&times;</span>
-          </span>
-        </div>
+        <SkillTag class="tag" v-for="(tag, index) in tags" :skillNameProp="tag.skillName" :proficiencyProp="0"
+          :indexProp="index" :key="tag.skillName" @removeTag="removeTag" @tagChanged="updateTags">
+        </SkillTag>
+      </div>
 
+      <div>
         <input type="text" class="form-control" v-model="searchText" @input="filterSkills" @keydown.enter="addTag"
           placeholder="Search skills..." />
       </div>
-      <ul class="dropdown-menu" v-if="showDropdown">
-        <li v-for="skill in filteredSkills" :key="skill" @click="addTag(skill)">
-          {{ skill }}
-        </li>
-      </ul>
+
+      <div>
+        <ul class="dropdown-menu" v-if="showDropdown">
+          <li v-for="skill in filteredSkills" :key="skill" @click="addTag(skill)">
+            {{ skill }}
+          </li>
+        </ul>
+      </div>
     </div>
 
     <div v-for="person in filteredPersons" :key="person.id" class="person">
-      
       {{ person.email }}
     </div>
   </main>
@@ -138,18 +154,15 @@ export default {
 
 .tag {
   display: inline-block;
-  padding: 5px 10px;
+  padding: 0.5rem;
+  width: 25%;
+  margin-bottom: 1rem;
   background-color: #ccc;
   border-radius: 3px;
 }
 
-.tag-close {
-  cursor: pointer;
-  margin-left: 5px;
-  margin-right: 5px;
-}
 
-.person{
+.person {
   background-color: lightgray;
   margin-top: 1rem;
   border: 0.05rem solid black;
