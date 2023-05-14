@@ -53,14 +53,3 @@ export default {
   },
 };
 </script>
-
-<template>
-  <div>
-
-
-    <button v-if="!account" @click="SignIn">sign in</button>
-    <button v-else @click="SignOut">sign out</button>
-
-    <div v-if="account">{{ account.username }}</div>
-  </div>
-</template>

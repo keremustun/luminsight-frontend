@@ -23,7 +23,6 @@ export default {
         selectStars(star) {
             this.proficiency = star;
             this.tagChanged()
-            console.log(this.proficiency)
         },
         starFilled(star) {
             return star <= this.proficiency;
