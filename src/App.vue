@@ -51,12 +51,12 @@ export default {
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" >
 
     <SSOHandler ref="SSOHandler" @signedIn="handleSignin" />
 
 
-    <div class="welcome" v-if="!this.account">
+    <div class="welcome" v-if="!this.account" >
       <div class="luminis-logo-container">
         <a href=""><img class="luminis-logo"
             src="https://www.luminis.eu/wp-content/themes/luminis-2020/library/images/logo.svg" alt="Logo" /></a>
@@ -64,7 +64,7 @@ export default {
       </div>
       <h1>Welcome to Luminsight</h1>
       <h2>Please sign in with your company email</h2>
-      <button class="btn btn-warning sign-in" @click="this.$refs.SSOHandler.SignIn()">
+      <button style="background: linear-gradient(150deg, rgba(255, 166, 0, 0.171), rgba(54, 252, 255, 0.232) ,rgba(30, 0, 255, 0.204));" class="btn btn-warning sign-in" @click="this.$refs.SSOHandler.SignIn()">
         Sign in
       </button>
     </div>
@@ -73,7 +73,7 @@ export default {
       <div class="row">
         <div class="col">
           <header>
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary" >
               <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -162,17 +162,20 @@ nav a:first-of-type {
 }
 
 .sign-in {
+  border: 0;
   margin-top: 2%;
   padding: 2.5% 5%;
   background-color: orange;
-  color: white;
   border-radius: 0;
+  font-weight: 700;
+  color:rgb(64, 75, 81);
   transition: box-shadow 0.5s ease;
+  box-shadow: 0 0 20px 5px rgba(0, 200, 255, 0.219);
 }
 
 .sign-in:hover {
-  color: white;
-  box-shadow: 0 0 10px 5px rgba(255, 175, 0, 0.5);
+  box-shadow: 0 0 20px 5px rgba(255, 174, 0, 0.735);
+  color:rgb(64, 75, 81);
 }
 
 .sign-out {
@@ -218,6 +221,10 @@ nav a:first-of-type {
   color: black;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-weight: 600;
+}
+
+#app{
+  height:200%;
 }
 
 </style>

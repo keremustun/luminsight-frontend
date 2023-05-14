@@ -6,11 +6,14 @@ export default {
         header: {
             default: ""
         },
-        taskCompleted: {
-            default: false
+        title:{
+            default: ""
         },
         body: {
             default: ""
+        },
+        taskCompleted: {
+            default: false
         },
     },
 
@@ -26,17 +29,25 @@ export default {
 </script>
 
 <template>
-    <GenericCard>
-        <template #header>
-            {{ header }}
+    <GenericCard :headerBackgroundColor="'rgb(103, 10, 155,0.8)'" :headerColor="'white'">
+        <template #header >
+            <slot name="header"></slot>
         </template>
 
+        <template #title>
+        <slot name="title"></slot>
+        </template>
         <template #body>
-            {{ body }}
+            <slot name="body"></slot>
         </template>
-
 
     </GenericCard>
 </template>
 
-<style></style>
+<style>
+
+.aa{
+    color:rgb(93, 0, 255)
+    
+}
+</style>
