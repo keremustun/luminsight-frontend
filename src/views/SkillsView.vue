@@ -51,13 +51,18 @@ export default {
 </script>
 
 <template>
-  <div>
-    <h1>My Skills</h1>
+  <div class="title">
+    <h4>My Skills</h4>
   </div>
 
   <main>
     <div>
-      <button @click="toggleModal()">Add skill</button>
+      <button class="btn btn-primary add-skill" @click="toggleModal()">Add skill</button>
+
+      <div class="search-skill">
+        <input type="text" class="form-control" v-model="searchText" @input="filterSkills" @keydown.enter="addTag"
+          placeholder="Search skills..." />
+      </div>
 
       <ManageSkillModal ref="manageSkillModal" v-if="modalOpened" 
         :skillNameProp="''"
@@ -76,7 +81,7 @@ export default {
       </ManageSkillModal>
     </div>
 
-    <SkillCard v-for="skill in skillsComputed" :key="skill.skillName" :skillName='skill.skillName'
+    <SkillCard class="skill-card" v-for="skill in skillsComputed" :key="skill.skillName" :skillName='skill.skillName'
       :stars='skill.proficiency' @skills-updated="refreshSkills()">
 
 
@@ -91,5 +96,26 @@ export default {
     display: flex;
     align-items: center;
   }
+}
+
+.title{
+  margin-top:2%
+}
+
+.add-skill{
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.search-skill{
+  margin-bottom:2%;
+  border-radius: 11%;
+}
+
+.skill-card{
+  display: inline-block;
+  margin-right: 5%;
+  margin-bottom: 2%;
+  width:15%;
 }
 </style>

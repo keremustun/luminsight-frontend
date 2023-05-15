@@ -115,7 +115,7 @@ export default {
         </div>
       </div>
 
-      <div class="row">
+      <div class="row router-view">
         <RouterView />
       </div>
     </div>
@@ -227,4 +227,9 @@ nav a:first-of-type {
   height:200%;
 }
 
+.router-view{
+  
+  margin-left: 1%;
+  margin-right: 1%;
+}
 </style>

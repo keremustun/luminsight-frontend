@@ -23,6 +23,10 @@ export default {
     },
   },
 
+  mounted(){
+    this.tags = []
+  },
+
   watch: {
     tags: {
       deep: true,

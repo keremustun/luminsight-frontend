@@ -56,13 +56,14 @@ export default {
 </script>
 
 <template>
-  <div>
-    <h1>My Profile</h1>
-  </div>
-
   <main>
-    <p>{{ unsavedChanges ? "Unsaved Changes" : "Up to date" }}</p>
-    <button @click="saveChanges()">Save Changes</button>
+    <div class="row align-items-center">
+      
+    <h4 class="col-8 myProfileHeader">My Profile</h4>
+    <h6 class="col-2 myProfileHeader unsaved-changes-text">{{ unsavedChanges ? "Unsaved Changes" : "Up to date" }}</h6>
+    <button class="col-2 btn btn-warning" v-if="unsavedChanges" @click="saveChanges()">Save Changes</button>
+
+    </div>
     <PersonalInfoCard v-for="(fieldValue, fieldName) in this.loggedInPerson.personalInfo" :fieldValue="fieldValue"
       :fieldName="fieldName" :key="fieldName" @updateData="updateChildData" />
 
@@ -75,6 +76,10 @@ export default {
     display: flex;
     align-items: center;
   }
+}
+
+.myProfileHeader {
+  display: inline-block;
 }
 
 .personalInfoField {

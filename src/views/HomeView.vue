@@ -148,7 +148,6 @@ export default {
 </template>
 
 <style>
-main {}
 
 .welcome-msg {
   margin-top: 2%;
@@ -160,8 +159,7 @@ main {}
 }
 
 .home-tasks-slider {
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 2%;
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: #e9ecef #adb5bd;
@@ -182,8 +180,8 @@ main {}
 }
 
 .home-tasks-container {
-  margin-top: 12%;
-  margin-right: 2%;
+  margin-top: 15%;
+  margin-right: 8%;
   display: flex;
   flex-wrap: nowrap;
   gap: 20px;

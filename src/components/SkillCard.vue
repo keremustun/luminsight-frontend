@@ -49,7 +49,7 @@ export default {
       </p>
 
       
-      <button @click="toggleModal()">Edit</button>
+      <button class="btn btn-warning" @click="toggleModal()">Edit</button>
 
       <ManageSkillModal ref="manageSkillModal" v-if="modalOpened" 
         :skillNameProp="skillName"
