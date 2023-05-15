@@ -6,7 +6,7 @@ export default {
         header: {
             default: ""
         },
-        title:{
+        title: {
             default: ""
         },
         body: {
@@ -15,6 +15,26 @@ export default {
         taskCompleted: {
             default: false
         },
+    },
+
+    data() {
+        return {
+            cardStyle: {
+                border: 0
+            },
+            headerStyle: {
+                backgroundColor: 'purple',
+                color: 'white',
+                border: 0
+            },
+            titleStyle: {
+
+            },
+            bodyStyle: {
+
+                background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.078), rgb(255, 190, 70, 0.078))'
+            }
+        }
     },
 
     methods: {
@@ -29,13 +49,13 @@ export default {
 </script>
 
 <template>
-    <GenericCard :headerBackgroundColor="'rgb(103, 10, 155,0.8)'" :headerColor="'white'">
-        <template #header >
+    <GenericCard :cardStyle="cardStyle" :headerStyle="headerStyle" :titleStyle="titleStyle" :bodyStyle="bodyStyle">
+        <template #header>
             <slot name="header"></slot>
         </template>
 
         <template #title>
-        <slot name="title"></slot>
+            <slot name="title"></slot>
         </template>
         <template #body>
             <slot name="body"></slot>
@@ -43,11 +63,3 @@ export default {
 
     </GenericCard>
 </template>
-
-<style>
-
-.aa{
-    color:rgb(93, 0, 255)
-    
-}
-</style>

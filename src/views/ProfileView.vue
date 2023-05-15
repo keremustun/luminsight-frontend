@@ -1,4 +1,5 @@
 <script>
+import HomeTaskCardVue from '../components/HomeTaskCard.vue'
 import PersonalInfoCard from '../components/PersonalInfoCard.vue'
 
 
@@ -13,24 +14,23 @@ export default {
     return {
 
       fieldsArray: this.loggedInPerson.personalInfo,
-      unsavedChanges: false
+      unsavedChanges: false,
 
     }
   },
-
 
   methods: {
 
     updateChildData(updatedData, index) {
       this.fieldsArray[`${index}`] = updatedData
-      this.unsavedChanges = true
-      console.log(this.unsavedChanges)
+      this.unsavedChanges = HomeTaskCardVue
     },
 
     saveChanges() {
       this.personService.updatePersonalInfo(this.loggedInPerson.email, this.fieldsArray)
         .then(response => {
           this.refreshPersonalInfo()
+
         })
     },
 
@@ -39,6 +39,8 @@ export default {
         .then(response => {
           this.personalInfo = response.data
           this.unsavedChanges = false
+
+
         })
     },
 
