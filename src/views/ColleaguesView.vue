@@ -1,5 +1,7 @@
 <script>
 import SkillTag from '../components/SkillTag.vue'
+import ColleagueCard from '../components/ColleagueCard.vue'
+
 export default {
   inject: ['personService'],
   data() {
@@ -98,7 +100,7 @@ export default {
 
   },
 
-  components: { SkillTag }
+  components: { SkillTag, ColleagueCard}
 };
 </script>
 
@@ -132,9 +134,7 @@ export default {
       </div>
     </div>
 
-    <div v-for="person in filteredPersons" :key="person.id" class="person">
-      {{ person.email }}
-    </div>
+    <ColleagueCard v-for="person in filteredPersons" :key="person.email" :colleague="person"/>
   </main>
 </template>
 
@@ -165,11 +165,4 @@ export default {
   border-radius: 3px;
 }
 
-
-.person {
-  background-color: lightgray;
-  margin-top: 1rem;
-  border: 0.05rem solid black;
-  border-radius: 0.25rem;
-}
 </style>
