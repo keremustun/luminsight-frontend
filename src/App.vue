@@ -86,7 +86,7 @@ export default {
                 <ul class="navbar-nav">
 
                   <li class="col nav-item">
-                    <RouterLink class="nav-link" to="/profile">Profile</RouterLink>
+                    <RouterLink class="nav-link" :to="{ name: 'profile', query: { profileOf: this.loggedInPerson.email } }">Profile</RouterLink>
                   </li>
                   <li class="col nav-item">
                     <RouterLink class="nav-link" to="/skills">Skills</RouterLink>

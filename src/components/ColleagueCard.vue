@@ -5,12 +5,39 @@ import SkillTagOnColleague from './SkillTagOnColleague.vue';
 export default {
   props: {
     colleague: {
-      default: {}
-    }
+      default: {
+        matchingSkills: [
+          {
+            skillName:"Skill Name",
+            proficiency:5
+          },
+          {
+            skillName:"Skill Name",
+            proficiency:4
+          }
+        ]
+      }
+    },
   },
+
   data() {
     return {
+      match: 0,
+      cardStyle: {
+        background: 'transparent',
+        border: 0
+      },
+      headerStyle: {
+        border: 0,
+        background: 'transparent'
+      },
+      titleStyle: {
 
+      },
+      bodyStyle: {
+
+        background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.078), rgb(255, 190, 70, 0.078))'
+      }
     }
   },
 
@@ -20,39 +47,58 @@ export default {
 </script>
 
 <template>
-  <GenericCard class="colleagueCard">
-    <template #title>
-      {{ colleague.personalInfo.firstName }} {{ colleague.personalInfo.lastName }}
-      {{ '66% match ' }}
+  <div>
+    <GenericCard class="colleagueCard" :cardStyle="cardStyle" :headerStyle="headerStyle">
+    <template #header>
+      <div class="title">
+        <div class="name">
+          {{ colleague.personalInfo.firstName }} {{ colleague.personalInfo.lastName }}
+        </div>
+        <div class="match">
+          {{ match }}% Match
+
+        </div>
+
+      </div>
+
     </template>
 
     <template #body>
-      <div class="row col-container">
-        <SkillTagOnColleague class="col" :skillNameProp="'C#'" :proficiencyProp="5" />
-        <SkillTagOnColleague class="col" :skillNameProp="'JS'" :proficiencyProp="4" />
-        <SkillTagOnColleague class="col" :skillNameProp="'JS'" :proficiencyProp="4" />
-        <SkillTagOnColleague class="col" :skillNameProp="'JS'" :proficiencyProp="4" />
-        <SkillTagOnColleague class="col" :skillNameProp="'JS'" :proficiencyProp="4" />
-        <SkillTagOnColleague class="col" :skillNameProp="'JS'" :proficiencyProp="4" />
+      <!-- only the matching skills are in colleague.skills, normally this wouldn't be the case but the backend has
+      been programmed to return it like this to increase performance -->
+      <div v-for="skill in colleague.skills" :key="skill.skillName" class="skills-container"> 
+        <SkillTagOnColleague class="col-4 skill" :skillNameProp="skill.skillName" :proficiencyProp="skill.proficiency" />
 
       </div>
 
     </template>
   </GenericCard>
+  <hr>
+  </div>
+  
 </template>
 
 <style>
+.name {
+  width: 90%;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.skills-container{
+  margin-right: 1%;
+  display: inline-block;
+}
+
+.match {
+
+  margin-left: 1%;
+  display: inline-block;
+}
+
 .colleagueCard {
   margin-top: 1%;
 }
 
-.col-container {
-  display: flex;
-  flex-wrap: wrap;
-}
 
-.col {
-  width: 25%; /* Each column occupies 25% of the container */
-  /* Additional styling for the columns */
-}
 </style>

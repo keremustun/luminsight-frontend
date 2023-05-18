@@ -25,7 +25,7 @@ export default {
     },
   },
 
-  mounted(){
+  mounted() {
     this.tags = []
   },
 
@@ -34,18 +34,21 @@ export default {
       deep: true,
       handler() {
         // Call the notifyParent method when any changes occur in the data object
+        if (Object.keys(this.tags).length > 0) {
+          const searchSkillsFilter = {
+            skillsToSearchFor: this.tags,
+            availableDaysPerWeek: this.availableDaysPerWeekSelected,
+            branches: this.branchesChosen
+          }
 
-        const searchSkillsFilter = {
-          skillsToSearchFor: this.tags,
-          availableDaysPerWeek: this.availableDaysPerWeekSelected,
-          branches: this.branchesChosen
+          this.personService.findPersonsWithSkills(searchSkillsFilter)
+            .then(response => {
+              this.filteredPersons = response.data
+            })
+        } else {
+          this.filteredPersons = []
         }
-        console.log(this.tags)
-        this.personService.findPersonsWithSkills(searchSkillsFilter)
-          .then(response => {
-            this.filteredPersons = response.data
-            console.log(this.filteredPersons)
-          })
+
       }
     }
   },
@@ -96,11 +99,15 @@ export default {
         this.tags.splice(index, 1, updatedTag);
       }
       console.log(this.tags)
+    },
+
+    visitProfile(email){
+      this.$router.push({ name: 'profile', query: { profileOf: email } });
     }
 
   },
 
-  components: { SkillTag, ColleagueCard}
+  components: { SkillTag, ColleagueCard }
 };
 </script>
 
@@ -134,7 +141,7 @@ export default {
       </div>
     </div>
 
-    <ColleagueCard v-for="person in filteredPersons" :key="person.email" :colleague="person"/>
+    <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersons" :key="person.email" :colleague="person" />
   </main>
 </template>
 
@@ -165,4 +172,5 @@ export default {
   border-radius: 3px;
 }
 
+.colleague {}
 </style>
