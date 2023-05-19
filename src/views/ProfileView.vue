@@ -13,7 +13,7 @@ export default {
 
   data() {
     return {
-      personalInfo:{},
+      personalInfo: {},
       profileOf: '',
       fieldsArray: this.loggedInPerson.personalInfo,
       unsavedChanges: false,
@@ -41,9 +41,7 @@ export default {
         })
     },
 
-
   },
-
   components: { PersonalInfoCard }
 
 }
@@ -51,26 +49,30 @@ export default {
 
 <template>
   <main>
-    <div v-if="profileOf === this.loggedInPerson.email">
-      <div class="row align-items-center">
+    <div class="header">
+      <div v-if="profileOf === this.loggedInPerson.email">
+        <div class="row align-items-center">
 
-        <h4 class="col-8 myProfileHeader">My Profile</h4>
-        <h6 class="col-2 myProfileHeader unsaved-changes-text">{{ unsavedChanges ? "Unsaved Changes" : "Up to date" }}
-        </h6>
-        <button class="col-2 btn btn-warning" v-if="unsavedChanges" @click="saveChanges()">Save Changes</button>
+          <h4 class="col-8 myProfileHeader">My Profile</h4>
+          <button @click="toggleEdit()" class="col-1 btn btn-primary edit">Edit</button>
+          <h6 class="col-2 myProfileHeader unsaved-changes-text">{{ unsavedChanges ? "Unsaved Changes" : "Up to date" }}
+          </h6>
+          <button class="col-2 btn btn-warning" v-if="unsavedChanges" @click="saveChanges()">Save Changes</button>
 
-      </div>
-
-    </div>
-    <div v-else>
-      <div class="row align-items-center">
-
-        <h4 class="col-8 myProfileHeader">Colleague</h4>
+        </div>
 
       </div>
+      <div v-else>
+        <div class="row align-items-center">
+
+          <h4 class="col-8 myProfileHeader">Colleague</h4>
+
+        </div>
+      </div>
     </div>
-      <PersonalInfoCard v-for="(fieldValue, fieldName) in personalInfo" :fieldValue="fieldValue"
-        :fieldName="fieldName" :key="fieldName" @updateData="updateChildData" />
+
+    <PersonalInfoCard class="personalInfoField" v-for="(fieldValue, fieldName) in personalInfo" :fieldValue="fieldValue"
+      :fieldName="fieldName" :key="fieldName" @updateData="updateChildData" />
   </main>
 </template>
 
@@ -82,12 +84,13 @@ export default {
   }
 }
 
+.header {
+  margin-top: 1%;
+}
+
 .myProfileHeader {
   display: inline-block;
 }
 
-.personalInfoField {
-  border: 0.05rem solid black;
-  margin-top: 1rem;
-}
+.edit {}
 </style>
