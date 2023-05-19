@@ -1,7 +1,7 @@
 <script>
 
 export default {
-    props: ['fieldValue', 'fieldName'],
+    props: ['fieldValue', 'fieldName', 'fieldNameDisplay', 'isMyProfileProp'],
 
     data() {
         return {
@@ -11,21 +11,30 @@ export default {
             valueType: typeof (this.fieldValue)
         }
     },
+
     methods: {
         notifyParent() {
-            // Emit the event with the updated data and index
+            console.log('notifying')
             this.$emit('updateData', this.value, this.field);
-            console.log('notifying parent')
         },
 
-        setClickedTrue() {
-            this.clicked = true
-            this.$nextTick(() => {
-                this.$refs.inputElement.focus();
-            });
+        setClicked(state) {
+            if (this.isMyProfileProp) {
+                this.clicked = state
+                if (this.clicked === true) {
+                    this.$nextTick(() => {
+                        this.$refs.inputElement.focus();
+                    });
+
+                }
+                this.notifyParent()
+
+            }
+
         },
 
     },
+
     watch: {
         value: {
             deep: true,
@@ -41,36 +50,36 @@ export default {
 <template>
     <div>
 
-        <div class="fieldName">
-            <p>{{ field }}</p>
+        <div class="fieldNameContainer">
+            <p class="fieldName">{{ fieldNameDisplay }}</p>
         </div>
 
         <div class="fieldValue" v-if="this.valueType === 'string' || this.valueType === 'number'">
             <div v-if="clicked">
-                <input ref="inputElement" @blur="clicked = false" v-model="value" type="text" >
+                <input ref="inputElement" @blur="setClicked(false)" v-model="value" type="text">
             </div>
             <div v-else>
-                <p @click="setClickedTrue"> {{ value }} </p>
+                <p v-if="isMyProfileProp" @click="setClicked(true)"> {{ value }} [edit icon]</p>
+                <p v-else @click="setClicked(true)"> {{ value }}</p>
 
             </div>
         </div>
+        <hr>
 
     </div>
 </template>
 
 <style>
+.personalInfoField {}
 
-.personalInfoField {
-  border: 0.05rem solid black;
-  border-radius: 1rem;
-  margin-top: 1rem;
+.fieldNameContainer,
+.fieldName {
+    font-weight: 700;
+    display: inline-block;
 }
 
-.fieldName{
-    margin: 1%;
-}
-
-.fieldValue{
-    margin: 1%;
+.fieldValue {
+    margin-left: 1%;
+    display: inline-block;
 }
 </style>

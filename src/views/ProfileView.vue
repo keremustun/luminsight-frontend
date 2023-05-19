@@ -1,5 +1,4 @@
 <script>
-import HomeTaskCardVue from '../components/HomeTaskCard.vue'
 import PersonalInfoCard from '../components/PersonalInfoCard.vue'
 
 
@@ -13,6 +12,7 @@ export default {
 
   data() {
     return {
+      route: '',
       personalInfo: {},
       profileOf: '',
       fieldsArray: this.loggedInPerson.personalInfo,
@@ -20,10 +20,16 @@ export default {
     }
   },
 
+  computed: {
+    isMyProfile() {
+      return this.loggedInPerson.email === this.profileOf
+    }
+  },
+
   methods: {
     updateChildData(updatedData, index) {
       this.fieldsArray[`${index}`] = updatedData
-      this.unsavedChanges = HomeTaskCardVue
+      this.saveChanges()
     },
 
     saveChanges() {
@@ -36,12 +42,24 @@ export default {
     refreshPersonalInfo(email) {
       this.personService.getPersonalInfo(email)
         .then(response => {
-          this.personalInfo = response.data
+          this.personalInfo =  { ...response.data }
           this.unsavedChanges = false
         })
     },
 
   },
+  watch: {
+    $route(to, from) {
+      console.log('checking')
+      // Check if the query parameter 'profileOf' has changed
+      if (to.query.profileOf !== from.query.profileOf) {
+        console.log('checkaing')
+        // Fetch the updated personal info based on the new query parameter
+        this.refreshPersonalInfo(to.query.profileOf);
+      }
+    }
+  },
+
   components: { PersonalInfoCard }
 
 }
@@ -54,9 +72,8 @@ export default {
         <div class="row align-items-center">
 
           <h4 class="col-8 myProfileHeader">My Profile</h4>
-          <button @click="toggleEdit()" class="col-1 btn btn-primary edit">Edit</button>
-          <h6 class="col-2 myProfileHeader unsaved-changes-text">{{ unsavedChanges ? "Unsaved Changes" : "Up to date" }}
-          </h6>
+          <!-- <h6 class="col-2 myProfileHeader unsaved-changes-text">{{ unsavedChanges ? "Unsaved Changes" : "Up to date" }}
+          </h6> -->
           <button class="col-2 btn btn-warning" v-if="unsavedChanges" @click="saveChanges()">Save Changes</button>
 
         </div>
@@ -71,8 +88,19 @@ export default {
       </div>
     </div>
 
-    <PersonalInfoCard class="personalInfoField" v-for="(fieldValue, fieldName) in personalInfo" :fieldValue="fieldValue"
-      :fieldName="fieldName" :key="fieldName" @updateData="updateChildData" />
+    <!-- <PersonalInfoCard class="personalInfoField" v-for="(fieldValue, fieldName) in personalInfo" :fieldValue="fieldValue"
+      :fieldName="fieldName" :key="fieldName" :isMyProfileProp="isMyProfile" @updateData="updateChildData" /> -->
+
+    <div class="">
+      <PersonalInfoCard v-if="personalInfo.firstName" class="personalInfoField firstName"
+        :fieldValue="personalInfo.firstName" :fieldName="'firstName'" :fieldNameDisplay="'First Name'" :key="'firstName'"
+        :isMyProfileProp="isMyProfile" @updateData="updateChildData" />
+
+      <PersonalInfoCard v-if="personalInfo.lastName" class="personalInfoField lastName"
+        :fieldValue="personalInfo.lastName" :fieldName="'lastName'" :fieldNameDisplay="'Last Name'" :key="'lastName'"
+        :isMyProfileProp="isMyProfile" @updateData="updateChildData" />
+    </div>
+
   </main>
 </template>
 
@@ -84,13 +112,15 @@ export default {
   }
 }
 
+.firstName,
+.lastName {}
+
 .header {
   margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 .myProfileHeader {
   display: inline-block;
 }
-
-.edit {}
 </style>
