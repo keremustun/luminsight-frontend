@@ -14,11 +14,21 @@ const store = createStore({
           cacheLocation: 'localStorage',
         },
       },
-      accessToken: ''
+      accessToken: '',
+      colleaguesPage: {
+        searchText: '',
+        dropdownSkills: ['JavaScript', 'HTML', 'CSS', 'Vue.js', 'React', 'Angular'],
+        showDropdown: false,
+
+        tags: [],
+        availableDaysPerWeekSelected: 0,
+        branchesSelected: [],
+        filteredPersons: [],
+      }
     };
   },
-  mutations :{
-    setAccessToken(state, token){
+  mutations: {
+    setAccessToken(state, token) {
       state.accessToken = token;
     }
   }

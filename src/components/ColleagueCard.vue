@@ -90,6 +90,11 @@ export default {
   display: inline-block;
 }
 
+.skill{
+  
+  background: linear-gradient(60deg,rgba(255, 161, 10, 0.385),rgba(0, 208, 255, 0.534));
+}
+
 .match {
 
   margin-left: 1%;

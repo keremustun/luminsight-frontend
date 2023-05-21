@@ -25,8 +25,26 @@ export default {
     },
   },
 
-  mounted() {
-    this.tags = []
+
+
+  beforeMount() {
+    this.tags = this.$store.state.colleaguesPage.tags,
+      this.searchText = this.$store.state.colleaguesPage.searchText
+    this.dropdownSkills = this.$store.state.colleaguesPage.dropdownSkills,
+      this.showDropdown = this.$store.state.colleaguesPage.showDropdown,
+      this.availableDaysPerWeekSelected = this.$store.state.colleaguesPage.availableDaysPerWeekSelected,
+      this.branchesSelected = this.$store.state.colleaguesPage.branchesSelected,
+      this.filteredPersons = this.$store.state.colleaguesPage.filteredPersons
+  },
+
+  beforeUnmount() {
+    this.$store.state.colleaguesPage.tags = this.tags;
+    this.$store.state.colleaguesPage.searchText = this.searchText;
+    this.$store.state.colleaguesPage.dropdownSkills = this.dropdownSkills;
+    this.$store.state.colleaguesPage.showDropdown = this.showDropdown;
+    this.$store.state.colleaguesPage.availableDaysPerWeekSelected = this.availableDaysPerWeekSelected;
+    this.$store.state.colleaguesPage.branchesSelected = this.branchesSelected;
+    this.$store.state.colleaguesPage.filteredPersons = this.filteredPersons;
   },
 
   watch: {
@@ -101,7 +119,7 @@ export default {
       console.log(this.tags)
     },
 
-    visitProfile(email){
+    visitProfile(email) {
       this.$router.push({ name: 'profile', query: { profileOf: email } });
     }
 
@@ -113,10 +131,9 @@ export default {
 
 <template>
   <div>
-    <h1>Colleagues!</h1>
-    <div>
-      <h2>Find skills in Luminis</h2>
-    </div>
+    <h4 class="title">Colleagues</h4>
+    <p class="description">Just enter a skill and find colleagues that have this skill!</p>
+
   </div>
 
   <main>
@@ -141,7 +158,8 @@ export default {
       </div>
     </div>
 
-    <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersons" :key="person.email" :colleague="person" />
+    <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersons"
+      :key="person.email" :colleague="person" />
   </main>
 </template>
 
@@ -151,6 +169,11 @@ export default {
     display: flex;
     align-items: center;
   }
+}
+
+.colleague:hover {
+  cursor: pointer;
+  background: linear-gradient(5deg, rgba(0, 0, 0, 0.06), white);
 }
 
 .dropdown-menu {
@@ -166,11 +189,12 @@ export default {
 .tag {
   display: inline-block;
   padding: 0.5rem;
-  width: 25%;
   margin-bottom: 1rem;
-  background-color: #ccc;
+  background: linear-gradient(60deg, rgba(10, 255, 247, 0.385), rgba(119, 0, 255, 0.342));
+  border: 1px solid black;
   border-radius: 3px;
+  width: 8rem;
 }
 
-.colleague {}
+.description {}
 </style>
