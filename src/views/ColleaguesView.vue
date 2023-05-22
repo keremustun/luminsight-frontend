@@ -137,7 +137,7 @@ export default {
   </div>
 
   <main>
-    <div>
+    <div class="search">
       <div class="tags">
         <SkillTag class="tag" v-for="(tag, index) in tags" :skillNameProp="tag.skillName" :proficiencyProp="0"
           :indexProp="index" :key="tag.skillName" @removeTag="removeTag" @tagChanged="updateTags">
@@ -164,6 +164,10 @@ export default {
 </template>
 
 <style>
+.search{
+  
+  margin-left: 1rem;
+}
 @media (min-width: 1024px) {
   .about {
     display: flex;
@@ -183,18 +187,16 @@ export default {
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
 }
 
 .tag {
   display: inline-block;
-  padding: 0.5rem;
   margin-bottom: 1rem;
   background: linear-gradient(60deg, rgba(10, 255, 247, 0.385), rgba(119, 0, 255, 0.342));
   border: 1px solid black;
   border-radius: 3px;
-  width: 8rem;
+  width: 10rem;
+  margin-right: 1% ;
 }
 
-.description {}
 </style>

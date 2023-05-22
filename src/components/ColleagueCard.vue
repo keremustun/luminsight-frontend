@@ -67,7 +67,7 @@ export default {
       <!-- only the matching skills are in colleague.skills, normally this wouldn't be the case but the backend has
       been programmed to return it like this to increase performance -->
       <div v-for="skill in colleague.skills" :key="skill.skillName" class="skills-container"> 
-        <SkillTagOnColleague class="col-4 skill" :skillNameProp="skill.skillName" :proficiencyProp="skill.proficiency" />
+        <SkillTagOnColleague class="col skill" :skillNameProp="skill.skillName" :proficiencyProp="skill.proficiency" />
 
       </div>
 
@@ -90,10 +90,6 @@ export default {
   display: inline-block;
 }
 
-.skill{
-  
-  background: linear-gradient(60deg,rgba(255, 161, 10, 0.385),rgba(0, 208, 255, 0.534));
-}
 
 .match {
 
