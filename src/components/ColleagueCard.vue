@@ -63,6 +63,7 @@ export default {
           this.match += (1 / numberOfSearchedSkills * 100)
         }
       }
+      this.match = (Math.ceil(this.match))
     }
   },
 
