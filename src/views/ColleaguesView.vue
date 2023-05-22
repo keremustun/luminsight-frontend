@@ -158,7 +158,7 @@ export default {
       </div>
     </div>
 
-    <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersons"
+    <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersons" :searchedSkills="tags"
       :key="person.email" :colleague="person" />
   </main>
 </template>
