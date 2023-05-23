@@ -24,8 +24,6 @@ export default {
 
   mounted() {
 
-    this.calculateMatch()
-
   },
 
   data() {
@@ -50,20 +48,17 @@ export default {
   },
 
   methods: {
-    calculateMatch() {
-      this.match = 0;
-      const numberOfSearchedSkills = this.searchedSkills.length
 
-      for (const personSkill of this.colleague.skills) {
-        const requiredProficiency = this.searchedSkills.find(skill => skill.skillName === personSkill.skillName).proficiency 
+    searchedSkillInColleagueSkills(searchedSkill){
+      return this.colleague.skills.find(colleagueSkill => colleagueSkill.skillName === searchedSkill.skillName) !== undefined
+    },
 
-        if (personSkill.proficiency < requiredProficiency)
-          this.match += (personSkill.proficiency / requiredProficiency / numberOfSearchedSkills * 100)
-        else {
-          this.match += (1 / numberOfSearchedSkills * 100)
-        }
-      }
-      this.match = (Math.ceil(this.match))
+    getColleagueSkillSkillName(searchedSkill){
+      return this.colleague.skills.find(colleagueSkill => colleagueSkill.skillName === searchedSkill.skillName).skillName
+    },
+
+    getColleagueSkillProficiency(searchedSkill){
+      return this.colleague.skills.find(colleagueSkill => colleagueSkill.skillName === searchedSkill.skillName).proficiency
     }
   },
 
@@ -71,8 +66,6 @@ export default {
     colleague:{
       deep:true,
       handler(){
-        console.log('tags changed')
-        this.calculateMatch()
       }
     }
   },
@@ -89,10 +82,6 @@ export default {
           <div class="name">
             {{ colleague.personalInfo.firstName }} {{ colleague.personalInfo.lastName }}
           </div>
-          <div class="match">
-            {{ match }}% Match
-
-          </div>
 
         </div>
 
@@ -101,8 +90,8 @@ export default {
       <template #body>
         <!-- only the matching skills are in colleague.skills, normally this wouldn't be the case but the backend has
       been programmed to return it like this to increase performance -->
-        <div v-for="skill in colleague.skills" :key="skill.skillName" class="skills-container">
-          <SkillTagOnColleague class="col skill" :skillNameProp="skill.skillName" :proficiencyProp="skill.proficiency" />
+        <div v-for="searchedSkill in searchedSkills" :key="searchedSkill.skillName" class="skills-container">
+          <SkillTagOnColleague v-if="searchedSkillInColleagueSkills(searchedSkill)" class="col skill" :skillNameProp="getColleagueSkillSkillName(searchedSkill)" :proficiencyProp="getColleagueSkillProficiency(searchedSkill)" />
 
         </div>
 
@@ -120,10 +109,13 @@ export default {
 }
 
 .skills-container {
-  margin-right: 1%;
   display: inline-block;
 }
 
+.skill{
+  
+  margin-right: 1rem;
+}
 
 .match {
 

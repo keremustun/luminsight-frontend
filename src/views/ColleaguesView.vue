@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       searchText: '',
-      dropdownSkills: ['JavaScript', 'HTML', 'CSS', 'Vue.js', 'React', 'Angular'],
+      dropdownSkills: [],
       showDropdown: false,
 
       tags: [],
@@ -18,7 +18,7 @@ export default {
   },
 
   computed: {
-    filteredSkills() {
+    suggestedSkills() {
       return this.dropdownSkills.filter((skill) =>
         skill.toLowerCase().startsWith(this.searchText.toLowerCase())
       );
@@ -33,8 +33,7 @@ export default {
     this.dropdownSkills = this.$store.state.colleaguesPage.dropdownSkills,
       this.showDropdown = this.$store.state.colleaguesPage.showDropdown,
       this.availableDaysPerWeekSelected = this.$store.state.colleaguesPage.availableDaysPerWeekSelected,
-      this.branchesSelected = this.$store.state.colleaguesPage.branchesSelected,
-      this.filteredPersons = this.$store.state.colleaguesPage.filteredPersons
+      this.branchesSelected = this.$store.state.colleaguesPage.branchesSelected
   },
 
   beforeUnmount() {
@@ -44,7 +43,6 @@ export default {
     this.$store.state.colleaguesPage.showDropdown = this.showDropdown;
     this.$store.state.colleaguesPage.availableDaysPerWeekSelected = this.availableDaysPerWeekSelected;
     this.$store.state.colleaguesPage.branchesSelected = this.branchesSelected;
-    this.$store.state.colleaguesPage.filteredPersons = this.filteredPersons;
   },
 
   watch: {
@@ -62,6 +60,7 @@ export default {
           this.personService.findPersonsWithSkills(searchSkillsFilter)
             .then(response => {
               this.filteredPersons = response.data
+              this.sortColleagues()
             })
         } else {
           this.filteredPersons = []
@@ -70,9 +69,16 @@ export default {
       }
     }
   },
+
   methods: {
-    filterSkills() {
-      this.showDropdown = this.searchText.length > 0;
+    suggestSkills() {
+      this.personService.getSuggestedSkill(this.searchText)
+        .then(response => {
+          console.log(response.data)
+          this.dropdownSkills = response.data
+          this.showDropdown = this.searchText.length > 0;
+
+        })
     },
 
     selectSkill(skill) {
@@ -121,8 +127,13 @@ export default {
 
     visitProfile(email) {
       this.$router.push({ name: 'profile', query: { profileOf: email } });
-    }
+    },
 
+
+    sortColleagues() {
+      this.filteredPersons.sort((personA, personB) => personB.weight - personA.weight);
+      console.log(this.filteredPersons)
+    }
   },
 
   components: { SkillTag, ColleagueCard }
@@ -145,29 +156,33 @@ export default {
       </div>
 
       <div>
-        <input type="text" class="form-control" v-model="searchText" @input="filterSkills" @keydown.enter="addTag"
+        <input type="text" class="form-control" v-model="searchText" @input="suggestSkills" @keydown.enter="addTag"
           placeholder="Search skills..." />
       </div>
 
       <div>
         <ul class="dropdown-menu" v-if="showDropdown">
-          <li v-for="skill in filteredSkills" :key="skill" @click="addTag(skill)">
-            {{ skill }}
+          <li v-for="skill in suggestedSkills" :key="skill" @click="addTag(skill)">
+            <div class="suggestedSkill">
+              {{ skill }}
+
+            </div>
           </li>
         </ul>
       </div>
     </div>
 
-    <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersons" :searchedSkills="tags"
-      :key="person.email" :colleague="person" />
+    <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersons"
+      :searchedSkills="tags" :key="person.email" :colleague="person" @matchChanged="changeFilteredPersonsOrder()" />
   </main>
 </template>
 
 <style>
-.search{
-  
+.search {
+
   margin-left: 1rem;
 }
+
 @media (min-width: 1024px) {
   .about {
     display: flex;
@@ -196,7 +211,15 @@ export default {
   border: 1px solid black;
   border-radius: 3px;
   width: 10rem;
-  margin-right: 1% ;
+  margin-right: 1rem;
 }
 
+.suggestedSkill{
+  padding: 5%;
+  cursor: pointer;
+}
+.suggestedSkill:hover{
+  background: linear-gradient(90deg, rgba(255, 170, 0, 0.22), rgba(0, 238, 255, 0.098), rgba(140, 0, 255, 0.018));
+  font-weight: 600;
+}
 </style>

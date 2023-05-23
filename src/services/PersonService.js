@@ -81,4 +81,17 @@ export class PersonService {
         return await axios.post(url, body)
     }
 
+    ////
+
+    async getSuggestedSkill(inputText){
+        const url = this.controllerEndpoint +
+            `getSuggestedSkills`
+            
+        const body = {
+            InpText: inputText
+        }
+
+
+        return await axios.post(url, body)
+    }
 }
