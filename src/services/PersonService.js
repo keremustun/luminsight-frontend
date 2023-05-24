@@ -94,4 +94,16 @@ export class PersonService {
 
         return await axios.post(url, body)
     }
+
+    async getSkillsStartingWith(personEmail, inputText){
+        const url = this.controllerEndpoint +
+            `${personEmail}/skills/findSkillsStartingWith`
+            
+        const body = {
+            InpText: inputText
+        }
+
+
+        return await axios.post(url, body)
+    }
 }

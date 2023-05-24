@@ -19,6 +19,7 @@ export default {
 
   computed: {
     suggestedSkills() {
+      console.log(this.dropdownSkills)
       return this.dropdownSkills.filter((skill) =>
         skill.toLowerCase().startsWith(this.searchText.toLowerCase())
       );
@@ -74,7 +75,6 @@ export default {
     suggestSkills() {
       this.personService.getSuggestedSkill(this.searchText)
         .then(response => {
-          console.log(response.data)
           this.dropdownSkills = response.data
           this.showDropdown = this.searchText.length > 0;
 
@@ -148,7 +148,9 @@ export default {
   </div>
 
   <main>
+
     <div class="search">
+
       <div class="tags">
         <SkillTag class="tag" v-for="(tag, index) in tags" :skillNameProp="tag.skillName" :proficiencyProp="0"
           :indexProp="index" :key="tag.skillName" @removeTag="removeTag" @tagChanged="updateTags">
@@ -165,15 +167,16 @@ export default {
           <li v-for="skill in suggestedSkills" :key="skill" @click="addTag(skill)">
             <div class="suggestedSkill">
               {{ skill }}
-
             </div>
           </li>
         </ul>
       </div>
+
     </div>
 
     <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersons"
       :searchedSkills="tags" :key="person.email" :colleague="person" @matchChanged="changeFilteredPersonsOrder()" />
+
   </main>
 </template>
 
@@ -214,11 +217,12 @@ export default {
   margin-right: 1rem;
 }
 
-.suggestedSkill{
+.suggestedSkill {
   padding: 5%;
   cursor: pointer;
 }
-.suggestedSkill:hover{
+
+.suggestedSkill:hover {
   background: linear-gradient(90deg, rgba(255, 170, 0, 0.22), rgba(0, 238, 255, 0.098), rgba(140, 0, 255, 0.018));
   font-weight: 600;
 }

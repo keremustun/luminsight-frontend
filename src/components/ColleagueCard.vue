@@ -92,7 +92,7 @@ export default {
       been programmed to return it like this to increase performance -->
         <div v-for="searchedSkill in searchedSkills" :key="searchedSkill.skillName" class="skills-container">
           <SkillTagOnColleague v-if="searchedSkillInColleagueSkills(searchedSkill)" class="col skill" :skillNameProp="getColleagueSkillSkillName(searchedSkill)" :proficiencyProp="getColleagueSkillProficiency(searchedSkill)" />
-
+     
         </div>
 
       </template>

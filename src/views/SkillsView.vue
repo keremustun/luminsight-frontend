@@ -11,11 +11,14 @@ export default {
   inject: ['loggedInPerson', 'personService'],
 
   mounted() {
+
+    this.skillsOf = this.$route.query.skillsOf
     this.refreshSkills()
   },
 
   data() {
     return {
+      skillsOf: '',
       skills: [],
       editingSkill: {},
       modalOpened: false
@@ -25,6 +28,10 @@ export default {
   computed: {
     skillsComputed() {
       return this.skills
+    },
+
+    isMyProfile() {
+      return this.loggedInPerson.email === this.skillsOf
     }
   },
 
@@ -34,15 +41,18 @@ export default {
     },
 
     refreshSkills() {
-      console.log(this.loggedInPerson)
-      this.personService.getPersonsSkills(this.loggedInPerson.email)
+      this.personService.getPersonsSkills(this.skillsOf)
         .then(response => {
           this.skills = response.data
         })
     },
-    
 
-    skillsUpdated(){
+    filterSkills() {
+      this.personService.getSkillsStartingWith(this.skillsOf, this.searchText)
+        .then(response => this.skills = response.data)
+    },
+
+    skillsUpdated() {
       this.refreshSkills()
     }
   },
@@ -51,34 +61,35 @@ export default {
 </script>
 
 <template>
-  <div class="title">
-    <h4>My Skills</h4>
-  </div>
-
   <main>
-    <div>
-      <button class="btn btn-primary add-skill" @click="toggleModal()">Add skill</button>
+    <div class="title">
+        <h4>{{isMyProfile ? 'My Skills' : `${this.skillsOf} Skills`}}</h4>
+      </div>
+    <div v-if="isMyProfile">
+      
+      <div>
+        <button class="btn btn-primary add-skill" @click="toggleModal()">Add skill</button>
 
-      <div class="search-skill">
-        <input type="text" class="form-control" v-model="searchText" @input="filterSkills" @keydown.enter="addTag"
-          placeholder="Search skills..." />
+
+
+        <ManageSkillModal ref="manageSkillModal" v-if="modalOpened" :skillNameProp="''" :starsProp="0" :open="true"
+          @close="modalOpened = false" @skills-updated="skillsUpdated()">
+
+          <template #title>
+            Add a Skill
+          </template>
+
+          <template #rightButton>
+            <button @click="this.$refs.manageSkillModal.addSkill()" class="btn btn-warning save">Add Skill</button>
+          </template>
+        </ManageSkillModal>
       </div>
 
-      <ManageSkillModal ref="manageSkillModal" v-if="modalOpened" 
-        :skillNameProp="''"
-        :starsProp="0"
-        :open="true" 
-        @close="modalOpened = false"
-        @skills-updated="skillsUpdated()">
+    </div>
 
-        <template #title>
-          Add a Skill
-        </template>
-
-        <template #rightButton>
-          <button @click="this.$refs.manageSkillModal.addSkill()" class="btn btn-warning save">Add Skill</button>
-        </template>
-      </ManageSkillModal>
+    <div class="search-skill">
+      <input type="text" class="form-control" v-model="searchText" @input="filterSkills" @keydown.enter="addTag"
+        placeholder="Search skills..." />
     </div>
 
     <SkillCard class="skill-card" v-for="skill in skillsComputed" :key="skill.skillName" :skillName='skill.skillName'
@@ -96,24 +107,24 @@ export default {
   }
 }
 
-.title{
-  margin-top:2%
+.title {
+  margin-top: 2%
 }
 
-.add-skill{
+.add-skill {
   margin-top: 2%;
   margin-bottom: 2%;
 }
 
-.search-skill{
-  margin-bottom:2%;
+.search-skill {
+  margin-bottom: 2%;
   border-radius: 11%;
 }
 
-.skill-card{
+.skill-card {
   display: inline-block;
-  margin-right: 5%;
+  margin-right: 3rem;
   margin-bottom: 2%;
-  width:15%;
+  width: 15rem;
 }
 </style>
