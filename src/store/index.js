@@ -16,7 +16,7 @@ const store = createStore({
       },
       accessToken: '',
       colleaguesPage: {
-        searchText: '',
+        searchTextSkill: '',
         dropdownSkills: ['JavaScript', 'HTML', 'CSS', 'Vue.js', 'React', 'Angular'],
         showDropdown: false,
 

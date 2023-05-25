@@ -6,7 +6,8 @@ export default {
   inject: ['personService'],
   data() {
     return {
-      searchText: '',
+      searchTextSkill: '',
+      searchTextPerson: '',
       dropdownSkills: [],
       showDropdown: false,
 
@@ -19,9 +20,8 @@ export default {
 
   computed: {
     suggestedSkills() {
-      console.log(this.dropdownSkills)
       return this.dropdownSkills.filter((skill) =>
-        skill.toLowerCase().startsWith(this.searchText.toLowerCase())
+        skill.toLowerCase().startsWith(this.searchTextSkill.toLowerCase())
       );
     },
   },
@@ -30,7 +30,7 @@ export default {
 
   beforeMount() {
     this.tags = this.$store.state.colleaguesPage.tags,
-      this.searchText = this.$store.state.colleaguesPage.searchText
+      this.searchTextSkill = this.$store.state.colleaguesPage.searchTextSkill
     this.dropdownSkills = this.$store.state.colleaguesPage.dropdownSkills,
       this.showDropdown = this.$store.state.colleaguesPage.showDropdown,
       this.availableDaysPerWeekSelected = this.$store.state.colleaguesPage.availableDaysPerWeekSelected,
@@ -39,9 +39,9 @@ export default {
 
   beforeUnmount() {
     this.$store.state.colleaguesPage.tags = this.tags;
-    this.$store.state.colleaguesPage.searchText = this.searchText;
+    this.$store.state.colleaguesPage.searchTextSkill = this.searchTextSkill;
     this.$store.state.colleaguesPage.dropdownSkills = this.dropdownSkills;
-    this.$store.state.colleaguesPage.showDropdown = this.showDropdown;
+    this.$store.state.colleaguesPage.showDropdown = this.showDroFpdown;
     this.$store.state.colleaguesPage.availableDaysPerWeekSelected = this.availableDaysPerWeekSelected;
     this.$store.state.colleaguesPage.branchesSelected = this.branchesSelected;
   },
@@ -51,38 +51,44 @@ export default {
       deep: true,
       handler() {
         // Call the notifyParent method when any changes occur in the data object
-        if (Object.keys(this.tags).length > 0) {
-          const searchSkillsFilter = {
-            skillsToSearchFor: this.tags,
-            availableDaysPerWeek: this.availableDaysPerWeekSelected,
-            branches: this.branchesChosen
-          }
-
-          this.personService.findPersonsWithSkills(searchSkillsFilter)
-            .then(response => {
-              this.filteredPersons = response.data
-              this.sortColleagues()
-            })
-        } else {
-          this.filteredPersons = []
-        }
+        this.updateResults()
 
       }
     }
   },
 
   methods: {
+    updateResults() {
+      if (Object.keys(this.tags).length > 0 || this.searchTextPerson.length > 0) {
+        const searchSkillsFilter = {
+          personSearchText: this.searchTextPerson,
+          skillsToSearchFor: this.tags,
+          availableDaysPerWeek: this.availableDaysPerWeekSelected,
+          branches: this.branchesChosen
+        }
+
+        this.personService.findPersonsWithSkills(searchSkillsFilter)
+          .then(response => {
+            console.log('aa')
+            this.filteredPersons = response.data
+            this.sortColleagues()
+          })
+      } else {
+        this.filteredPersons = []
+      }
+    },
+
     suggestSkills() {
-      this.personService.getSuggestedSkill(this.searchText)
+      this.personService.getSuggestedSkill(this.searchTextSkill)
         .then(response => {
           this.dropdownSkills = response.data
-          this.showDropdown = this.searchText.length > 0;
+          this.showDropdown = this.searchTextSkill.length > 0 && this.dropdownSkills.length > 0;
 
         })
     },
 
     selectSkill(skill) {
-      this.searchText = skill;
+      this.searchTextSkill = skill;
       this.showDropdown = false;
     },
 
@@ -91,7 +97,7 @@ export default {
 
       if (typeof (tag) === 'object') {
         skill = {
-          skillName: this.searchText,
+          skillName: this.searchTextSkill,
           proficiency: 0
         }
       }
@@ -104,7 +110,7 @@ export default {
       }
 
       this.tags.push(skill);
-      this.searchText = '';
+      this.searchTextSkill = '';
       this.showDropdown = false;
     },
 
@@ -132,7 +138,10 @@ export default {
 
     sortColleagues() {
       this.filteredPersons.sort((personA, personB) => personB.weight - personA.weight);
-      console.log(this.filteredPersons)
+    },
+
+    searchPerson() {
+      this.updateResults()
     }
   },
 
@@ -157,10 +166,19 @@ export default {
         </SkillTag>
       </div>
 
-      <div>
-        <input type="text" class="form-control" v-model="searchText" @input="suggestSkills" @keydown.enter="addTag"
-          placeholder="Search skills..." />
+      <div class="row">
+        <div class="col">
+          <input type="text" class="form-control" v-model="searchTextSkill" @input="suggestSkills" @keydown.enter="addTag"
+            placeholder="Search skills..." />
+        </div>
+
+        <div class="col">
+          <input type="text" class="form-control" v-model="searchTextPerson" @input="searchPerson"
+            placeholder="Search people..." />
+        </div>
+
       </div>
+
 
       <div>
         <ul class="dropdown-menu" v-if="showDropdown">
