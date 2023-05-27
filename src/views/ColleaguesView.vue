@@ -42,8 +42,8 @@ export default {
     this.searchTextSkill = this.$store.state.colleaguesPage.searchTextSkill
     this.dropdownSkills = this.$store.state.colleaguesPage.dropdownSkills
     this.showDropdown = this.$store.state.colleaguesPage.showDropdown
-    this.$refs.filtersComponent.branches = this.$store.state.colleaguesPage.branches 
-    this.$refs.filtersComponent.minimalAvailableDays = this.$store.state.colleaguesPage.minimalAvailableDays 
+    this.$refs.filtersComponent.branches = this.$store.state.colleaguesPage.branches
+    this.$refs.filtersComponent.minimalAvailableDaysPerWeek = this.$store.state.colleaguesPage.minimalAvailableDaysPerWeek
   },
 
   beforeUnmount() {
@@ -52,8 +52,8 @@ export default {
     this.$store.state.colleaguesPage.dropdownSkills = this.dropdownSkills;
     this.$store.state.colleaguesPage.showDropdown = this.showDropdown;
     this.$store.state.colleaguesPage.branches = this.$refs.filtersComponent.branches;
-    this.$store.state.colleaguesPage.minimalAvailableDays = this.$refs.filtersComponent.minimalAvailableDays;
-    
+    this.$store.state.colleaguesPage.minimalAvailableDaysPerWeek = this.$refs.filtersComponent.minimalAvailableDaysPerWeek;
+
   },
 
   watch: {
@@ -89,8 +89,8 @@ export default {
         const searchSkillsFilter = {
           personSearchText: this.searchTextPerson,
           skillsToSearchFor: this.tags,
-          branches: this.$refs.filtersComponent.branches,
-          minimalAvailableDays: this.$refs.filtersComponent.minimalAvailableDays,
+          branches: this.$refs.filtersComponent.branches.filter(branch => branch.checked === true).map(branch => branch.name),
+          minimalAvailableDaysPerWeek: this.$refs.filtersComponent.minimalAvailableDaysPerWeek,
         }
 
         this.personService.findPersonsWithSkills(searchSkillsFilter)

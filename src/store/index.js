@@ -17,11 +17,28 @@ const store = createStore({
       accessToken: '',
       colleaguesPage: {
         searchTextSkill: '',
-        dropdownSkills: ['JavaScript', 'HTML', 'CSS', 'Vue.js', 'React', 'Angular'],
+        dropdownSkills: [],
         showDropdown: false,
 
         tags: [],
-        branches:[],
+        branches: [
+          {
+              name: 'Rotterdam',
+              checked: false
+          },
+          {
+              name: 'Amsterdam',
+              checked: false
+          },
+          {
+              name: 'Apeldoorn',
+              checked: false
+          },
+          {
+              name: 'Arnhem',
+              checked: false
+          }
+      ],
         minimalAvailableDays:5
       }
     };

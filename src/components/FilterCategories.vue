@@ -5,27 +5,10 @@ export default {
 
     data() {
         return {
-            branches: [
-                {
-                    name: 'Rotterdam',
-                    checked: false
-                },
-                {
-                    name: 'Amsterdam',
-                    checked: false
-                },
-                {
-                    name: 'Apeldoorn',
-                    checked: false
-                },
-                {
-                    name: 'Arnhem',
-                    checked: false
-                }
-            ],
+            branches:[],
             showBranches: true,
 
-            minimalAvailableDays: 5
+            minimalAvailableDaysPerWeek: 5
         }
     },
 
@@ -36,7 +19,7 @@ export default {
                 this.$emit('filtersUpdated')
             }
         },
-        minimalAvailableDays:{
+        minimalAvailableDaysPerWeek:{
             deep: true,
             handler(){
                 this.$emit('filtersUpdated')
@@ -64,8 +47,8 @@ export default {
     </div>
 
     <div class="category">
-        <label class="label-days" for="available-days">Min. Available Days</label>
-        <select id="available-days" v-model="minimalAvailableDays">
+        <label class="label-days" for="available-days">Min. Available Days Per Week</label>
+        <select id="available-days" v-model="minimalAvailableDaysPerWeek">
             <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
