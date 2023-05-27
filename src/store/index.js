@@ -21,9 +21,8 @@ const store = createStore({
         showDropdown: false,
 
         tags: [],
-        availableDaysPerWeekSelected: 0,
-        branchesSelected: [],
-        filteredPersons: [],
+        branches:[],
+        minimalAvailableDays:5
       }
     };
   },

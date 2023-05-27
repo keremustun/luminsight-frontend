@@ -1,25 +1,26 @@
 <script>
 import SkillTag from '../components/SkillTag.vue'
 import ColleagueCard from '../components/ColleagueCard.vue'
+import FilterCategories from '../components/FilterCategories.vue'
 
 export default {
   inject: ['personService'],
   data() {
     return {
-      searchTextSkill: '',
       searchTextPerson: '',
+
+      searchTextSkill: '',
       dropdownSkills: [],
       showDropdown: false,
-
       tags: [],
-      availableDaysPerWeekSelected: 0,
-      branchesSelected: [],
+
+
+      expandedCategories: [],
       filteredPersons: [],
 
       sortOn: 'Skill Proficiency (High to Low)',
       sortingOptions: ['Skill Proficiency (High to Low)', 'Skill Proficiency (Low to High)', 'Colleague name (A-Z)', 'Colleague name (Z-A)'],
       sortClicked: false
-
     };
   },
 
@@ -36,13 +37,13 @@ export default {
 
 
 
-  beforeMount() {
-    this.tags = this.$store.state.colleaguesPage.tags,
-      this.searchTextSkill = this.$store.state.colleaguesPage.searchTextSkill
-    this.dropdownSkills = this.$store.state.colleaguesPage.dropdownSkills,
-      this.showDropdown = this.$store.state.colleaguesPage.showDropdown,
-      this.availableDaysPerWeekSelected = this.$store.state.colleaguesPage.availableDaysPerWeekSelected,
-      this.branchesSelected = this.$store.state.colleaguesPage.branchesSelected
+  mounted() {
+    this.tags = this.$store.state.colleaguesPage.tags
+    this.searchTextSkill = this.$store.state.colleaguesPage.searchTextSkill
+    this.dropdownSkills = this.$store.state.colleaguesPage.dropdownSkills
+    this.showDropdown = this.$store.state.colleaguesPage.showDropdown
+    this.$refs.filtersComponent.branches = this.$store.state.colleaguesPage.branches 
+    this.$refs.filtersComponent.minimalAvailableDays = this.$store.state.colleaguesPage.minimalAvailableDays 
   },
 
   beforeUnmount() {
@@ -50,8 +51,9 @@ export default {
     this.$store.state.colleaguesPage.searchTextSkill = this.searchTextSkill;
     this.$store.state.colleaguesPage.dropdownSkills = this.dropdownSkills;
     this.$store.state.colleaguesPage.showDropdown = this.showDropdown;
-    this.$store.state.colleaguesPage.availableDaysPerWeekSelected = this.availableDaysPerWeekSelected;
-    this.$store.state.colleaguesPage.branchesSelected = this.branchesSelected;
+    this.$store.state.colleaguesPage.branches = this.$refs.filtersComponent.branches;
+    this.$store.state.colleaguesPage.minimalAvailableDays = this.$refs.filtersComponent.minimalAvailableDays;
+    
   },
 
   watch: {
@@ -66,13 +68,29 @@ export default {
   },
 
   methods: {
+    toggleCategory(category) {
+      if (this.isCategoryExpanded(category)) {
+        // Category is expanded, collapse it
+        const index = this.expandedCategories.indexOf(category);
+        if (index !== -1) {
+          this.expandedCategories.splice(index, 1);
+        }
+      } else {
+        // Category is collapsed, expand it
+        this.expandedCategories.push(category);
+      }
+    },
+    isCategoryExpanded(category) {
+      return this.expandedCategories.includes(category);
+    },
+
     updateResults() {
       if (true) {
         const searchSkillsFilter = {
           personSearchText: this.searchTextPerson,
           skillsToSearchFor: this.tags,
-          availableDaysPerWeek: this.availableDaysPerWeekSelected,
-          branches: this.branchesChosen
+          branches: this.$refs.filtersComponent.branches,
+          minimalAvailableDays: this.$refs.filtersComponent.minimalAvailableDays,
         }
 
         this.personService.findPersonsWithSkills(searchSkillsFilter)
@@ -179,7 +197,7 @@ export default {
     }
   },
 
-  components: { SkillTag, ColleagueCard }
+  components: { SkillTag, ColleagueCard, FilterCategories }
 };
 </script>
 
@@ -222,11 +240,9 @@ export default {
       <div class="col-2 filter-menu">
 
         <div>
-          <div>a</div>
-          <div>a</div>
-          <div>a</div>
-          <div>a</div>
+          <FilterCategories ref="filtersComponent" @filtersUpdated="updateResults()" />
         </div>
+
         <div class="col skills-input">
           <input type="text" class="form-control" v-model="searchTextSkill" @input="suggestSkills" @keydown.enter="addTag"
             placeholder="Filter on skills..." />
