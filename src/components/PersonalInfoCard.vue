@@ -84,16 +84,16 @@ export default {
         <div class="fieldValue" v-if="this.valueType === 'string' || this.valueType === 'number'">
             <div v-if="clicked">
                 <div v-if="fieldType === 'combobox'">
-                    <select ref="inputElement" @blur="setClicked(false)" v-model="value">
+                    <select ref="inputElement" @keyup.enter="setClicked(false)" @blur="setClicked(false)" v-model="value">
                         <option v-for="option in branchOptions" :value="option">{{ option }}</option>
                     </select>
                 </div>
                 <div v-if="fieldType === 'textarea'">
-                    <textarea ref="inputElement" @blur="setClicked(false)" v-model="value" type="text"></textarea>
+                    <textarea ref="inputElement"  @blur="setClicked(false)" v-model="value" type="text"></textarea>
                 </div>
                 <div v-if="fieldType === 'input'">
 
-                    <input ref="inputElement" @blur="setClicked(false)" v-model="value" type="text">
+                    <input ref="inputElement" @keyup.enter="setClicked(false)" @blur="setClicked(false)" v-model="value" type="text">
                 </div>
             </div>
             <div v-else>
@@ -116,10 +116,21 @@ export default {
 <style>
 
 
+
 .value-container {
-    cursor: url('../assets/edit-pen-icon.svg') -60 50, auto;
+    cursor: text;
+    min-width: 8rem;
+    padding:  0.25rem 0.5rem;
+    border-radius: 0.2rem;
     
 }
+
+.value-container:hover {
+    cursor: text;
+    background-color: rgba(128, 128, 128, 0.348);
+    
+}
+
 .value {
     display: inline-block;
     
@@ -133,6 +144,10 @@ export default {
     font-weight: 700;
     display: inline-block;
 
+}
+
+.fieldNameContainer{
+    padding:  0.25rem 0.5rem;
 }
 
 .fieldValue {

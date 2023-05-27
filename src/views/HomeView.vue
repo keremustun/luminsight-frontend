@@ -78,6 +78,7 @@ export default {
 
 <template>
   <main>
+    
     <div class="welcome-msg">
       <h2>Welcome {{ loggedInPerson.personalInfo.firstName }}!</h2>
     </div>

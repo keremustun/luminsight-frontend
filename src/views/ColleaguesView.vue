@@ -14,7 +14,12 @@ export default {
       tags: [],
       availableDaysPerWeekSelected: 0,
       branchesSelected: [],
-      filteredPersons: []
+      filteredPersons: [],
+
+      sortOn: 'Skill Proficiency (High to Low)',
+      sortingOptions: ['Skill Proficiency (High to Low)', 'Skill Proficiency (Low to High)', 'Colleague name (A-Z)', 'Colleague name (Z-A)'],
+      sortClicked: false
+
     };
   },
 
@@ -38,7 +43,6 @@ export default {
       this.showDropdown = this.$store.state.colleaguesPage.showDropdown,
       this.availableDaysPerWeekSelected = this.$store.state.colleaguesPage.availableDaysPerWeekSelected,
       this.branchesSelected = this.$store.state.colleaguesPage.branchesSelected
-    console.log(this.$data)
   },
 
   beforeUnmount() {
@@ -140,7 +144,16 @@ export default {
 
 
     sortColleagues() {
-      this.filteredPersons.sort((personA, personB) => personB.weight - personA.weight);
+
+      if (this.sortOn === 'Skill Proficiency (High to Low)') {
+        this.filteredPersons.sort((personA, personB) => personB.weight - personA.weight);
+      } else if (this.sortOn === 'Skill Proficiency (Low to High)') {
+        this.filteredPersons.sort((personA, personB) => personA.weight - personB.weight);
+      } else if (this.sortOn === 'Colleague name (A-Z)') {
+        this.filteredPersons.sort((personA, personB) => personA.personalInfo.firstName.localeCompare(personB.personalInfo.firstName));
+      } else if (this.sortOn === 'Colleague name (Z-A)') {
+        this.filteredPersons.sort((personA, personB) => personB.personalInfo.firstName.localeCompare(personA.personalInfo.firstName));
+      }
     },
 
     searchPerson() {
@@ -157,6 +170,12 @@ export default {
       const highlightedLastName = lastName.replace(regex, '<span class="highlighted">$&</span>');
 
       return `${highlightedFirstName} ${highlightedLastName}`;
+    },
+
+    setSort(sortOption) {
+      this.sortOn = sortOption;
+      this.sortClicked = false;
+      this.sortColleagues()
     }
   },
 
@@ -164,66 +183,146 @@ export default {
 };
 </script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <template>
   <div>
     <h4 class="title">Colleagues</h4>
     <p class="description">Just enter a skill and find colleagues that have this skill!</p>
 
   </div>
+  <hr>
 
   <main>
+    <div class="row">
+      <div class="col-2 filter-menu">
 
-    <div class="search">
-
-      <div class="tags">
-        <SkillTag class="tag" v-for="(tag, index) in tags" :skillNameProp="tag.skillName" :proficiencyProp="0"
-          :indexProp="index" :key="tag.skillName" @removeTag="removeTag" @tagChanged="updateTags">
-        </SkillTag>
-      </div>
-
-      <div class="row">
-        <div class="col">
+        <div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+        </div>
+        <div class="col skills-input">
           <input type="text" class="form-control" v-model="searchTextSkill" @input="suggestSkills" @keydown.enter="addTag"
-            placeholder="Search skills..." />
+            placeholder="Filter on skills..." />
         </div>
 
-        <div class="col">
-          <input type="text" class="form-control" v-model="searchTextPerson" @input="searchPerson"
-            placeholder="Search people..." />
+        <div>
+          <ul class="dropdown-menu" v-if="showDropdown">
+            <li v-for="skill in suggestedSkills" :key="skill" @click="addTag(skill)">
+              <div class="suggestedSkill">
+                {{ skill }}
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="tags">
+          <SkillTag class="tag" v-for="(tag, index) in tags" :skillNameProp="tag.skillName" :proficiencyProp="0"
+            :indexProp="index" :key="tag.skillName" @removeTag="removeTag" @tagChanged="updateTags">
+          </SkillTag>
         </div>
 
       </div>
 
 
-      <div>
-        <ul class="dropdown-menu" v-if="showDropdown">
-          <li v-for="skill in suggestedSkills" :key="skill" @click="addTag(skill)">
-            <div class="suggestedSkill">
-              {{ skill }}
+      <div class="col">
+        <div class="search">
+          <div class="row">
+            <div class="col">
+              <input type="text" class="form-control" v-model="searchTextPerson" @input="searchPerson"
+                placeholder="Search people..." />
             </div>
-          </li>
-        </ul>
+            <div class="col ">
+              <div class="dropdown-container">
+                <button class="btn dropdown-toggle dropdown" @click="this.sortClicked = !this.sortClicked">
+                  {{ sortOn }}
+                </button>
+                <div class="dropdown-menu" v-if="sortClicked">
+                  <div v-for="sortOption in sortingOptions" class="dropdown-item" @click="setSort(sortOption)">{{
+                    sortOption }}</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersonsComputed"
+          :searchedSkills="tags" :key="person.email" :colleague="person" @matchChanged="changeFilteredPersonsOrder()">
+
+          <template #header>
+            <div class="title">
+              <div class="name"
+                v-html="highlightMatchedText(person.personalInfo.firstName, person.personalInfo.lastName)">
+
+              </div>
+
+            </div>
+          </template>
+        </ColleagueCard>
       </div>
 
     </div>
 
-    <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersonsComputed"
-      :searchedSkills="tags" :key="person.email" :colleague="person" @matchChanged="changeFilteredPersonsOrder()">
-
-      <template #header>
-        <div class="title">
-          <div class="name" v-html="highlightMatchedText(person.personalInfo.firstName, person.personalInfo.lastName)">
-
-          </div>
-
-        </div>
-      </template>
-    </ColleagueCard>
 
   </main>
 </template>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <style>
+.filter-menu {
+  background-color: rgba(0, 0, 0, 0.037);
+  min-height: 100vh;
+
+}
+
 .search {
 
   margin-left: 1rem;
@@ -241,23 +340,38 @@ export default {
   background: linear-gradient(5deg, rgba(0, 0, 0, 0.06), white);
 }
 
+.dropdown-container {
+  float: right;
+}
+
 .dropdown-menu {
   display: block;
+}
+
+.dropdown-item {
+  cursor: pointer;
+  transition-duration: 0.2s;
+}
+
+.dropdown-item:active {
+  background: rgb(128, 0, 128);
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
+
 }
 
 .tag {
   display: inline-block;
-  margin-bottom: 1rem;
   background: linear-gradient(60deg, rgba(10, 255, 247, 0.385), rgba(119, 0, 255, 0.342));
   border: 1px solid black;
   border-radius: 3px;
   width: 10rem;
   margin-right: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .suggestedSkill {
@@ -273,5 +387,22 @@ export default {
 
 .highlighted {
   background-color: yellow;
+}
+
+.dropdown {
+  min-width: 15rem;
+  background-color: purple;
+  color: white;
+  border: none;
+}
+
+.dropdown:hover {
+  background-color: purple;
+  color: white;
+  box-shadow: 0rem 0rem 1rem purple;
+}
+
+.skills-input {
+  margin-top: 1rem;
 }
 </style>
