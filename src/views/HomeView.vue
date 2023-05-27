@@ -86,7 +86,7 @@ export default {
       <div class="col home-tasks-slider">
         <div class="home-tasks-container">
 
-          <HomeTaskCard @click="this.$router.push('/profile')" class="home-task-card">
+          <HomeTaskCard @click="this.$router.push({ name: 'profile', query: { profileOf: this.loggedInPerson.email } })" class="home-task-card">
             <template #header>
               <h5>Profile info</h5>
             </template>
@@ -100,7 +100,7 @@ export default {
             </template>
           </HomeTaskCard>
 
-          <HomeTaskCard @click="this.$router.push('/skills')" class="home-task-card">
+          <HomeTaskCard @click="this.$router.push({ name: 'skills', query: { skillsOf: this.loggedInPerson.email } })" class="home-task-card">
             <template #header>
               <h5>Put in your skills!</h5>
             </template>
@@ -114,7 +114,7 @@ export default {
             </template>
           </HomeTaskCard>
 
-          <HomeTaskCard @click="this.$router.push('/colleagues')" class="home-task-card">
+          <HomeTaskCard @click="this.$router.push(`/colleagues`)" class="home-task-card">
             <template #header>
               <h5>Find colleagues</h5>
             </template>

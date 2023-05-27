@@ -24,6 +24,9 @@ export default {
         skill.toLowerCase().startsWith(this.searchTextSkill.toLowerCase())
       );
     },
+    filteredPersonsComputed() {
+      return this.filteredPersons;
+    }
   },
 
 
@@ -35,13 +38,14 @@ export default {
       this.showDropdown = this.$store.state.colleaguesPage.showDropdown,
       this.availableDaysPerWeekSelected = this.$store.state.colleaguesPage.availableDaysPerWeekSelected,
       this.branchesSelected = this.$store.state.colleaguesPage.branchesSelected
+    console.log(this.$data)
   },
 
   beforeUnmount() {
     this.$store.state.colleaguesPage.tags = this.tags;
     this.$store.state.colleaguesPage.searchTextSkill = this.searchTextSkill;
     this.$store.state.colleaguesPage.dropdownSkills = this.dropdownSkills;
-    this.$store.state.colleaguesPage.showDropdown = this.showDroFpdown;
+    this.$store.state.colleaguesPage.showDropdown = this.showDropdown;
     this.$store.state.colleaguesPage.availableDaysPerWeekSelected = this.availableDaysPerWeekSelected;
     this.$store.state.colleaguesPage.branchesSelected = this.branchesSelected;
   },
@@ -59,7 +63,7 @@ export default {
 
   methods: {
     updateResults() {
-      if (Object.keys(this.tags).length > 0 || this.searchTextPerson.length > 0) {
+      if (true) {
         const searchSkillsFilter = {
           personSearchText: this.searchTextPerson,
           skillsToSearchFor: this.tags,
@@ -69,7 +73,6 @@ export default {
 
         this.personService.findPersonsWithSkills(searchSkillsFilter)
           .then(response => {
-            console.log('aa')
             this.filteredPersons = response.data
             this.sortColleagues()
           })
@@ -142,6 +145,18 @@ export default {
 
     searchPerson() {
       this.updateResults()
+    },
+
+    highlightMatchedText(firstName, lastName) {
+      if (!this.searchTextPerson) {
+        return `${firstName} ${lastName}`;
+      }
+
+      const regex = new RegExp(`\\b${this.searchTextPerson}`, 'gi');
+      const highlightedFirstName = firstName.replace(regex, '<span class="highlighted">$&</span>');
+      const highlightedLastName = lastName.replace(regex, '<span class="highlighted">$&</span>');
+
+      return `${highlightedFirstName} ${highlightedLastName}`;
     }
   },
 
@@ -192,8 +207,18 @@ export default {
 
     </div>
 
-    <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersons"
-      :searchedSkills="tags" :key="person.email" :colleague="person" @matchChanged="changeFilteredPersonsOrder()" />
+    <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersonsComputed"
+      :searchedSkills="tags" :key="person.email" :colleague="person" @matchChanged="changeFilteredPersonsOrder()">
+
+      <template #header>
+        <div class="title">
+          <div class="name" v-html="highlightMatchedText(person.personalInfo.firstName, person.personalInfo.lastName)">
+
+          </div>
+
+        </div>
+      </template>
+    </ColleagueCard>
 
   </main>
 </template>
@@ -243,5 +268,10 @@ export default {
 .suggestedSkill:hover {
   background: linear-gradient(90deg, rgba(255, 170, 0, 0.22), rgba(0, 238, 255, 0.098), rgba(140, 0, 255, 0.018));
   font-weight: 600;
+}
+
+
+.highlighted {
+  background-color: yellow;
 }
 </style>

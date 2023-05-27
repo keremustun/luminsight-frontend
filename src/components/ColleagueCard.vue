@@ -49,23 +49,23 @@ export default {
 
   methods: {
 
-    searchedSkillInColleagueSkills(searchedSkill){
+    searchedSkillInColleagueSkills(searchedSkill) {
       return this.colleague.skills.find(colleagueSkill => colleagueSkill.skillName === searchedSkill.skillName) !== undefined
     },
 
-    getColleagueSkillSkillName(searchedSkill){
+    getColleagueSkillSkillName(searchedSkill) {
       return this.colleague.skills.find(colleagueSkill => colleagueSkill.skillName === searchedSkill.skillName).skillName
     },
 
-    getColleagueSkillProficiency(searchedSkill){
+    getColleagueSkillProficiency(searchedSkill) {
       return this.colleague.skills.find(colleagueSkill => colleagueSkill.skillName === searchedSkill.skillName).proficiency
     }
   },
 
-  watch:{
-    colleague:{
-      deep:true,
-      handler(){
+  watch: {
+    colleague: {
+      deep: true,
+      handler() {
       }
     }
   },
@@ -78,21 +78,19 @@ export default {
   <div>
     <GenericCard class="colleagueCard" :cardStyle="cardStyle" :headerStyle="headerStyle">
       <template #header>
-        <div class="title">
-          <div class="name">
-            {{ colleague.personalInfo.firstName }} {{ colleague.personalInfo.lastName }}
-          </div>
-
-        </div>
-
+        <slot name="header">
+          
+        </slot>
       </template>
 
       <template #body>
         <!-- only the matching skills are in colleague.skills, normally this wouldn't be the case but the backend has
       been programmed to return it like this to increase performance -->
         <div v-for="searchedSkill in searchedSkills" :key="searchedSkill.skillName" class="skills-container">
-          <SkillTagOnColleague v-if="searchedSkillInColleagueSkills(searchedSkill)" class="col skill" :skillNameProp="getColleagueSkillSkillName(searchedSkill)" :proficiencyProp="getColleagueSkillProficiency(searchedSkill)" />
-     
+          <SkillTagOnColleague v-if="searchedSkillInColleagueSkills(searchedSkill)" class="col skill"
+            :skillNameProp="getColleagueSkillSkillName(searchedSkill)"
+            :proficiencyProp="getColleagueSkillProficiency(searchedSkill)" />
+
         </div>
 
       </template>
@@ -112,8 +110,8 @@ export default {
   display: inline-block;
 }
 
-.skill{
-  
+.skill {
+
   margin-right: 1rem;
 }
 
