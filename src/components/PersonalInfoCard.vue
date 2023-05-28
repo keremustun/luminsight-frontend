@@ -2,19 +2,19 @@
 
 export default {
     props: {
-        fieldValue:{
+        fieldValue: {
 
         },
-        fieldName:{
+        fieldName: {
 
         },
-        fieldNameDisplay:{
+        fieldNameDisplay: {
 
         },
         fieldType: {
             default: 'input'
         },
-        isMyProfileProp:{
+        isMyProfileProp: {
 
         }
 
@@ -28,7 +28,7 @@ export default {
             value: this.fieldValue,
             valueType: typeof (this.fieldValue),
             branchOptions: ['Rotterdam', 'Amsterdam', 'Apeldoorn', 'Arnhem'],
-            availableDaysPerWeekOptions:[0,1,2,3,4,5]
+            availableDaysPerWeekOptions: [0, 1, 2, 3, 4, 5]
         }
     },
 
@@ -81,16 +81,20 @@ export default {
             <div v-if="clicked">
                 <div v-if="fieldType === 'combobox'">
                     <select ref="inputElement" @keyup.enter="setClicked(false)" @blur="setClicked(false)" v-model="value">
-                        <option v-if="fieldName === 'branch'" v-for="option in branchOptions" :value="option">{{ option }}</option>
-                        <option v-if="fieldName === 'availableDaysPerWeek'" v-for="option in availableDaysPerWeekOptions" :value="option">{{ option }}</option>
+                        <option v-if="fieldName === 'branch'" v-for="option in branchOptions" :value="option">{{ option }}
+                        </option>
+                        <option v-if="fieldName === 'availableDaysPerWeek'" v-for="option in availableDaysPerWeekOptions"
+                            :value="option">{{ option }}</option>
                     </select>
                 </div>
                 <div v-if="fieldType === 'textarea'">
-                    <textarea class="form-control" rows="2" cols="100" ref="inputElement"  @blur="setClicked(false)" v-model="value" type="text"></textarea>
+                    <textarea class="form-control" rows="2" cols="100" ref="inputElement" @blur="setClicked(false)"
+                        v-model="value" type="text"></textarea>
                 </div>
                 <div v-if="fieldType === 'input'">
 
-                    <input ref="inputElement" @keyup.enter="setClicked(false)" @blur="setClicked(false)" v-model="value" type="text">
+                    <input ref="inputElement" @keyup.enter="setClicked(false)" @blur="setClicked(false)" v-model="value"
+                        type="text">
                 </div>
             </div>
             <div v-else>
@@ -100,7 +104,11 @@ export default {
                         {{ value }}
                     </div>
                 </div>
-                <p v-else @click="setClicked(true)"> {{ value }}</p>
+                <div class="colleague-value" v-else @click="setClicked(true)">
+                    <div class="value">
+                        {{ value }}
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -111,26 +119,34 @@ export default {
 </template>
 
 <style>
-
-
-
 .value-container {
     cursor: text;
     min-width: 8rem;
-    padding:  0.25rem 0.5rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 0.2rem;
-    
+
 }
 
 .value-container:hover {
     cursor: text;
     background-color: rgba(128, 128, 128, 0.348);
-    
+
 }
 
 .value {
     display: inline-block;
-    
+
+}
+
+.colleague-value {
+
+
+    cursor: text;
+    min-width: 8rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.2rem;
+
+
 }
 
 .fieldNameContainer,
@@ -141,8 +157,8 @@ export default {
 
 }
 
-.fieldNameContainer{
-    padding:  0.25rem 0.5rem;
+.fieldNameContainer {
+    padding: 0.25rem 0.5rem;
 }
 
 .fieldValue {
@@ -150,7 +166,5 @@ export default {
     display: inline-block;
 }
 
-.biography.active{
-    
-}
+.biography.active {}
 </style>

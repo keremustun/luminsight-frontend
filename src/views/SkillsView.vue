@@ -44,6 +44,7 @@ export default {
       this.personService.getPersonsSkills(this.skillsOf)
         .then(response => {
           this.skills = response.data
+          this.skills.sort((skillA, skillB) => skillA.skillName.localeCompare(skillB.skillName));
         })
     },
 
@@ -68,7 +69,7 @@ export default {
     <div v-if="isMyProfile">
       
       <div>
-        <button class="btn btn-primary add-skill" @click="toggleModal()">Add skill</button>
+        <button class="btn  add-skill" @click="toggleModal()">Add skill</button>
 
 
 
@@ -114,6 +115,14 @@ export default {
 .add-skill {
   margin-top: 2%;
   margin-bottom: 2%;
+  background-color: purple;
+  color: white;
+}
+
+.add-skill:hover {
+  background-color: purple;
+  color: white;
+  box-shadow: 0rem 0rem 1rem purple;
 }
 
 .search-skill {

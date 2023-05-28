@@ -49,7 +49,7 @@ export default {
       </p>
 
       
-      <button class="btn btn-warning" @click="toggleModal()">Edit</button>
+      <button class="btn btn-edit" @click="toggleModal()">Edit</button>
 
       <ManageSkillModal ref="manageSkillModal" v-if="modalOpened" 
         :skillNameProp="skillName"
@@ -83,5 +83,18 @@ export default {
 
 .star-filled {
   color: gold;
+}
+
+.btn-edit {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  background-color:orange;
+  color: black;
+}
+
+.btn-edit:hover {
+  background-color:orange;
+  color: black;
+  box-shadow: 0rem 0rem 1rem orange;
 }
 </style>
