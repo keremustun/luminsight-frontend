@@ -27,13 +27,13 @@ export default {
             field: this.fieldName,
             value: this.fieldValue,
             valueType: typeof (this.fieldValue),
-            branchOptions: ['Rotterdam', 'Amsterdam', 'Apeldoorn', 'Arnhem']
+            branchOptions: ['Rotterdam', 'Amsterdam', 'Apeldoorn', 'Arnhem'],
+            availableDaysPerWeekOptions:[0,1,2,3,4,5]
         }
     },
 
     methods: {
         notifyParent() {
-            console.log('notifying')
             this.$emit('updateData', this.value, this.field);
         },
 
@@ -44,14 +44,10 @@ export default {
                     this.$nextTick(() => {
                         this.$refs.inputElement.focus();
                     });
-
                 }
                 this.notifyParent()
-
             }
-
         },
-
     },
 
     watch: {
@@ -85,11 +81,12 @@ export default {
             <div v-if="clicked">
                 <div v-if="fieldType === 'combobox'">
                     <select ref="inputElement" @keyup.enter="setClicked(false)" @blur="setClicked(false)" v-model="value">
-                        <option v-for="option in branchOptions" :value="option">{{ option }}</option>
+                        <option v-if="fieldName === 'branch'" v-for="option in branchOptions" :value="option">{{ option }}</option>
+                        <option v-if="fieldName === 'availableDaysPerWeek'" v-for="option in availableDaysPerWeekOptions" :value="option">{{ option }}</option>
                     </select>
                 </div>
                 <div v-if="fieldType === 'textarea'">
-                    <textarea ref="inputElement"  @blur="setClicked(false)" v-model="value" type="text"></textarea>
+                    <textarea class="form-control" rows="2" cols="100" ref="inputElement"  @blur="setClicked(false)" v-model="value" type="text"></textarea>
                 </div>
                 <div v-if="fieldType === 'input'">
 
@@ -136,8 +133,6 @@ export default {
     
 }
 
-
-
 .fieldNameContainer,
 .fieldName {
     float: left;
@@ -153,5 +148,9 @@ export default {
 .fieldValue {
     margin-left: 1%;
     display: inline-block;
+}
+
+.biography.active{
+    
 }
 </style>

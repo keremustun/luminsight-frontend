@@ -1,7 +1,6 @@
 <script>
 import PersonalInfoCard from '../components/PersonalInfoCard.vue'
 
-
 export default {
   inject: ['loggedInPerson', 'personService'],
 
@@ -50,11 +49,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log('checking')
-      // Check if the query parameter 'profileOf' has changed
       if (to.query.profileOf !== from.query.profileOf) {
-        console.log('checkaing')
-        // Fetch the updated personal info based on the new query parameter
         this.refreshPersonalInfo(to.query.profileOf);
       }
     }
@@ -74,8 +69,6 @@ export default {
             <h4>My Profile</h4>
           </div>
 
-          <!-- <h6 class="col-2 myProfileHeader unsaved-changes-text">{{ unsavedChanges ? "Unsaved Changes" : "Up to date" }}
-          </h6> -->
           <button class="col-2 btn btn-warning" v-if="unsavedChanges" @click="saveChanges()">Save Changes</button>
 
         </div>
@@ -90,9 +83,6 @@ export default {
       </div>
     </div>
 
-    <!-- <PersonalInfoCard class="personalInfoField" v-for="(fieldValue, fieldName) in personalInfo" :fieldValue="fieldValue"
-      :fieldName="fieldName" :key="fieldName" :isMyProfileProp="isMyProfile" @updateData="updateChildData" /> -->
-
     <div class="personalInfoCards">
       <PersonalInfoCard v-if="personalInfo.firstName !== undefined" class="personalInfoField firstName"
         :fieldValue="personalInfo.firstName" :fieldName="'firstName'" :fieldNameDisplay="'First Name'" :key="'firstName'"
@@ -104,7 +94,7 @@ export default {
 
       <PersonalInfoCard v-if="personalInfo.availableDaysPerWeek !== undefined"
         class="personalInfoField availableDaysPerWeek" :fieldValue="personalInfo.availableDaysPerWeek"
-        :fieldName="'availableDaysPerWeek'" :fieldNameDisplay="'Available number of days per week'"
+        :fieldName="'availableDaysPerWeek'" :fieldType="'combobox'" :fieldNameDisplay="'Available number of days per week'"
         :key="'availableDaysPerWeek'" :isMyProfileProp="isMyProfile" @updateData="updateChildData" />
 
       <PersonalInfoCard v-if="personalInfo.jobTitle !== undefined" class="personalInfoField jobTitle"
