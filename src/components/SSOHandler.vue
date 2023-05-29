@@ -1,5 +1,6 @@
 <script>
 import { PublicClientApplication } from '@azure/msal-browser';
+import axios from 'axios';
 
 export default {
   data() {
@@ -16,6 +17,7 @@ export default {
 
   mounted() {
     const accounts = this.$msalInstance.getAllAccounts();
+    console.log(accounts)
     if (accounts.length == 0) {
       return;
     }

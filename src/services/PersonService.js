@@ -7,8 +7,10 @@ export class PersonService {
     async getPerson(personEmail) {
         const url = this.controllerEndpoint +
             `getPerson/${personEmail}`
-
-        return await axios.get(url, { headers: { Authorization: `Bearer ${store.state.accessToken}` } })
+        const auth = {
+            headers: { 'Authorization': 'Bearer ' + store.state.accessToken }
+        }
+        return await axios.get(url, auth)
     }
 
     async createPerson(personEmail) {
@@ -18,10 +20,10 @@ export class PersonService {
         return await axios.post(url)
     }
 
-    async findPersonsWithSkills(searchSkillsFilter){
+    async findPersonsWithSkills(searchSkillsFilter) {
         const url = 'https://localhost:7224/api/person/findPersonsWithSkills'
         const body = searchSkillsFilter
-        
+
         return await axios.post(url, body)
     }
     //////////////////////////////////////////////////////////////////////////////////// Personal Info
@@ -83,10 +85,10 @@ export class PersonService {
 
     ////
 
-    async getSuggestedSkill(inputText){
+    async getSuggestedSkill(inputText) {
         const url = this.controllerEndpoint +
             `getSuggestedSkills`
-            
+
         const body = {
             InpText: inputText
         }
@@ -95,10 +97,10 @@ export class PersonService {
         return await axios.post(url, body)
     }
 
-    async getSkillsStartingWith(personEmail, inputText){
+    async getSkillsStartingWith(personEmail, inputText) {
         const url = this.controllerEndpoint +
             `${personEmail}/skills/findSkillsStartingWith`
-            
+
         const body = {
             InpText: inputText
         }

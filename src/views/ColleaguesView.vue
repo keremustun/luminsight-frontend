@@ -270,11 +270,11 @@ export default {
       <div class="col">
         <div class="search">
           <div class="row">
-            <div class="col">
+            <div class="col-md search-people">
               <input type="text" class="form-control" v-model="searchTextPerson" @input="searchPerson"
                 placeholder="Search people..." />
             </div>
-            <div class="col ">
+            <div class="col-md-auto d-flex align-items-center justify-content-center">
               <div class="dropdown-container">
                 <button class="btn dropdown-toggle dropdown" @click="this.sortClicked = !this.sortClicked">
                   {{ sortOn }}
@@ -344,10 +344,23 @@ export default {
   margin-left: 1rem;
 }
 
-@media (min-width: 1024px) {
-  .about {
-    display: flex;
-    align-items: center;
+@media (max-width: 1024px) {
+
+  .filter-menu {
+    background-color: rgba(0, 0, 0, 0.037);
+    min-width: 100%;
+    min-height: 40vh;
+    margin-bottom: 1rem;
+
+  }
+
+  .search-people{
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .dropdown{
+    width: 100%;
   }
 }
 
