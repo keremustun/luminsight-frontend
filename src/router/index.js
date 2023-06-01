@@ -40,7 +40,17 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/ResumesView.vue')
+      component: () => import('../views/ResumesView.vue'),
+      props: route => ({ resumesOf: route.query.resumesOf })
+    },
+    {
+      path: '/resume',
+      name: 'resume',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../components/Resume.vue'),
+      props: route => ({ resumeId: route.query.resumeId })
     }
   ]
 })

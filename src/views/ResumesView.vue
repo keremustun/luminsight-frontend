@@ -1,26 +1,48 @@
-<script setup>
-import AddSkillCard from '../components/SkillCard.vue'
-</script>
+<script >
+import ResumeCard from '../components/ResumeCard.vue'
 
-<script>
 export default {
-  props: {
-    stars: {
-      default: 4
+  inject: ['loggedInPerson', 'personService'],
+
+  mounted() {
+    this.resumesOf = this.$route.query.resumesOf
+  },
+
+  data() {
+    return {
+      resumesOf: '',
+      resumes: [
+        {
+          id:1
+        }
+      ]
     }
-  }
+  },
+  methods: {
+    visitResume(id){
+      this.$router.push({ name: 'resume', query: { resumeId: id } });
+    }
+  },
+
+  components: {ResumeCard}
 }
 </script>
 
 <template>
-  <div class="about">
-    <h6>My Resume's</h6>
-  </div>
+  <h4 class="title">{{ this.loggedInPerson.email === resumesOf ? 'My Resumes' : `Resumes of ${resumesOf}` }}</h4>
 
   <main>
     <div>
-      This page has not been created yet
+      <button>
+        Add Resume
+      </button>
     </div>
+    <div class="resumes">
+      <ResumeCard v-for="resume in resumes" :key="resume.id" @click="visitResume(resume.id)">
+
+      </ResumeCard>
+    </div>
+    
   </main>
 </template>
 
@@ -30,5 +52,11 @@ export default {
     display: flex;
     align-items: center;
   }
+}
+
+.resumes {
+  background-color: rgba(128, 128, 128, 0.126);
+  height: 85vh;
+  width: 95vw;
 }
 </style>

@@ -95,7 +95,7 @@ export default {
                     <RouterLink class="nav-link" to="/colleagues">Colleagues</RouterLink>
                   </li>
                   <li class="col nav-item">
-                    <RouterLink class="nav-link" to="/resumes">Resumes</RouterLink>
+                    <RouterLink class="nav-link"  :to="{ name: 'resumes', query: { resumesOf: this.loggedInPerson.email } }">Resumes</RouterLink>
                   </li>
                   <div class="col-6">
 
