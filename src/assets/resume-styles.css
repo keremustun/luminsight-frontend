@@ -1,6 +1,17 @@
 .name {
     font-weight: 700;
-    font-size:28px;
+    font-size: 40px;
+    color: rgb(103, 2, 175);
+    display: inline-block;
+}
+
+.job-title {
+    font-weight: 600;
+    font-style: italic;
+    display: inline-block;
+    font-size: 30px;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .background {
@@ -32,6 +43,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .section {
@@ -39,8 +51,10 @@
 }
 
 .section-title {
+    color: rgb(198, 92, 0);
     font-weight: bold;
-    margin-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 8px;
 }
 
 /* Adjust the layout for different screen sizes */
@@ -61,3 +75,53 @@
     }
 }
 
+.skill {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    
+}
+.skill-name{
+    width: 150px;
+}
+.stars {
+    margin-left: 5px;
+}
+
+.star {
+    font-size: 18px;
+    color: gold;
+}
+
+
+.empty-star:before {
+    content: '\2606';
+    color: gray;
+    /* Filled star unicode */
+}
+
+.filled-star:before {
+    content: "\2605";
+    color: gold;
+    /* Filled star unicode */
+}
+
+.experience {
+    margin-bottom: 30px;
+}
+
+.experience-title {
+    color: rgb(103, 2, 175);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.experience-date {
+    font-size: 12px;
+    font-style: italic;
+    margin-bottom: 7px;
+}
+
+.experience-description {
+    font-size: 12px;
+}

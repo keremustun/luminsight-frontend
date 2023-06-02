@@ -44,17 +44,24 @@ export default {
       this.personService.getPersonsSkills(this.skillsOf)
         .then(response => {
           this.skills = response.data
-          this.skills.sort((skillA, skillB) => skillA.skillName.localeCompare(skillB.skillName));
+          this.sortSkillsAlphabetically()
         })
     },
 
     filterSkills() {
       this.personService.getSkillsStartingWith(this.skillsOf, this.searchText)
-        .then(response => this.skills = response.data)
+        .then(response => {
+          this.skills = response.data
+          this.sortSkillsAlphabetically()
+        })
     },
 
     skillsUpdated() {
       this.refreshSkills()
+    },
+
+    sortSkillsAlphabetically(){
+      this.skills.sort((skillA, skillB) => skillA.skillName.localeCompare(skillB.skillName));
     }
   },
 
