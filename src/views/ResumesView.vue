@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     visitResume(id){
-      this.$router.push({ name: 'resume', query: { resumeId: id } });
+      this.$router.push({ name: 'resume', query: { resumeOf:this.resumesOf, resumeId: id } });
     }
   },
 
