@@ -29,12 +29,13 @@
 .resume-container {
     margin: 30px;
     width: 1080px;
-    height: 1920px;
     /* 16:9 aspect ratio */
     background-color: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     font-size: 14px;
     background-color: white;
+
+
 }
 
 .resume {
@@ -47,7 +48,12 @@
 }
 
 .section {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
+}
+.sub-section {
+    padding-top: 20px; 
+    padding-bottom: 10px; 
+    page-break-inside: avoid;
 }
 
 .section-title {
@@ -79,11 +85,13 @@
     display: flex;
     align-items: center;
     font-size: 12px;
-    
+
 }
-.skill-name{
+
+.skill-name {
     width: 150px;
 }
+
 .stars {
     margin-left: 5px;
 }

@@ -10,7 +10,88 @@ export default {
     data() {
         return {
             person: undefined,
-            skills: [],
+            skills: [{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },{
+                skillName:'C#',
+                proficiency:5
+            },],
             experiences: [{
                 title: '3rd year Internship',
                 dateFrom: 'Sep 2021',
@@ -42,7 +123,7 @@ export default {
         person: {
             deep: true,
             handler() {
-                this.skills = this.person.skills
+                // this.skills = this.person.skills
                 this.skills.sort((skillA, skillB) => skillA.skillName.localeCompare(skillB.skillName));
             }
         }
@@ -124,7 +205,7 @@ export default {
 
                     <div class="section">
                         <div class="section-title">Experiences</div>
-                        <div v-for="experience in experiences" class="experience">
+                        <div v-for="experience in experiences" class="sub-section experience">
                             <div class="experience-title">
                                 {{ experience.title }}
                             </div>
