@@ -31,7 +31,6 @@ export class PersonService {
     async getPersonalInfo(personEmail) {
         const url = this.controllerEndpoint +
             `${personEmail}/personalInfo`
-
         return await axios.get(url)
     }
 

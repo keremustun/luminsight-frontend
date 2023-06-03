@@ -25,11 +25,9 @@ export default {
         this.setYears()
     },
 
-    emits: ['experiences-updated'],
-
     data() {
         return {
-            oldExperience:{
+            oldExperience: {
                 title: this.experienceProp.title,
                 monthFrom: this.experienceProp.monthFrom,
                 yearFrom: this.experienceProp.yearFrom,
@@ -38,7 +36,7 @@ export default {
                 description: this.experienceProp.description,
             },
 
-            newExperience:{
+            newExperience: {
                 title: this.experienceProp.title,
                 monthFrom: this.experienceProp.monthFrom,
                 yearFrom: this.experienceProp.yearFrom,
@@ -46,7 +44,7 @@ export default {
                 yearUntil: this.experienceProp.yearUntil,
                 description: this.experienceProp.description,
             },
-           
+
 
 
             months: [
@@ -100,7 +98,10 @@ export default {
                     this.loggedInPerson.email,
                     this.experienceProp.title
                 ).then(response => {
-                    this.cleanUp()
+                    if (response.data === 'Experience deleted')
+                        this.cleanUp()
+                    else
+                        alert(response.data)
                 })
             }
         },

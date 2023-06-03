@@ -22,10 +22,6 @@ export default {
 
     },
 
-    mounted() {
-        console.log(this.fieldName + ':' + typeof (this.fieldValue))
-    },
-
     data() {
         return {
             clicked: false,
@@ -40,7 +36,6 @@ export default {
 
     methods: {
         notifyParent() {
-            console.log(this.field)
             this.$emit('updateData', this.value, this.field);
         },
 
@@ -56,20 +51,6 @@ export default {
             }
         },
 
-        addExperience(newExperience){
-            this.value.push(newExperience)
-        },
-
-
-        updateExperiences(newExperience) {
-            const index = this.value.findIndex(exp => exp.id === experienceId);
-
-            // If the experience exists, update its properties
-            if (index !== -1) {
-                this.value[index] = newExperience;
-            }
-            this.notifyParent()
-        }
     },
 
     watch: {
@@ -141,25 +122,24 @@ export default {
         <div @click=" " v-if="this.fieldType === 'experiences'">
             <div class="fieldNameContainerExperiences">
                 <p class="fieldNameExperiences">{{ fieldNameDisplay }}</p>
-                <div v-if="this.isMyProfileProp">
-                    <button @click="experienceModalOpened = true">
+                <div class="add-experience-btn-container" v-if="this.isMyProfileProp">
+                    <button class="btn add-experience-btn" @click="experienceModalOpened = true">
                         Add Experience
                     </button>
                 </div>
             </div>
-            <div v-for="experience in this.value" :key="experience.id" class="experience">
-                <Experience :experience="experience" @experienceUpdated="notifyParent()"/>
+            <div v-for="experience in fieldValue" :key="experience.title" class="experience">
+                <Experience :experience="experience" @experienceUpdated="notifyParent()" />
             </div>
-            <ExperienceModal ref="experienceModal" v-if="experienceModalOpened" :open="true" @close="modalOpened = false"
-                @experienceUpdated="notifyParent()">
+            <ExperienceModal ref="experienceModal" v-if="experienceModalOpened" :open="true"
+                @close="experienceModalOpened = false" @experienceUpdated="notifyParent()">
                 <template #title>
                     <h3>Add experience</h3>
                 </template>
 
 
                 <template #rightButton>
-                    <button @click="this.$refs.experienceModal.addExperience()"
-                        class="btn btn-warning save">Save</button>
+                    <button @click="this.$refs.experienceModal.addExperience()" class="btn btn-warning save">Save</button>
                 </template>
             </ExperienceModal>
         </div>
@@ -174,6 +154,7 @@ export default {
 .fieldNameExperiences {
     font-weight: 700;
 
+    display: inline-block;
 }
 
 .fieldNameContainerExperiences {
@@ -187,6 +168,21 @@ export default {
     border-radius: 0.3rem;
 }
 
+.add-experience-btn-container {
+    display: inline-block;
+    margin-left: 2rem;
+
+}
+
+.add-experience-btn {
+    background-color: orange;
+}
+
+.add-experience-btn:hover {
+    background-color: rgb(255, 184, 52);
+}
+
+
 .experience:hover {
     cursor: pointer;
     background-color: rgba(128, 128, 128, 0.348);
@@ -194,15 +190,17 @@ export default {
 
 .experience-title {
     font-weight: 600;
+    font-size: 120%;
 }
 
 
 .experience-date {
     font-style: italic;
+    font-size: 80%;
 }
 
 .experience-description {
-    margin-top: 0.1rem;
+    margin-top: 0.5rem;
 }
 
 
@@ -253,4 +251,5 @@ export default {
     display: inline-block;
 }
 
-.biography.active {}</style>
+.biography.active {}
+</style>

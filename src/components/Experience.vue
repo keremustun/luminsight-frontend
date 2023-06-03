@@ -6,20 +6,19 @@ export default {
 
     methods: {
         toggleModal() {
-
             this.modalOpened = !this.modalOpened
         },
 
-        experienceUpdated(){
+        experienceUpdated() {
             this.$emit('experienceUpdated')
         },
 
-        
+
     },
 
-    data(){
+    data() {
         return {
-            modalOpened:false
+            modalOpened: false
         }
     },
 
@@ -35,15 +34,16 @@ export default {
             {{ experience.title }}
         </div>
         <div class="experience-date">
-            {{ experience.dateFrom }} - {{ experience.dateUntil }}
+            {{ experience.monthFrom }} {{ experience.yearFrom }} - {{ experience.monthUntil }} {{ experience.yearUntil }}
         </div>
 
         <div class="experience-description">
             {{ experience.description }}
         </div>
     </div>
-    
-    <ExperienceModal ref="experienceModal" v-if="modalOpened" :experienceProp="experience" :open="true"  @close="modalOpened = false" @experienceUpdated="experienceUpdated()">
+
+    <ExperienceModal ref="experienceModal" v-if="modalOpened" :experienceProp="experience" :open="true"
+        @close="modalOpened = false" @experienceUpdated="experienceUpdated">
 
         <template #title>
             <h3>Edit the experience</h3>
@@ -57,7 +57,6 @@ export default {
             <button @click="this.$refs.experienceModal.updateExperience()" class="btn btn-warning save">Save</button>
         </template>
     </ExperienceModal>
-
 </template>
 
 <style></style>
