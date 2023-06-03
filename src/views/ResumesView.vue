@@ -6,7 +6,6 @@ export default {
 
   mounted() {
     this.resumesOf = this.$route.query.resumesOf
-      console.log(this.resumesOf)
     this.personService.getPerson(this.resumesOf).then(response => {
       this.person = response.data
       console.log(this.person)
@@ -18,15 +17,19 @@ export default {
       person: {},
       resumesOf: '',
       resumes: [
-        {
-          id: 1
-        }
       ]
     }
   },
   methods: {
     visitResume(id) {
       this.$router.push({ name: 'resume', query: { resumeOf: this.resumesOf, resumeId: id } });
+    },
+
+    addResume(){
+      this.personService.addResume(this.resumesOf).then(response =>{
+        const newResumeId = response.data
+        this.visitResume(newResumeId)
+      })
     }
   },
 
@@ -39,13 +42,13 @@ export default {
 
   <main>
     <div>
-      <button class="btn btn-add-resume">
+      <button @click="addResume()" class="btn btn-add-resume">
         Add Resume
       </button>
     </div>
     <div class="resumes">
 
-      <ResumeCard class="resume-card" :key="1" @click="visitResume(1)">
+      <ResumeCard class="resume-card" :key="1" @click="visitResume('default')">
         <template #title>
           <div class="resume-card-title">
             Generated Default Resume
@@ -60,7 +63,7 @@ export default {
         </template> -->
       </ResumeCard>
 
-      <ResumeCard class="resume-card" v-for="resume in resumes" :key="resume.id" @click="visitResume(resume.id)">
+      <ResumeCard class="resume-card" v-for="resume in person.resumes" :key="resume.id" @click="visitResume(resume.id)">
         <template #title>
           <div class="resume-card-title">
             Resume title{{ resume.title }}
@@ -70,9 +73,6 @@ export default {
           <div class="resume-card-body">
             <div>
               Skills:
-            </div>
-            <div>
-              Date created
             </div>
           </div>
         </template>
@@ -114,7 +114,7 @@ export default {
 
 .resume-card:hover {
   cursor: pointer;
-  background: linear-gradient(180deg, transparent, rgba(157, 0, 255, 0.266));
+  background: linear-gradient(180deg, transparent, rgba(109, 0, 176, 0.266));
 }
 
 .resume-card-title {

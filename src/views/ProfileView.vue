@@ -1,5 +1,6 @@
 <script>
 import PersonalInfoCard from '../components/PersonalInfoCard.vue'
+import SkillsView from '../views/SkillsView.vue'
 
 export default {
   inject: ['loggedInPerson', 'personService'],
@@ -59,7 +60,7 @@ export default {
     }
   },
 
-  components: { PersonalInfoCard }
+  components: { PersonalInfoCard, SkillsView }
 
 }
 </script>
@@ -118,6 +119,12 @@ export default {
         :fieldValue="personalInfo.experiences" :fieldName="'experiences'" :fieldType="'experiences'"
         :fieldNameDisplay="'Experiences'" :isMyProfileProp="isMyProfile"
         @updateData="this.refreshPersonalInfo(this.loggedInPerson.email)" />
+    </div>
+
+    <div v-if="profileOf !== this.loggedInPerson.email">
+      <SkillsView :skillsOfProp="this.$route.query.profileOf">
+
+      </SkillsView>
     </div>
 
   </main>

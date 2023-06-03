@@ -1,6 +1,7 @@
 
 <script>
 import resumeStyles from '@/assets/resume-styles.css';
+import ResumeConfigurationMenu from './ResumeConfigurationMenu.vue';
 import axios from 'axios';
 import Stars from './Stars.vue'
 
@@ -10,6 +11,8 @@ export default {
     data() {
         return {
             person: undefined,
+            jobTitle: '',
+
             skills: [{
                 skillName: 'C#',
                 proficiency: 5
@@ -92,6 +95,7 @@ export default {
                 skillName: 'C#',
                 proficiency: 5
             },],
+
             experiences: [],
 
             styling: resumeStyles,
@@ -104,6 +108,19 @@ export default {
     mounted() {
         this.personService.getPerson(this.$route.query.resumeOf).then((response) => {
             this.person = response.data;
+
+            const index = this.person.resumes.findIndex(resume => resume.id === this.$route.query.resumeId)
+
+            if (this.$route.query.resumeId === 'default') {
+
+                this.skills = this.person.skills
+                this.experiences = this.person.personalInfo.experiences
+                this.jobTitle = this.person.personalInfo.jobTitle
+            } else {
+
+                this.skills = this.person.resumes[index].skills
+                this.experiences = this.person.resumes[index].experiences
+            }
         });
     },
 
@@ -144,11 +161,20 @@ export default {
             } catch (error) {
                 console.error(error); // Handle the error
             }
+        },
+
+        updateConfigurations() {
+            console.log(this.$refs.resumeConfigrationMenu.skills)
+            this.skills = this.$refs.resumeConfigrationMenu.skills
+                .filter(skill => skill.checked)
+
+            this.experiences = this.$refs.resumeConfigrationMenu.experiences
+                .filter(experience => experience.checked)
         }
     },
 
     components: {
-        Stars
+        Stars, ResumeConfigurationMenu
     }
 
 };
@@ -163,6 +189,18 @@ export default {
             </div>
         </div>
         <div class="container">
+            <div v-if="this.$route.query.resumeId !== 'default'" class="col add-sections-menu">
+                <ResumeConfigurationMenu ref="resumeConfigrationMenu" v-if="person" :skillsProp="this.person.skills"
+                    :experiencesProp="this.person.personalInfo.experiences" @configurationsUpdated="updateConfigurations()">
+
+                </ResumeConfigurationMenu>
+                <div class="menu-skills">
+                    Skills
+                </div>
+                <div class="menu-experiences">
+                    Experiences
+                </div>
+            </div>
             <div ref="resumeContainer" class="resume-container" :style="resumeStyles">
                 <div v-if="person" class="resume">
                     <div class="section">
@@ -171,7 +209,7 @@ export default {
                         </div>
 
                         <div class="job-title">
-                            {{ person.personalInfo.jobTitle }}
+                            {{ jobTitle }}
                         </div>
                     </div>
 
@@ -195,7 +233,7 @@ export default {
 
                     <div class="section">
                         <div class="section-title">Experiences</div>
-                        <div v-for="experience in person.personalInfo.experiences" class="sub-section resume-experience">
+                        <div v-for="experience in experiences" class="sub-section resume-experience">
                             <div class="resume-experience-title">
                                 {{ experience.title }}
                             </div>
@@ -209,10 +247,10 @@ export default {
                         </div>
                     </div>
 
-                    <div class="section">
+                    <!-- <div class="section">
                         <div class="section-title">Languages</div>
 
-                    </div>
+                    </div> -->
 
 
                 </div>
@@ -236,7 +274,7 @@ export default {
 }
 
 .download-btn:hover {
-    color:white;
+    color: white;
     background-color: orange;
 
     box-shadow: 0rem 0rem 1rem white;

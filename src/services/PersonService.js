@@ -68,6 +68,15 @@ export class PersonService {
         return await axios.put(url, body )
     }
 
+    //////////////////////////////////////////////////////////////////////////////////// Resumes
+
+    async addResume(personEmail){
+        const url = this.controllerEndpoint +
+            `${personEmail}/addResume`
+
+        return await axios.put(url)
+    }
+
     //////////////////////////////////////////////////////////////////////////////////// Skills
 
     async getPersonsSkills(personEmail) {

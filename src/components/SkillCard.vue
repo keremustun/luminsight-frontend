@@ -13,6 +13,9 @@ export default {
     skillName: {
       default: "skill"
     },
+    isMyProfile:{
+      default:true
+    }
   },
 
   data() {
@@ -49,7 +52,7 @@ export default {
       </p>
 
       
-      <button class="btn btn-edit" @click="toggleModal()">Edit</button>
+      <button v-if="isMyProfile" class="btn btn-edit" @click="toggleModal()">Edit</button>
 
       <ManageSkillModal ref="manageSkillModal" v-if="modalOpened" 
         :skillNameProp="skillName"

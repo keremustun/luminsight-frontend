@@ -10,9 +10,19 @@ import { reactive } from 'vue';
 export default {
   inject: ['loggedInPerson', 'personService'],
 
-  mounted() {
+  props: {
+    skillsOfProp: {
+      default: ''
+    }
+  },
 
-    this.skillsOf = this.$route.query.skillsOf
+  mounted() {
+    if (this.skillsOfProp !== '') {
+      this.skillsOf = this.skillsOfProp
+    } else {
+      this.skillsOf = this.$route.query.skillsOf
+
+    }
     this.refreshSkills()
   },
 
@@ -45,6 +55,7 @@ export default {
         .then(response => {
           this.skills = response.data
           this.sortSkillsAlphabetically()
+          console.log(this.skills)
         })
     },
 
@@ -60,7 +71,7 @@ export default {
       this.refreshSkills()
     },
 
-    sortSkillsAlphabetically(){
+    sortSkillsAlphabetically() {
       this.skills.sort((skillA, skillB) => skillA.skillName.localeCompare(skillB.skillName));
     }
   },
@@ -71,10 +82,10 @@ export default {
 <template>
   <main>
     <div class="title">
-        <h4>{{isMyProfile ? 'My Skills' : `${this.skillsOf} Skills`}}</h4>
-      </div>
+      <h4>{{ isMyProfile ? 'My Skills' : `` }}</h4>
+    </div>
     <div v-if="isMyProfile">
-      
+
       <div>
         <button class="btn  add-skill" @click="toggleModal()">Add skill</button>
 
@@ -101,7 +112,7 @@ export default {
     </div>
 
     <SkillCard class="skill-card" v-for="skill in skillsComputed" :key="skill.skillName" :skillName='skill.skillName'
-      :stars='skill.proficiency' @skills-updated="refreshSkills()">
+      :stars='skill.proficiency' @skills-updated="refreshSkills()" :isMyProfile="isMyProfile">
     </SkillCard>
 
   </main>
