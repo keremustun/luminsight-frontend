@@ -41,8 +41,8 @@ export default {
     refreshPersonalInfo(email) {
       this.personService.getPersonalInfo(email)
         .then(response => {
+          console.log('sinde')
           this.personalInfo = { ...response.data }
-          this.unsavedChanges = false
         })
     },
 
@@ -113,7 +113,7 @@ export default {
       <PersonalInfoCard v-if="personalInfo.experiences !== undefined" class="personalInfoField experiences"
         :fieldValue="personalInfo.experiences" :fieldName="'experiences'" :fieldType="'experiences'"
         :fieldNameDisplay="'Experiences'" :key="'experiences'" :isMyProfileProp="isMyProfile"
-        @updateData="updateChildData" />
+         />
     </div>
 
   </main>

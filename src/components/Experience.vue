@@ -8,11 +8,10 @@ export default {
         toggleModal() {
 
             this.modalOpened = !this.modalOpened
-            console.log(this.modalOpened)
         },
 
-        experiencesUpdated(){
-
+        experienceUpdated(){
+            this.$emit('experienceUpdated')
         },
 
         
@@ -44,7 +43,7 @@ export default {
         </div>
     </div>
     
-    <ExperienceModal ref="experienceModal" v-if="modalOpened" :experienceProp="experience" :open="true"  @close="modalOpened = false" @experiences-updated="experiencesUpdated()">
+    <ExperienceModal ref="experienceModal" v-if="modalOpened" :experienceProp="experience" :open="true"  @close="modalOpened = false" @experienceUpdated="experienceUpdated()">
 
         <template #title>
             <h3>Edit the experience</h3>

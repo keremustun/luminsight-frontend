@@ -40,6 +40,7 @@ export default {
 
     methods: {
         notifyParent() {
+            console.log(this.field)
             this.$emit('updateData', this.value, this.field);
         },
 
@@ -60,7 +61,7 @@ export default {
         },
 
 
-        updateExperiences(newExperience, experienceId) {
+        updateExperiences(newExperience) {
             const index = this.value.findIndex(exp => exp.id === experienceId);
 
             // If the experience exists, update its properties
@@ -147,10 +148,10 @@ export default {
                 </div>
             </div>
             <div v-for="experience in this.value" :key="experience.id" class="experience">
-                <Experience :experience="experience" />
+                <Experience :experience="experience" @experienceUpdated="notifyParent()"/>
             </div>
             <ExperienceModal ref="experienceModal" v-if="experienceModalOpened" :open="true" @close="modalOpened = false"
-                @experienceUpdated="updateExperiences()">
+                @experienceUpdated="notifyParent()">
                 <template #title>
                     <h3>Add experience</h3>
                 </template>

@@ -48,7 +48,25 @@ export class PersonService {
             `${personEmail}/personalInfo/addExperience`
         const body = newExperience
 
-        return await axios.post(url, body)
+        return await axios.put(url, body)
+    }
+
+
+    async deleteExperience(personEmail, title) {
+        const url = this.controllerEndpoint +
+            `${personEmail}/personalInfo/deleteExperience/${title}`
+
+
+        return await axios.delete(url)
+    }
+
+
+    async updateExperience(personEmail,title, newExperience) {
+        const url = this.controllerEndpoint +
+            `${personEmail}/personalInfo/updateExperience/${title}`
+        const body = newExperience
+
+        return await axios.put(url, body )
     }
 
     //////////////////////////////////////////////////////////////////////////////////// Skills

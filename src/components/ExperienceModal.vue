@@ -23,15 +23,31 @@ export default {
 
     mounted() {
         this.setYears()
-        console.log(this.experienceProp)
     },
 
     emits: ['experiences-updated'],
 
     data() {
         return {
-            oldExperience: this.experienceProp,
-            newExperience: this.experienceProp,
+            oldExperience:{
+                title: this.experienceProp.title,
+                monthFrom: this.experienceProp.monthFrom,
+                yearFrom: this.experienceProp.yearFrom,
+                monthUntil: this.experienceProp.monthUntil,
+                yearUntil: this.experienceProp.yearUntil,
+                description: this.experienceProp.description,
+            },
+
+            newExperience:{
+                title: this.experienceProp.title,
+                monthFrom: this.experienceProp.monthFrom,
+                yearFrom: this.experienceProp.yearFrom,
+                monthUntil: this.experienceProp.monthUntil,
+                yearUntil: this.experienceProp.yearUntil,
+                description: this.experienceProp.description,
+            },
+           
+
 
             months: [
                 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -57,7 +73,7 @@ export default {
                 this.loggedInPerson.email,
                 this.newExperience
             ).then(response => {
-                if (response.data === 'Experience Added')
+                if (response.data === 'Experience added')
                     this.cleanUp()
                 else
                     alert(response.data)
@@ -67,9 +83,10 @@ export default {
         updateExperience() {
             this.personService.updateExperience(
                 this.loggedInPerson.email,
+                this.oldExperience.title,
                 this.newExperience
             ).then(response => {
-                if (response.data === 'Experience Added')
+                if (response.data === 'Experience updated')
                     this.cleanUp()
                 else
                     alert(response.data)
@@ -81,7 +98,7 @@ export default {
             if (confirmed) {
                 this.personService.deleteExperience(
                     this.loggedInPerson.email,
-                    this.oldSkill.skillName
+                    this.experienceProp.title
                 ).then(response => {
                     this.cleanUp()
                 })
@@ -95,7 +112,7 @@ export default {
 
         cleanUp() {
             this.$refs.genericModal.hideModal()
-            this.$emit('skills-updated')
+            this.$emit('experienceUpdated')
         }
     },
 
