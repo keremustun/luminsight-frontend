@@ -81,7 +81,7 @@
     }
 }
 
-.skill {
+.resume-skill {
     display: flex;
     align-items: center;
     font-size: 12px;
@@ -114,22 +114,22 @@
     /* Filled star unicode */
 }
 
-.experience {
+.resume-experience {
     margin-bottom: 30px;
 }
 
-.experience-title {
+.resume-experience-title {
     color: rgb(103, 2, 175);
     font-size: 16px;
     font-weight: bold;
 }
 
-.experience-date {
+.resume-experience-date {
     font-size: 12px;
     font-style: italic;
     margin-bottom: 7px;
 }
 
-.experience-description {
+.resume-experience-description {
     font-size: 12px;
 }

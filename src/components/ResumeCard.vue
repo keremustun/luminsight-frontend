@@ -1,28 +1,37 @@
 <script>
 import GenericCard from './GenericCard.vue'
 
-export default{
-    
-    components:{ GenericCard }
+export default {
+    data() {
+        return {
+            cardStyle: {
+                border: 'none',
+                borderRadius: '0rem',
+                backgroundColor: 'transparent'
+            }
+        }
+    },
+    components: { GenericCard }
 }
 </script>
 
 <template>
-    
-    <GenericCard>
-        <template #title>
-            <div>
-                Title
-            </div>
-        </template>
+    <div>
+        <GenericCard :cardStyle="cardStyle">
+            <template #title>
+                <slot name="title">
 
-        <template #body>
-            <div>
-                Skills:
-            </div>
-            <div>
-                Date created
-            </div>
-        </template>
-    </GenericCard>
+                </slot>
+            </template>
+
+            <template #body>
+                <slot name="body">
+
+                </slot>
+                
+            </template>
+        </GenericCard>
+        <hr>
+    </div>
 </template>
+

@@ -11,99 +11,88 @@ export default {
         return {
             person: undefined,
             skills: [{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
-            },{
-                skillName:'C#',
-                proficiency:5
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
+            }, {
+                skillName: 'C#',
+                proficiency: 5
             },],
-            experiences: [{
-                title: '3rd year Internship',
-                dateFrom: 'Sep 2021',
-                dateUntil: 'Feb 2022',
-                description: 'internship k;fads k;fadsfdahadf kjadsf jkjeskjnakwfdahadf kjadsf jkjeskjnakwndkj f;awoeawoen,and,jawedinternship k;fadsfdahadf kjadsf jkjeskjnakwndkj f;awoeawoen,and,jawedinterns k;fadsfdahadf kjadsf jkjeskjnakwip k;fadsfdahadf kjadsf jkjeskjnakwndkj f;awoeawoen,and,jawedinternship k;fadsfdahadf kjadsf jkjeskjnak k;fadsfdahadf kjadsf jkjeskjnakwawoen,and,jawedinternship k;fadsfdahadf kjadsf jkje k;fadsfdahadf kjadsf jkjeskjnakwakwndkj f;awoeawoen,and,jawedinternship k;fadsfdahadf kjadsf jkjeskjnakwndkj f;awoeawoen,and,jawedinternship k;fadsfdahadf kjadsf jkjeskjnakwndkj f;awoeawoen,and,jawed',
-            },
-            {
-                title: 'Graduation Internship',
-                dateFrom: 'Feb 2023',
-                dateUntil: 'Jun 2023',
-                description: 'internship k;fadsfdahadf kjadsf jaweawenternship k;aweawewndkjk;fadsfdahadf kdkj f;awoeawoen,and,jawedinternship k;fadsfdahadf kjadsf jkjeskjnakwndkj f;awoeawoen,and,jawedinternship k;fadsfdahadf kjadsf jkjeskjnakwndkj f;awoeawoen,and,jawedi k;fadsfdahadf kjadsf jkjeskjnakwnternship k;fadsfdahadf kjadsf jkjeskjnakwndkj f;awoeawoen,and,jawedintkwndkj f;awoeawoen,and,jawed',
-            }],
+            experiences: [],
 
             styling: resumeStyles,
             resumeWidth: 1080,
@@ -115,7 +104,6 @@ export default {
     mounted() {
         this.personService.getPerson(this.$route.query.resumeOf).then((response) => {
             this.person = response.data;
-            console.log(this.person)
         });
     },
 
@@ -167,11 +155,13 @@ export default {
 </script>
   
 <template>
-    <div>
-        <button @click="generatePDF">Download PDF</button>
-        <a ref="downloadLink" style="display: none;"></a>
-    </div>
     <div class="row background">
+        <div class="resume-menu">
+            <div class="btn download-btn-container">
+                <button class="btn download-btn" @click="generatePDF">Download as PDF</button>
+                <a ref="downloadLink" style="display: none;"></a>
+            </div>
+        </div>
         <div class="container">
             <div ref="resumeContainer" class="resume-container" :style="resumeStyles">
                 <div v-if="person" class="resume">
@@ -191,7 +181,7 @@ export default {
 
                         </div>
 
-                        <div v-for="skill in skills" class="skill">
+                        <div v-for="skill in skills" class="resume-skill">
                             <div class="skill-name">
                                 {{ skill.skillName }}
                             </div>
@@ -205,14 +195,15 @@ export default {
 
                     <div class="section">
                         <div class="section-title">Experiences</div>
-                        <div v-for="experience in experiences" class="sub-section experience">
-                            <div class="experience-title">
+                        <div v-for="experience in person.personalInfo.experiences" class="sub-section resume-experience">
+                            <div class="resume-experience-title">
                                 {{ experience.title }}
                             </div>
-                            <div class="experience-date">
-                                {{ experience.dateFrom }} - {{ experience.dateUntil }}
+                            <div class="resume-experience-date">
+                                {{ experience.monthFrom }} {{ experience.yearFrom }} - {{ experience.monthUntil }} {{
+                                    experience.yearUntil }}
                             </div>
-                            <div class="experience-description">
+                            <div class="resume-experience-description">
                                 {{ experience.description }}
                             </div>
                         </div>
@@ -224,13 +215,33 @@ export default {
                     </div>
 
 
-                    <div class="section">
-                        <div class="section-title">Hobbies</div>
-
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<style>
+.resume-menu {
+    background-color: purple;
+    height: 3.3rem;
+}
+
+.download-btn-container {
+    float: right;
+}
+
+.download-btn {
+    background-color: orange;
+}
+
+.download-btn:hover {
+    color:white;
+    background-color: orange;
+
+    box-shadow: 0rem 0rem 1rem white;
+}
+
+.background {}
+</style>
   
