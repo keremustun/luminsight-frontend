@@ -94,8 +94,9 @@ export default {
 
       <PersonalInfoCard v-if="personalInfo.availableDaysPerWeek !== undefined"
         class="personalInfoField availableDaysPerWeek" :fieldValue="personalInfo.availableDaysPerWeek"
-        :fieldName="'availableDaysPerWeek'" :fieldType="'combobox'" :fieldNameDisplay="'Available number of days per week'"
-        :key="'availableDaysPerWeek'" :isMyProfileProp="isMyProfile" @updateData="updateChildData" />
+        :fieldName="'availableDaysPerWeek'" :fieldType="'combobox'"
+        :fieldNameDisplay="'Available number of days per week'" :key="'availableDaysPerWeek'"
+        :isMyProfileProp="isMyProfile" @updateData="updateChildData" />
 
       <PersonalInfoCard v-if="personalInfo.jobTitle !== undefined" class="personalInfoField jobTitle"
         :fieldValue="personalInfo.jobTitle" :fieldName="'jobTitle'" :fieldNameDisplay="'Job Title'" :key="'jobTitle'"
@@ -103,16 +104,16 @@ export default {
 
       <PersonalInfoCard v-if="personalInfo.branch !== undefined" class="personalInfoField branch"
         :fieldValue="personalInfo.branch" :fieldName="'branch'" :fieldNameDisplay="'Located branch'" :key="'branch'"
-        :fieldType="'combobox'" :isMyProfileProp="isMyProfile" @updateData="updateChildData">
-
-        <template #body>
-
-        </template>
-      </PersonalInfoCard>
+        :fieldType="'combobox'" :isMyProfileProp="isMyProfile" @updateData="updateChildData" />
 
       <PersonalInfoCard v-if="personalInfo.biography !== undefined" class="personalInfoField biography"
         :fieldValue="personalInfo.biography" :fieldName="'biography'" :fieldType="'textarea'"
         :fieldNameDisplay="'Biography'" :key="'biography'" :isMyProfileProp="isMyProfile" @updateData="updateChildData" />
+
+      <PersonalInfoCard v-if="personalInfo.experiences !== undefined" class="personalInfoField experiences"
+        :fieldValue="personalInfo.experiences" :fieldName="'experiences'" :fieldType="'experiences'"
+        :fieldNameDisplay="'Experiences'" :key="'experiences'" :isMyProfileProp="isMyProfile"
+        @updateData="updateChildData" />
     </div>
 
   </main>
