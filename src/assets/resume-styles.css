@@ -18,7 +18,11 @@
     background: linear-gradient(90deg, transparent, rgba(7, 2, 2, 0.321), rgba(7, 2, 2, 0.645), rgba(7, 2, 2, 0.255), transparent);
 }
 
+.container-wrapper {
+    height: 80vh;
+}
 .container {
+    display: inline-block;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,12 +32,13 @@
 
 .resume-container {
     margin: 30px;
-    width: 1080px;
+    width: 65rem;
     /* 16:9 aspect ratio */
     background-color: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     font-size: 14px;
     background-color: white;
+    display: inline-block;
 
 
 }

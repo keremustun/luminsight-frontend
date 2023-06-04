@@ -98,6 +98,10 @@ export default {
 
             experiences: [],
 
+            showJobTitle: false,
+            showSkills: false,
+            showExperiences: false,
+
             styling: resumeStyles,
             resumeWidth: 1080,
             resumeHeight: 1920,
@@ -116,6 +120,9 @@ export default {
                 this.skills = this.person.skills
                 this.experiences = this.person.personalInfo.experiences
                 this.jobTitle = this.person.personalInfo.jobTitle
+                this.showJobTitle = true;
+                this.showSkills = true;
+                this.showExperiences = true;
             } else {
 
                 this.skills = this.person.resumes[index].skills
@@ -164,12 +171,16 @@ export default {
         },
 
         updateConfigurations() {
-            console.log(this.$refs.resumeConfigrationMenu.skills)
-            this.skills = this.$refs.resumeConfigrationMenu.skills
+            console.log(this.$refs.resumeConfigurationMenu.skills)
+            this.skills = this.$refs.resumeConfigurationMenu.skills
                 .filter(skill => skill.checked)
 
-            this.experiences = this.$refs.resumeConfigrationMenu.experiences
+            this.experiences = this.$refs.resumeConfigurationMenu.experiences
                 .filter(experience => experience.checked)
+
+            this.showSkills = this.$refs.resumeConfigurationMenu.showSkills
+            this.showExperiences = this.$refs.resumeConfigurationMenu.showExperiences
+
         }
     },
 
@@ -188,74 +199,72 @@ export default {
                 <a ref="downloadLink" style="display: none;"></a>
             </div>
         </div>
-        <div class="container">
+        <div class="row container-wrapper">
             <div v-if="this.$route.query.resumeId !== 'default'" class="col add-sections-menu">
-                <ResumeConfigurationMenu ref="resumeConfigrationMenu" v-if="person" :skillsProp="this.person.skills"
+                <ResumeConfigurationMenu ref="resumeConfigurationMenu" v-if="person" :skillsProp="this.person.skills"
                     :experiencesProp="this.person.personalInfo.experiences" @configurationsUpdated="updateConfigurations()">
 
                 </ResumeConfigurationMenu>
-                <div class="menu-skills">
-                    Skills
-                </div>
-                <div class="menu-experiences">
-                    Experiences
-                </div>
             </div>
-            <div ref="resumeContainer" class="resume-container" :style="resumeStyles">
-                <div v-if="person" class="resume">
-                    <div class="section">
-                        <div class="name">
-                            {{ person.personalInfo.firstName }} {{ person.personalInfo.lastName }}
-                        </div>
+            <div class="col container">
 
-                        <div class="job-title">
-                            {{ jobTitle }}
-                        </div>
-                    </div>
-
-
-                    <div class="section">
-                        <div class="section-title">Skills
-
-                        </div>
-
-                        <div v-for="skill in skills" class="resume-skill">
-                            <div class="skill-name">
-                                {{ skill.skillName }}
+                <div ref="resumeContainer" class="resume-container" :style="resumeStyles">
+                    <div v-if="person" class="resume">
+                        <div class="section">
+                            <div class="name">
+                                {{ person.personalInfo.firstName }} {{ person.personalInfo.lastName }}
                             </div>
-                            <span class="stars">
-                                <span v-for="n in 5" :key="n" class="star"
-                                    :class="{ 'filled-star': n <= skill.proficiency, 'empty-star': n > skill.proficiency }"></span>
-                            </span>
-                        </div>
 
-                    </div>
-
-                    <div class="section">
-                        <div class="section-title">Experiences</div>
-                        <div v-for="experience in experiences" class="sub-section resume-experience">
-                            <div class="resume-experience-title">
-                                {{ experience.title }}
-                            </div>
-                            <div class="resume-experience-date">
-                                {{ experience.monthFrom }} {{ experience.yearFrom }} - {{ experience.monthUntil }} {{
-                                    experience.yearUntil }}
-                            </div>
-                            <div class="resume-experience-description">
-                                {{ experience.description }}
+                            <div class="job-title">
+                                {{ jobTitle }}
                             </div>
                         </div>
-                    </div>
 
-                    <!-- <div class="section">
+
+                        <div v-if="showSkills" class="section">
+                            <div class="section-title">Skills
+
+                            </div>
+
+                            <div v-for="skill in skills" class="resume-skill">
+                                <div class="skill-name">
+                                    {{ skill.skillName }}
+                                </div>
+                                <span class="stars">
+                                    <span v-for="n in 5" :key="n" class="star"
+                                        :class="{ 'filled-star': n <= skill.proficiency, 'empty-star': n > skill.proficiency }"></span>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div v-if="showExperiences" class="section">
+                            <div class="section-title">Experiences</div>
+                            <div v-for="experience in experiences" class="sub-section resume-experience">
+                                <div class="resume-experience-title">
+                                    {{ experience.title }}
+                                </div>
+                                <div class="resume-experience-date">
+                                    {{ experience.monthFrom }} {{ experience.yearFrom }} - {{ experience.monthUntil }} {{
+                                        experience.yearUntil }}
+                                </div>
+                                <div class="resume-experience-description">
+                                    {{ experience.description }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="section">
                         <div class="section-title">Languages</div>
 
                     </div> -->
 
 
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -280,6 +289,12 @@ export default {
     box-shadow: 0rem 0rem 1rem white;
 }
 
-.background {}
+.add-sections-menu {
+    /* 16:9 aspect ratio */
+    display: inline-block;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+}
 </style>
   
