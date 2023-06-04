@@ -1,3 +1,20 @@
+.logo-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 30px;
+  }
+  
+  .logo {
+    float:right;
+    width: 80px;
+    height: 24px;
+  }
+
+
+
+
+
 .resume-person-name {
     font-weight: 700;
     font-size: 40px;

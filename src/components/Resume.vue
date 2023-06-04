@@ -6,7 +6,7 @@ import axios from 'axios';
 import Stars from './Stars.vue'
 
 export default {
-    inject: ['loggedInPerson','personService'],
+    inject: ['loggedInPerson', 'personService'],
 
     data() {
         return {
@@ -250,8 +250,8 @@ export default {
             <div class="row">
 
                 <div v-if="resumeId !== 'default'" class="col btn title-input-wrapper">
-                    
-                    <div >
+
+                    <div>
                         <input type="text" class="form-control title-input" v-model="resumeTitle" @input="updateResume()"
                             @keydown.enter="addTag" placeholder="✎ Enter a title" />
                     </div>
@@ -262,7 +262,7 @@ export default {
                     <div class="btn">
                         <button class="btn download-btn" @click="generatePDF">Download as PDF</button>
                         <a ref="downloadLink" style="display: none;"></a>
-                        
+
 
                     </div>
                     <div v-if="this.loggedInPerson.email === resumeOf" class="btn">
@@ -288,6 +288,9 @@ export default {
 
                 <div ref="resumeContainer" class="resume-container" :style="resumeStyles">
                     <div v-if="person" class="resume">
+                        <div class="logo-container">
+                            <img src="https://www.luminis.eu/wp-content/themes/luminis-2020/library/images/logo.svg" alt="Logo" class="logo" />
+                        </div>
                         <div class="section">
                             <div class="resume-person-name">
                                 {{ person.personalInfo.firstName }} {{ person.personalInfo.lastName }}
@@ -296,8 +299,10 @@ export default {
                             <div class="job-title">
                                 {{ jobTitle }}
                             </div>
-                        </div>
 
+
+                        </div>
+                        
 
                         <div v-if="Object.keys(skills).length > 0" class="section">
                             <div class="section-title">Skills
@@ -458,9 +463,9 @@ export default {
 }
 
 @media (max-width: 1004px) {
-  .resume-menu {
-    height:20vh
-  }
+    .resume-menu {
+        height: 20vh
+    }
 }
 </style>
   
