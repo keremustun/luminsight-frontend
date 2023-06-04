@@ -15,22 +15,22 @@ export default {
     },
 
     mounted() {
-
+        console.log(this.skillsProp)
         this.personService.getPerson(this.resumeOf).then(response => {
             this.person = response.data
 
             this.skillsWithState = this.person.skills.map(skill => {
-                const isChecked  = this.skillsProp.includes(skill.skillName);
+                const isChecked = this.skillsProp.map(skill => skill.skillName).includes(skill.skillName);
                 return {
                     ...skill,
-                    checked: isChecked 
+                    checked: isChecked
                 }
             })
             this.experiencesWithState = this.person.personalInfo.experiences.map(experience => {
-                const isChecked  = this.experiencesProp.includes(experience.title);
+                const isChecked = this.experiencesProp.map(experience => experience.title).includes(experience.title);
                 return {
                     ...experience,
-                    checked: isChecked 
+                    checked: isChecked
                 }
             })
 
@@ -46,37 +46,26 @@ export default {
             skillsWithState: [],
             selectedSkills: [],
             skillsExpanded: true,
-            showSkills: false,
+            showSkills: true,
 
             experiencesWithState: [],
             selectedExperiences: [],
             experiencesExpanded: true,
-            showExperiences: false,
+            showExperiences: true,
         }
-    },
-
-    watch: {
-        skillsWithState: {
-            deep: true,
-            handler() {
-                this.selectedSkills = this.skillsWithState.filter(skill => skill.checked)
-                this.notifyParent()
-            }
-        },
-        experiencesWithState: {
-            deep: true,
-            handler() {
-                this.selectedExperiences = this.skillsWithState.filter(experience => experience.checked)
-                this.notifyParent()
-            }
-        },
-
     },
 
     methods: {
         notifyParent() {
             this.$emit('configurationsUpdated')
 
+        },
+
+        toggleConfiguration(configuration) {
+            configuration.checked = !configuration.checked
+            this.selectedSkills = this.skillsWithState.filter(skill => skill.checked)
+            this.selectedExperiences = this.experiencesWithState.filter(experience => experience.checked)
+            this.notifyParent()
         }
     }
 
@@ -90,19 +79,19 @@ export default {
             <span class="arrow rcm-section-title" :class="{ 'expanded': skillsExpanded }">
                 Skills
             </span>
-            <div class="toggle">
+            <!-- <div class="toggle">
                 <input class="toggle-checkbox" type="checkbox" id="toggle-switch-skills" v-model="showSkills"
                     @change="notifyParent()" />
                 <label class="toggle-label" for="toggle-switch-skills">
                     <div class="toggle-inner"></div>
                     <div class="toggle-switch"></div>
                 </label>
-            </div>
+            </div> -->
         </div>
 
         <div class="skills-options" v-if="skillsExpanded">
 
-            <div v-for="skill in skillsWithState" :key="skill.skillName" @click="skill.checked = !skill.checked"
+            <div v-for="skill in skillsWithState" :key="skill.skillName" @click="toggleConfiguration(skill)"
                 class="configuration" :class="{ 'selected': skill.checked, 'not-selected': !skill.checked }">
                 {{ skill.skillName }}
                 <span class="stars">
@@ -119,20 +108,19 @@ export default {
             <span class="arrow rcm-section-title" :class="{ 'expanded': experiencesExpanded }">
                 Experiences
             </span>
-            <div class="toggle">
+            <!-- <div class="toggle">
                 <input class="toggle-checkbox" type="checkbox" id="toggle-switch-experiences" v-model="showExperiences"
                     @change="notifyParent()" />
                 <label class="toggle-label" for="toggle-switch-experiences">
                     <div class="toggle-inner"></div>
                     <div class="toggle-switch"></div>
                 </label>
-            </div>
+            </div> -->
         </div>
 
         <div class="experiences-options" v-if="experiencesExpanded">
-            <div v-for="experience in experiencesWithState" :key="experience.title"
-                @click="experience.checked = !experience.checked" class="configuration"
-                :class="{ 'selected': experience.checked, 'not-selected': !experience.checked }">
+            <div v-for="experience in experiencesWithState" :key="experience.title" @click="toggleConfiguration(experience)"
+                class="configuration" :class="{ 'selected': experience.checked, 'not-selected': !experience.checked }">
                 {{ experience.title }}
             </div>
         </div>

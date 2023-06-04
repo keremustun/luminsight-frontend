@@ -77,6 +77,13 @@ export class PersonService {
         return await axios.put(url)
     }
 
+    async deleteResume(personEmail, resumeId) {
+        const url = this.controllerEndpoint +
+            `${personEmail}/deleteResume/${resumeId}`
+
+        return await axios.delete(url)
+    }
+
     async updateResume(personEmail, resume) {
         const url = this.controllerEndpoint +
             `${personEmail}/updateResume`

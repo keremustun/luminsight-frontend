@@ -6,13 +6,13 @@ import axios from 'axios';
 import Stars from './Stars.vue'
 
 export default {
-    inject: ['personService'],
+    inject: ['loggedInPerson','personService'],
 
     data() {
         return {
             person: undefined,
-            resume:undefined,
-            resumeOf:this.$route.query.resumeOf,
+            resume: undefined,
+            resumeOf: this.$route.query.resumeOf,
             resumeId: this.$route.query.resumeId,
             resumeTitle: '',
             jobTitle: '',
@@ -103,8 +103,8 @@ export default {
             experiences: [],
 
             showJobTitle: false,
-            showSkills: false,
-            showExperiences: false,
+            showSkills: true,
+            showExperiences: true,
 
             styling: resumeStyles,
             resumeWidth: 1080,
@@ -132,6 +132,8 @@ export default {
                 this.resumeTitle = this.resume.title
                 this.skills = this.resume.skills
                 this.experiences = this.resume.experiences
+                this.showJobTitle = true;
+                this.showSkills = true;
             }
         });
     },
@@ -145,30 +147,6 @@ export default {
             }
         },
 
-        resumeTitle:{
-            deep:true,
-            handler(){
-                this.updateResume()
-            }
-        },
-        jobTitle:{
-            deep:true,
-            handler(){
-                this.updateResume()
-            }
-        },
-        skills:{
-            deep:true,
-            handler(){
-                this.updateResume()
-            }
-        },
-        experiences:{
-            deep:true,
-            handler(){
-                this.updateResume()
-            }
-        },
     },
 
     methods: {
@@ -207,10 +185,10 @@ export default {
 
             this.showSkills = this.$refs.resumeConfigurationMenu.showSkills
             this.showExperiences = this.$refs.resumeConfigurationMenu.showExperiences
-
+            this.updateResume()
         },
 
-        updateResume(){
+        updateResume() {
             const resume = {
                 id: this.resumeId,
                 title: this.resumeTitle,
@@ -219,8 +197,25 @@ export default {
                 experiences: this.experiences
             }
 
-            console.log(resume)
-            this.personService.updateResume(this.resumeOf,resume)
+            this.personService.updateResume(this.resumeOf, resume)
+        },
+
+        deleteResume() {
+            if (confirm('Are you sure that you want to delete this resume?')) {
+                this.personService.deleteResume(this.resumeOf, this.resumeId).then(response => {
+                    if (response.data === 'Resume deleted') {
+                        alert('Resume deleted')
+                        this.$router.push({
+                            name: 'resumes',
+                            query: {
+                                resumesOf: this.resumeOf
+                            }
+                        });
+                    } else {
+                        alert(response.data)
+                    }
+                });
+            }
         }
     },
 
@@ -254,16 +249,26 @@ export default {
         <div class="resume-menu">
             <div class="row">
 
-                <div class="col btn title-input-wrapper">
-                    <div>
-                        <input type="text" class="form-control title-input" v-model="resumeTitle" @input="changeTitle"
+                <div v-if="resumeId !== 'default'" class="col btn title-input-wrapper">
+                    
+                    <div >
+                        <input type="text" class="form-control title-input" v-model="resumeTitle" @input="updateResume()"
                             @keydown.enter="addTag" placeholder="✎ Enter a title" />
                     </div>
+
                 </div>
 
-                <div class="col btn download-btn-container">
-                    <button class="btn download-btn" @click="generatePDF">Download as PDF</button>
-                    <a ref="downloadLink" style="display: none;"></a>
+                <div class="col download-btn-container">
+                    <div class="btn">
+                        <button class="btn download-btn" @click="generatePDF">Download as PDF</button>
+                        <a ref="downloadLink" style="display: none;"></a>
+                        
+
+                    </div>
+                    <div v-if="this.loggedInPerson.email === resumeOf" class="btn">
+                        <button v-if="resumeId !== 'default'" class="btn delete-btn" @click="deleteResume()">Delete
+                            Resume</button>
+                    </div>
                 </div>
             </div>
 
@@ -273,8 +278,9 @@ export default {
 
         <div class="row container-wrapper">
             <div v-if="this.$route.query.resumeId !== 'default'" class="col add-sections-menu">
-                <ResumeConfigurationMenu ref="resumeConfigurationMenu" v-if="person" :resumeOf="resumeOf" :skillsProp="this.person.skills"
-                    :experiencesProp="this.person.personalInfo.experiences" @configurationsUpdated="updateConfigurations()">
+                <ResumeConfigurationMenu ref="resumeConfigurationMenu" v-if="person" :resumeOf="resumeOf"
+                    :skillsProp="this.resume.skills" :experiencesProp="this.resume.experiences"
+                    @configurationsUpdated="updateConfigurations()">
 
                 </ResumeConfigurationMenu>
             </div>
@@ -283,7 +289,7 @@ export default {
                 <div ref="resumeContainer" class="resume-container" :style="resumeStyles">
                     <div v-if="person" class="resume">
                         <div class="section">
-                            <div class="name">
+                            <div class="resume-person-name">
                                 {{ person.personalInfo.firstName }} {{ person.personalInfo.lastName }}
                             </div>
 
@@ -293,14 +299,13 @@ export default {
                         </div>
 
 
-                        <div v-if="showSkills" class="section">
+                        <div v-if="Object.keys(skills).length > 0" class="section">
                             <div class="section-title">Skills
 
                             </div>
-
                             <div v-for="skill in skills" class="resume-skill">
                                 <div class="skill-name">
-                                    {{ skill.skillName }}
+                                    - {{ skill.skillName }}
                                 </div>
                                 <span class="stars">
                                     <span v-for="n in 5" :key="n" class="star"
@@ -310,7 +315,7 @@ export default {
 
                         </div>
 
-                        <div v-if="showExperiences" class="section">
+                        <div v-if="Object.keys(experiences).length > 0" class="section">
                             <div class="section-title">Experiences</div>
                             <div v-for="experience in experiences" class="sub-section resume-experience">
                                 <div class="resume-experience-title">
@@ -363,6 +368,15 @@ export default {
 
 
 <style>
+.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: black;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
 .title-input-wrapper {
 
     color: white;
@@ -371,6 +385,12 @@ export default {
 .title-input {
     color: white;
     background: transparent;
+    border: none;
+}
+
+.title-input:hover {
+    color: white;
+    background: rgba(176, 99, 211, 0.529);
     border: none;
 }
 
@@ -397,11 +417,15 @@ export default {
 }
 
 .download-btn-container {
-    float: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
 }
 
 .download-btn {
     background-color: orange;
+    margin-right: 1rem;
 }
 
 .download-btn:hover {
@@ -411,12 +435,32 @@ export default {
     box-shadow: 0rem 0rem 1rem white;
 }
 
+
+.delete-btn {
+
+    color: white;
+    background-color: rgb(255, 0, 0);
+}
+
+.delete-btn:hover {
+    color: white;
+    background-color: rgb(203, 1, 1);
+
+    box-shadow: 0rem 0rem 0.5rem rgb(255, 255, 255);
+}
+
 .add-sections-menu {
     /* 16:9 aspect ratio */
     display: inline-block;
     background-color: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     font-size: 14px;
+}
+
+@media (max-width: 1004px) {
+  .resume-menu {
+    height:20vh
+  }
 }
 </style>
   
