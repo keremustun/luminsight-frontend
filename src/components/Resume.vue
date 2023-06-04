@@ -11,6 +11,10 @@ export default {
     data() {
         return {
             person: undefined,
+            resume:undefined,
+            resumeOf:this.$route.query.resumeOf,
+            resumeId: this.$route.query.resumeId,
+            resumeTitle: '',
             jobTitle: '',
 
             skills: [{
@@ -113,7 +117,6 @@ export default {
         this.personService.getPerson(this.$route.query.resumeOf).then((response) => {
             this.person = response.data;
 
-            const index = this.person.resumes.findIndex(resume => resume.id === this.$route.query.resumeId)
 
             if (this.$route.query.resumeId === 'default') {
 
@@ -124,9 +127,11 @@ export default {
                 this.showSkills = true;
                 this.showExperiences = true;
             } else {
-
-                this.skills = this.person.resumes[index].skills
-                this.experiences = this.person.resumes[index].experiences
+                const index = this.person.resumes.findIndex(resume => resume.id === this.$route.query.resumeId)
+                this.resume = this.person.resumes[index]
+                this.resumeTitle = this.resume.title
+                this.skills = this.resume.skills
+                this.experiences = this.resume.experiences
             }
         });
     },
@@ -138,7 +143,32 @@ export default {
                 // this.skills = this.person.skills
                 this.skills.sort((skillA, skillB) => skillA.skillName.localeCompare(skillB.skillName));
             }
-        }
+        },
+
+        resumeTitle:{
+            deep:true,
+            handler(){
+                this.updateResume()
+            }
+        },
+        jobTitle:{
+            deep:true,
+            handler(){
+                this.updateResume()
+            }
+        },
+        skills:{
+            deep:true,
+            handler(){
+                this.updateResume()
+            }
+        },
+        experiences:{
+            deep:true,
+            handler(){
+                this.updateResume()
+            }
+        },
     },
 
     methods: {
@@ -171,16 +201,26 @@ export default {
         },
 
         updateConfigurations() {
-            console.log(this.$refs.resumeConfigurationMenu.skills)
-            this.skills = this.$refs.resumeConfigurationMenu.skills
-                .filter(skill => skill.checked)
+            this.skills = this.$refs.resumeConfigurationMenu.selectedSkills
 
-            this.experiences = this.$refs.resumeConfigurationMenu.experiences
-                .filter(experience => experience.checked)
+            this.experiences = this.$refs.resumeConfigurationMenu.selectedExperiences
 
             this.showSkills = this.$refs.resumeConfigurationMenu.showSkills
             this.showExperiences = this.$refs.resumeConfigurationMenu.showExperiences
 
+        },
+
+        updateResume(){
+            const resume = {
+                id: this.resumeId,
+                title: this.resumeTitle,
+                jobTitle: this.jobTitle,
+                skills: this.skills,
+                experiences: this.experiences
+            }
+
+            console.log(resume)
+            this.personService.updateResume(this.resumeOf,resume)
         }
     },
 
@@ -191,17 +231,49 @@ export default {
 };
 </script>
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <template>
     <div class="row background">
+
         <div class="resume-menu">
-            <div class="btn download-btn-container">
-                <button class="btn download-btn" @click="generatePDF">Download as PDF</button>
-                <a ref="downloadLink" style="display: none;"></a>
+            <div class="row">
+
+                <div class="col btn title-input-wrapper">
+                    <div>
+                        <input type="text" class="form-control title-input" v-model="resumeTitle" @input="changeTitle"
+                            @keydown.enter="addTag" placeholder="✎ Enter a title" />
+                    </div>
+                </div>
+
+                <div class="col btn download-btn-container">
+                    <button class="btn download-btn" @click="generatePDF">Download as PDF</button>
+                    <a ref="downloadLink" style="display: none;"></a>
+                </div>
             </div>
+
         </div>
+
+
+
         <div class="row container-wrapper">
             <div v-if="this.$route.query.resumeId !== 'default'" class="col add-sections-menu">
-                <ResumeConfigurationMenu ref="resumeConfigurationMenu" v-if="person" :skillsProp="this.person.skills"
+                <ResumeConfigurationMenu ref="resumeConfigurationMenu" v-if="person" :resumeOf="resumeOf" :skillsProp="this.person.skills"
                     :experiencesProp="this.person.personalInfo.experiences" @configurationsUpdated="updateConfigurations()">
 
                 </ResumeConfigurationMenu>
@@ -268,7 +340,57 @@ export default {
     </div>
 </template>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <style>
+.title-input-wrapper {
+
+    color: white;
+}
+
+.title-input {
+    color: white;
+    background: transparent;
+    border: none;
+}
+
+.title-input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1;
+    /* Firefox */
+}
+
+.title-input:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: white;
+}
+
+.title-input::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: white;
+}
+
 .resume-menu {
     background-color: purple;
     height: 3.3rem;

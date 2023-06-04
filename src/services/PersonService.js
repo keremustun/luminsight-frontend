@@ -60,21 +60,30 @@ export class PersonService {
     }
 
 
-    async updateExperience(personEmail,title, newExperience) {
+    async updateExperience(personEmail, title, newExperience) {
         const url = this.controllerEndpoint +
             `${personEmail}/personalInfo/updateExperience/${title}`
         const body = newExperience
 
-        return await axios.put(url, body )
+        return await axios.put(url, body)
     }
 
     //////////////////////////////////////////////////////////////////////////////////// Resumes
 
-    async addResume(personEmail){
+    async addResume(personEmail) {
         const url = this.controllerEndpoint +
             `${personEmail}/addResume`
 
         return await axios.put(url)
+    }
+
+    async updateResume(personEmail, resume) {
+        const url = this.controllerEndpoint +
+            `${personEmail}/updateResume`
+
+        const body = resume
+
+        return await axios.put(url,body)
     }
 
     //////////////////////////////////////////////////////////////////////////////////// Skills

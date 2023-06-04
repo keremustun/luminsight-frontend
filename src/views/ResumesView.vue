@@ -66,7 +66,7 @@ export default {
       <ResumeCard class="resume-card" v-for="resume in person.resumes" :key="resume.id" @click="visitResume(resume.id)">
         <template #title>
           <div class="resume-card-title">
-            Resume title{{ resume.title }}
+            {{ resume.title }}
           </div>
         </template>
         <template #body>
