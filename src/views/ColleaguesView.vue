@@ -18,7 +18,7 @@ export default {
       expandedCategories: [],
       filteredPersons: [],
 
-      sortOn: 'Skill Proficiency (High to Low)',
+      sortOn: 'Colleague name (A-Z)',
       sortingOptions: ['Skill Proficiency (High to Low)', 'Skill Proficiency (Low to High)', 'Colleague name (A-Z)', 'Colleague name (Z-A)'],
       sortClicked: false
     };
@@ -31,6 +31,7 @@ export default {
       );
     },
     filteredPersonsComputed() {
+      console.log(typeof (this.filteredPersons))
       return this.filteredPersons;
     }
   },
@@ -85,22 +86,19 @@ export default {
     },
 
     updateResults() {
-      if (true) {
-        const searchSkillsFilter = {
-          personSearchText: this.searchTextPerson,
-          skillsToSearchFor: this.tags,
-          branches: this.$refs.filtersComponent.branches.filter(branch => branch.checked === true).map(branch => branch.name),
-          minimalAvailableDaysPerWeek: this.$refs.filtersComponent.minimalAvailableDaysPerWeek,
-        }
-
-        this.personService.findPersonsWithSkills(searchSkillsFilter)
-          .then(response => {
-            this.filteredPersons = response.data
-            this.sortColleagues()
-          })
-      } else {
-        this.filteredPersons = []
+      const searchSkillsFilter = {
+        personSearchText: this.searchTextPerson,
+        skillsToSearchFor: this.tags,
+        branches: this.$refs.filtersComponent.branches.filter(branch => branch.checked === true).map(branch => branch.name),
+        minimalAvailableDaysPerWeek: this.$refs.filtersComponent.minimalAvailableDaysPerWeek,
       }
+
+      this.personService.findPersonsWithSkills(searchSkillsFilter)
+        .then(response => {
+          this.filteredPersons = [...response.data]
+          this.sortColleagues()
+        })
+
     },
 
     suggestSkills() {
@@ -135,6 +133,7 @@ export default {
       }
 
       this.tags.push(skill);
+      this.sortOn = 'Skill Proficiency (High to Low)'
       this.searchTextSkill = '';
       this.showDropdown = false;
     },
@@ -153,7 +152,6 @@ export default {
       if (index !== -1) {
         this.tags.splice(index, 1, updatedTag);
       }
-      console.log(this.tags)
     },
 
     visitProfile(email) {
@@ -162,7 +160,8 @@ export default {
 
 
     sortColleagues() {
-
+      if (Object.keys(this.tags).length === 0)
+        this.sortOn = 'Colleague name (A-Z)'
       if (this.sortOn === 'Skill Proficiency (High to Low)') {
         this.filteredPersons.sort((personA, personB) => personB.weight - personA.weight);
       } else if (this.sortOn === 'Skill Proficiency (Low to High)') {
@@ -291,7 +290,7 @@ export default {
 
 
         <ColleagueCard @click="visitProfile(person.email)" class="colleague" v-for="person in filteredPersonsComputed"
-          :searchedSkills="tags" :key="person.email" :colleague="person" @matchChanged="changeFilteredPersonsOrder()">
+          :key="person.email" :searchedSkills="tags" :colleague="person" @matchChanged="changeFilteredPersonsOrder()">
 
           <template #header>
             <div class="title">
@@ -354,12 +353,12 @@ export default {
 
   }
 
-  .search-people{
+  .search-people {
     display: block;
     margin-bottom: 1rem;
   }
 
-  .dropdown{
+  .dropdown {
     width: 100%;
   }
 }
