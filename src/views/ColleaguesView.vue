@@ -30,8 +30,8 @@ export default {
         skill.toLowerCase().startsWith(this.searchTextSkill.toLowerCase())
       );
     },
+    
     filteredPersonsComputed() {
-      console.log(typeof (this.filteredPersons))
       return this.filteredPersons;
     }
   },

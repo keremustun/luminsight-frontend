@@ -36,16 +36,17 @@ export default {
             hovered: 0,
             stars: [1, 2, 3, 4, 5],
 
-
             dropdownSkills: [],
-            showDropdown: false,
-
+            showDropdown: false
         }
     },
+
     computed: {
         suggestedSkills() {
             console.log(this.dropdownSkills)
-            return this.dropdownSkills
+            return this.dropdownSkills.filter((skill) =>
+                skill.toLowerCase().startsWith(this.newSkill.skillName.toLowerCase())
+            );
         },
     },
 
@@ -111,20 +112,21 @@ export default {
             this.$emit('skills-updated')
         },
 
-        suggestSkills() {
-            this.personService.getSuggestedSkill(this.newSkill.skillName)
-                .then(response => {
-                    this.dropdownSkills = response.data
-                    this.showDropdown = this.newSkill.skillName.length > 0 && this.dropdownSkills.length > 0;
-
-                })
-        },
 
         addTag(tag) {
             this.newSkill.skillName = tag
             this.showDropdown = false;
         },
 
+
+        suggestSkills() {
+            this.personService.getSuggestedSkill(this.newSkill.skillName)
+                .then(response => {
+                    this.dropdownSkills = response.data
+                    this.showDropdown =  this.dropdownSkills.length > 0;
+
+                })
+        },
     },
 
     components: { GenericModal }
@@ -138,14 +140,13 @@ export default {
         </template>
 
         <template #body>
-            <input class="skillNameInput" v-model="newSkill.skillName" @input="suggestSkills" type="text">
+            <input class="skillNameInput" v-model="newSkill.skillName" @input="suggestSkills()" type="text">
 
             <div>
                 <ul class="dropdown-menu" v-if="showDropdown">
                     <li v-for="skill in suggestedSkills" :key="skill" @click="addTag(skill)">
                         <div class="suggestedSkill">
                             {{ skill }}
-
                         </div>
                     </li>
                 </ul>
@@ -225,4 +226,19 @@ export default {
     background-color: orange;
     border: orange;
 }
+
+.dropdown-menu {
+  display: block;
+}
+
+.suggestedSkill {
+  padding: 5%;
+  cursor: pointer;
+}
+
+.suggestedSkill:hover {
+  background: linear-gradient(90deg, rgba(255, 170, 0, 0.22), rgba(0, 238, 255, 0.098), rgba(140, 0, 255, 0.018));
+  font-weight: 600;
+}
+
 </style>
