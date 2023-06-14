@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from '../store/index.js'
 
 export class PersonService {
-    controllerEndpoint = 'https://localhost:7224/api/person/'
+    controllerEndpoint = '/api/person/'
 
     async getPerson(personEmail) {
         const url = this.controllerEndpoint +
@@ -21,11 +21,13 @@ export class PersonService {
     }
 
     async findPersonsWithSkills(searchSkillsFilter) {
-        const url = 'https://localhost:7224/api/person/findPersonsWithSkills'
+        const url = this.controllerEndpoint +
+            `${personEmail}/findPersonsWithSkills`
         const body = searchSkillsFilter
 
         return await axios.post(url, body)
     }
+
     //////////////////////////////////////////////////////////////////////////////////// Personal Info
 
     async getPersonalInfo(personEmail) {

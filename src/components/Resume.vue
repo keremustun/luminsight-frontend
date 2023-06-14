@@ -156,12 +156,15 @@ export default {
                 const htmlContent = resumeElement.innerHTML;
                 const styling = `<style>${this.styling}</style>`;
 
-                const response = await axios.post('https://localhost:7224/api/person/generatePdf', {
+                const response = await axios.post('/api/person/generatePdf', {
                     htmlContent,
                     styling,
                 }, {
                     responseType: 'blob', // Set response type as blob
                 });
+                
+
+
                 // Create a blob URL from the response data
                 const blobUrl = URL.createObjectURL(response.data);
 
