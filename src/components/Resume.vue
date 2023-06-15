@@ -151,35 +151,32 @@ export default {
 
     methods: {
         async generatePDF() {
-            try {
-                const resumeElement = this.$refs.resumeContainer;
-                const htmlContent = resumeElement.innerHTML;
-                const styling = `<style>${this.styling}</style>`;
+            const resumeElement = this.$refs.resumeContainer;
+            const htmlContent = resumeElement.innerHTML;
+            const styling = `<style>${this.styling}</style>`;
 
-                const response = await axios.post('/api/person/generatePdf', {
-                    htmlContent,
-                    styling,
-                }, {
-                    responseType: 'blob', // Set response type as blob
-                });
-                
-
-
+            this.personService.generatePdf(htmlContent, styling).then(response => {
+                console.log('aa')
                 // Create a blob URL from the response data
                 const blobUrl = URL.createObjectURL(response.data);
 
                 // Create an anchor element to trigger the file download
                 const link = document.createElement('a');
                 link.href = blobUrl;
-                link.download = 'resume.pdf';
+
+                if (this.resumeTitle === '') {
+                    link.download = `Luminis Resume - ${this.person.personalInfo.firstName} ${this.person.personalInfo.lastName}.pdf`;
+                }
+                else {
+                    link.download = `Luminis Resume - ${this.person.personalInfo.firstName} ${this.person.personalInfo.lastName} - ${this.resumeTitle}.pdf`;
+                }
                 link.click();
 
                 // Clean up the blob URL
                 URL.revokeObjectURL(blobUrl);
-            } catch (error) {
-                console.error(error); // Handle the error
-            }
+            })
         },
+
 
         updateConfigurations() {
             this.skills = this.$refs.resumeConfigurationMenu.selectedSkills
@@ -292,7 +289,8 @@ export default {
                 <div ref="resumeContainer" class="resume-container" :style="resumeStyles">
                     <div v-if="person" class="resume">
                         <div class="logo-container">
-                            <img src="https://www.luminis.eu/wp-content/themes/luminis-2020/library/images/logo.svg" alt="Logo" class="logo" />
+                            <img src="https://www.luminis.eu/wp-content/themes/luminis-2020/library/images/logo.svg"
+                                alt="Logo" class="logo" />
                         </div>
                         <div class="section">
                             <div class="resume-person-name">
@@ -305,7 +303,7 @@ export default {
 
 
                         </div>
-                        
+
 
                         <div v-if="Object.keys(skills).length > 0" class="section">
                             <div class="section-title">Skills
