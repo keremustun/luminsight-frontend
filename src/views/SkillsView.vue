@@ -99,7 +99,7 @@ export default {
           </template>
 
           <template #rightButton>
-            <button @click="this.$refs.manageSkillModal.addSkill()" class="btn btn-warning save">Add Skill</button>
+            <button @click="$refs.manageSkillModal.addSkill()" class="btn btn-warning save">Add Skill</button>
           </template>
         </ManageSkillModal>
       </div>
