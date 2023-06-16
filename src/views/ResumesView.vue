@@ -69,13 +69,13 @@ export default {
             {{ resume.title }}
           </div>
         </template>
-        <template #body>
+        <!-- <template #body>
           <div class="resume-card-body">
             <div>
               Skills:
             </div>
           </div>
-        </template>
+        </template> -->
       </ResumeCard>
 
     </div>

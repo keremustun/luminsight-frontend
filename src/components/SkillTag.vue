@@ -2,7 +2,20 @@
 import Stars from './Stars.vue'
 
 export default {
-    props: ['skillNameProp', 'proficiencyPropSkillTag', 'index'],
+    props:{
+        skillNameProp:{
+            
+        },
+        proficiencyPropSkillTag:{
+
+        },
+        index:{
+
+        },
+        showStars:{
+            default:true
+        }
+    },
 
     data() {
         return {
@@ -45,7 +58,7 @@ export default {
             <div class="tag-close" @click="removeTag">&times;</div>
         </div>
 
-        <div class="skill-container">
+        <div class="skill-container" v-if="showStars">
             <Stars ref="stars" :proficiencyPropStars="proficiencyPropSkillTag" :editable="true"
                 @proficiencyChanged="tagChanged()">
 

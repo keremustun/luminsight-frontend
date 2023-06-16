@@ -258,7 +258,7 @@ export default {
         </div>
 
         <div class="tags">
-          <SkillTag class="tag" v-for="(tag, index) in tags" :skillNameProp="tag.skillName" :proficiencyProp="0"
+          <SkillTag class="tag" v-for="(tag, index) in tags" :skillNameProp="tag.skillName" :proficiencyProp="0" :showStars="false"
             :indexProp="index" :key="tag.skillName" @removeTag="removeTag" @tagChanged="updateTags">
           </SkillTag>
         </div>
