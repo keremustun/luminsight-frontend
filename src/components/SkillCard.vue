@@ -66,11 +66,11 @@ export default {
         </template>
 
         <template #leftButton>
-          <button @click="this.$refs.manageSkillModal.deleteSkill()" class="btn btn-danger delete">Delete</button>
+          <button @click="$refs.manageSkillModal.deleteSkill()" class="btn btn-danger delete">Delete</button>
         </template>
 
         <template #rightButton>
-          <button @click="this.$refs.manageSkillModal.updateSkill()" class="btn btn-warning save">Save</button>
+          <button @click="$refs.manageSkillModal.updateSkill()" class="btn btn-warning save">Save</button>
         </template>
       </ManageSkillModal>
     </template>

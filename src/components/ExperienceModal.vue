@@ -134,13 +134,13 @@ export default {
 
 
                 <div class="experience-field-name">Date From</div>
-                <div class="dropdown">
+                <div class="experience-dropdown">
                     <select class="form-control experience-field-value" v-model="newExperience.monthFrom">
                         <option v-for="month in months" :key="month" :value="month">{{ month }}</option>
                     </select>
                 </div>
 
-                <div class="dropdown">
+                <div class="experience-dropdown">
                     <select class="form-control experience-field-value" v-model="newExperience.yearFrom">
                         <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
                     </select>
@@ -148,13 +148,13 @@ export default {
 
 
                 <div class="experience-field-name">Date Until</div>
-                <div class="dropdown">
+                <div class="experience-dropdown">
                     <select class="form-control experience-field-value" v-model="newExperience.monthUntil">
                         <option v-for="month in months" :key="month" :value="month">{{ month }}</option>
                     </select>
                 </div>
 
-                <div class="dropdown">
+                <div class="experience-dropdown">
                     <select class="form-control experience-field-value" v-model="newExperience.yearUntil">
                         <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
                     </select>
