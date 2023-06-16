@@ -8,7 +8,6 @@ export default {
     this.resumesOf = this.$route.query.resumesOf
     this.personService.getPerson(this.resumesOf).then(response => {
       this.person = response.data
-      console.log(this.person)
     })
   },
 

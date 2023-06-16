@@ -2,8 +2,8 @@ import axios from 'axios';
 import store from '../store/index.js'
 
 export class PersonService {
-    controllerEndpoint = '/api/person/'
-    //controllerEndpoint = 'https://localhost:8082/api/person/'
+    //controllerEndpoint = '/api/person/'
+    controllerEndpoint = 'https://localhost:8082/api/person/'
 
     async getPerson(personEmail) {
         const url = this.controllerEndpoint +
@@ -129,11 +129,13 @@ export class PersonService {
         return await axios.put(url, body)
     }
 
-    async deletePersonSkill(personEmail, skillName) {
+    async deletePersonSkill(personEmail, skill) {
         const url = this.controllerEndpoint +
-            `${personEmail}/skills/${encodeURIComponent(skillName)}`
+            `${personEmail}/skills`
 
-        return await axios.delete(url)
+        const body = skill
+
+        return await axios.post(url,body)
     }
 
     async updatePersonSkill(personEmail, skillName, newSkill) {

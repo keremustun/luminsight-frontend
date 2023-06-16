@@ -43,7 +43,6 @@ export default {
 
     computed: {
         suggestedSkills() {
-            console.log(this.dropdownSkills)
             return this.dropdownSkills.filter((skill) =>
                 skill.toLowerCase().startsWith(this.newSkill.skillName.toLowerCase())
             );
@@ -95,7 +94,7 @@ export default {
             if (confirmed) {
                 this.personService.deletePersonSkill(
                     this.loggedInPerson.email,
-                    this.oldSkill.skillName
+                    this.oldSkill
                 ).then(response => {
                     this.cleanUp()
                 })

@@ -55,7 +55,6 @@ export default {
         .then(response => {
           this.skills = response.data
           this.sortSkillsAlphabetically()
-          console.log(this.skills)
         })
     },
 
